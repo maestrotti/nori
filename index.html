@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Baby Tracker</title>
+    <style>
+        :root {
+            --color-white: rgba(255, 255, 255, 1);
+            --color-cream-50: rgba(252, 252, 249, 1);
+            --color-cream-100: rgba(255, 255, 253, 1);
+            --color-gray-200: rgba(245, 245, 245, 1);
+            --color-gray-300: rgba(167, 169, 169, 1);
+            --color-slate-500: rgba(98, 108, 113, 1);
+            --color-brown-600: rgba(94, 82, 64, 1);
+            --color-charcoal-700: rgba(31, 33, 33, 1);
+            --color-charcoal-800: rgba(38, 40, 40, 1);
+            --color-teal-500: rgba(33, 128, 141, 1);
+            --color-teal-600: rgba(29, 116, 128, 1);
+            --color-teal-700: rgba(26, 104, 115, 1);
+            --color-pink-400: rgba(236, 72, 153, 1);
+            --color-pink-500: rgba(219, 39, 119, 1);
+            --color-purple-400: rgba(192, 132, 252, 1);
+            --color-purple-500: rgba(168, 85, 247, 1);
+            --color-blue-400: rgba(96, 165, 250, 1);
+            --color-blue-500: rgba(59, 130, 246, 1);
+            --color-orange-400: rgba(251, 146, 60, 1);
+            --color-orange-500: rgba(249, 115, 22, 1);
+            --color-green-400: rgba(74, 222, 128, 1);
+            --color-green-500: rgba(34, 197, 94, 1);
+            
+            --color-brown-600-rgb: 94, 82, 64;
+            --color-teal-500-rgb: 33, 128, 141;
+            
+            --color-background: var(--color-cream-50);
+            --color-surface: var(--color-cream-100);
+            --color-text: var(--color-charcoal-700);
+            --color-text-secondary: var(--color-slate-500);
+            --color-primary: var(--color-teal-500);
+            --color-primary-hover: var(--color-teal-600);
+            --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+            
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --radius-base: 8px;
+            --radius-lg: 12px;
+            --radius-full: 9999px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-gray-400-rgb: 119, 124, 124;
+                --color-background: var(--color-charcoal-700);
+                --color-surface: var(--color-charcoal-800);
+                --color-text: var(--color-gray-200);
+                --color-text-secondary: rgba(167, 169, 169, 0.7);
+                --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--color-background);
+            color: var(--color-text);
+            padding-bottom: 80px;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: var(--color-surface);
+            padding: var(--space-16) var(--space-20);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: var(--space-8);
+        }
+
+        .header-stats {
+            display: flex;
+            gap: var(--space-16);
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-12);
+            padding: var(--space-16);
+        }
+
+        .quick-btn {
+            background: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-20);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-8);
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .quick-btn:active {
+            transform: scale(0.97);
+            box-shadow: none;
+        }
+
+        .quick-btn-icon {
+            font-size: 32px;
+            line-height: 1;
+        }
+
+        .quick-btn-label {
+            font-size: 13px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .quick-btn-time {
+            font-size: 11px;
+            color: var(--color-text-secondary);
+        }
+
+        .sleep { border-color: var(--color-purple-400); color: var(--color-purple-500); }
+        .feeding { border-color: var(--color-pink-400); color: var(--color-pink-500); }
+        .diaper { border-color: var(--color-blue-400); color: var(--color-blue-500); }
+        .bath { border-color: var(--color-teal-500); color: var(--color-teal-600); }
+        .medicine { border-color: var(--color-orange-400); color: var(--color-orange-500); }
+        .checkup { border-color: var(--color-green-400); color: var(--color-green-500); }
+
+        .section {
+            background: var(--color-surface);
+            margin: var(--space-16);
+            padding: var(--space-16);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-border);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-16);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .view-all {
+            font-size: 13px;
+            color: var(--color-primary);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-12);
+        }
+
+        .activity-item {
+            display: flex;
+            gap: var(--space-12);
+            padding: var(--space-12);
+            background: var(--color-background);
+            border-radius: var(--radius-base);
+            border: 1px solid var(--color-border);
+        }
+
+        .activity-icon {
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-base);
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .activity-details {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            white-space: nowrap;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            animation: fadeIn 0.2s;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .modal-content {
+            background: var(--color-surface);
+            width: 100%;
+            max-height: 85vh;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            padding: var(--space-24);
+            animation: slideUp 0.3s ease-out;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-24);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--color-text-secondary);
+            line-height: 1;
+        }
+
+        .form-group {
+            margin-bottom: var(--space-20);
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: var(--space-8);
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: var(--space-12);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-base);
+            font-size: 15px;
+            background: var(--color-background);
+            color: var(--color-text);
+        }
+
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        .button-group {
+            display: flex;
+            gap: var(--space-12);
+            margin-bottom: var(--space-20);
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: var(--space-12);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-base);
+            background: var(--color-background);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: var(--space-16);
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-base);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+            background: var(--color-primary-hover);
+        }
+
+        .timer-display {
+            text-align: center;
+            padding: var(--space-24);
+            background: var(--color-background);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-20);
+        }
+
+        .timer-text {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--color-primary);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer-label {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            margin-top: var(--space-8);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--color-surface);
+            border-top: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-around;
+            padding: var(--space-12) 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            color: var(--color-text-secondary);
+            transition: color 0.2s;
+            padding: var(--space-8);
+        }
+
+        .nav-item.active {
+            color: var(--color-primary);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+        }
+
+        .nav-label {
+            font-size: 11px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--space-24);
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-12);
+        }
+
+        .stat-card {
+            background: var(--color-background);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            border: 1px solid var(--color-border);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--color-orange-500);
+            color: white;
+            border-radius: var(--radius-full);
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .reminders-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-12);
+        }
+
+        .reminder-item {
+            background: rgba(var(--color-teal-500-rgb), 0.08);
+            border: 1px solid var(--color-primary);
+            border-radius: var(--radius-base);
+            padding: var(--space-12);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reminder-content {
+            flex: 1;
+        }
+
+        .reminder-title {
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .reminder-time {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
+
+        .delete-btn {
+            color: var(--color-orange-500);
+            font-size: 20px;
+            cursor: pointer;
+            padding: var(--space-8);
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Početna stranica -->
+    <div id="homePage" class="page active">
+        <div class="header">
+            <h1>👶 Baby Tracker</h1>
+            <div class="header-stats">
+                <span>🌙 Posljednji san: <strong id="lastSleepTime">-</strong></span>
+                <span>🍼 Posljednje hranjenje: <strong id="lastFeedingTime">-</strong></span>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <div class="quick-btn sleep" onclick="openModal('sleep')">
+                <div class="quick-btn-icon">😴</div>
+                <div class="quick-btn-label">San</div>
+                <div class="quick-btn-time" id="sleepLastTime">-</div>
+            </div>
+            <div class="quick-btn feeding" onclick="openModal('feeding')">
+                <div class="quick-btn-icon">🍼</div>
+                <div class="quick-btn-label">Hranjenje</div>
+                <div class="quick-btn-time" id="feedingLastTime">-</div>
+            </div>
+            <div class="quick-btn diaper" onclick="openModal('diaper')">
+                <div class="quick-btn-icon">👶</div>
+                <div class="quick-btn-label">Pelena</div>
+                <div class="quick-btn-time" id="diaperLastTime">-</div>
+            </div>
+            <div class="quick-btn bath" onclick="openModal('bath')">
+                <div class="quick-btn-icon">🛁</div>
+                <div class="quick-btn-label">Kupanje</div>
+                <div class="quick-btn-time" id="bathLastTime">-</div>
+            </div>
+            <div class="quick-btn medicine" onclick="openModal('medicine')">
+                <div class="quick-btn-icon">💊</div>
+                <div class="quick-btn-label">Lijekovi</div>
+                <div class="quick-btn-time" id="medicineLastTime">-</div>
+            </div>
+            <div class="quick-btn" onclick="openModal('colic')">
+                <div class="quick-btn-icon">😣</div>
+                <div class="quick-btn-label">Grčevi</div>
+                <div class="quick-btn-time" id="colicLastTime">-</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">Najnovije aktivnosti</h2>
+                <a class="view-all" onclick="switchPage('history')">Prikaži sve</a>
+            </div>
+            <div id="recentActivities" class="activity-list"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">Dnevna statistika</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="todaySleepCount">0</div>
+                    <div class="stat-label">Spavanja</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="todayFeedingCount">0</div>
+                    <div class="stat-label">Hranjenja</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="todayDiaperCount">0</div>
+                    <div class="stat-label">Pelene</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="todayTotalSleep">0h</div>
+                    <div class="stat-label">Ukupno spavanja</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stranica historije -->
+    <div id="historyPage" class="page">
+        <div class="header">
+            <h1>📊 Historija</h1>
+        </div>
+        <div class="section">
+            <div id="allActivities" class="activity-list"></div>
+        </div>
+    </div>
+
+    <!-- Stranica kontrola -->
+    <div id="checkupPage" class="page">
+        <div class="header">
+            <h1>🏥 Kontrole</h1>
+        </div>
+        <div class="section">
+            <button class="submit-btn" onclick="openModal('checkup')">+ Dodaj kontrolu</button>
+            <div style="height: 16px;"></div>
+            <div id="checkupList" class="activity-list"></div>
+        </div>
+    </div>
+
+    <!-- Stranica podsjetnika -->
+    <div id="remindersPage" class="page">
+        <div class="header">
+            <h1>🔔 Podsjetnici</h1>
+        </div>
+        <div class="section">
+            <button class="submit-btn" onclick="openModal('reminder')">+ Dodaj podsjetnik</button>
+            <div style="height: 16px;"></div>
+            <div id="remindersList" class="reminders-list"></div>
+        </div>
+    </div>
+
+    <!-- Modal za san -->
+    <div id="sleepModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">😴 San</h2>
+                <span class="close-btn" onclick="closeModal('sleep')">&times;</span>
+            </div>
+            <div id="sleepTimer" class="timer-display" style="display: none;">
+                <div class="timer-text" id="sleepTimerText">00:00:00</div>
+                <div class="timer-label">Vrijeme spavanja</div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Vrijeme</label>
+                <input type="datetime-local" id="sleepStartTime" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Trajanje (sati)</label>
+                <input type="number" id="sleepDuration" class="form-input" min="0" step="0.25" placeholder="npr. 2.5">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Bilješke</label>
+                <textarea id="sleepNotes" class="form-textarea" placeholder="Dodatne bilješke..."></textarea>
+            </div>
+            <button class="submit-btn" id="sleepSubmitBtn" onclick="saveSleep()">Spremi</button>
+            <button class="submit-btn" id="sleepStartBtn" onclick="startSleepTimer()" style="background: var(--color-purple-500);">Pokreni tajmer</button>
+            <button class="submit-btn" id="sleepStopBtn" onclick="stopSleepTimer()" style="display: none; background: var(--color-orange-500);">Zaustavi tajmer</button>
+        </div>
+    </div>
+
+    <!-- Modal za hranjenje -->
+    <div id="feedingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🍼 Hranjenje</h2>
+                <span class="close-btn" onclick="closeModal('feeding')">&times;</span>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Vrijeme</label>
+                <input type="datetime-local" id="feedingTime" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Dojka</label>
+                <div class="button-group">
+                    <button class="toggle-btn" data-value="left" onclick="selectBreast(this)">Lijeva</button>
+                    <button class="toggle-btn" data-value="right" onclick="selectBreast(this)">Desna</button>
+                    <button class="toggle-btn" data-value="both" onclick="selectBreast(this)">Obje</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Trajanje (minute)</label>
+                <input type="number" id="feedingDuration" class="form-input" min="1" placeholder="npr. 15">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Bilješke</label>
+                <textarea id="feedingNotes" class="form-textarea" placeholder="Dodatne bilješke..."></textarea>
+            </div>
+            <button class="submit-btn" onclick="saveFeeding()">Spremi</button>
+        </div>
+    </div>
+
+    <!-- Modal za pelenu -->
+    <div id="diaperModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">👶 Pelena</h2>
+                <span class="close-btn" onclick="closeModal('diaper')">&times;</span>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Vrijeme</label>
+                <input type="datetime-local" id="diaperTime" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Tip</label>
+                <div class="button-group">
+                    <button class="toggle-btn" data-value="wet" onclick="selectDiaperType(this)">💧 Mokra</button>
+                    <button class="toggle-btn" data-value="dirty" onclick="selectDiaperType(this)">💩 Prljava</button>
+                    <button class="toggle-btn" data-value="both" onclick="selectDiaperType(this)">Oboje</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Bilješke</label>
+                <textarea id="diaperNotes" class="form-textarea" placeholder="Dodatne bilješke..."></textarea>
+            </div>
+            <button class="submit-btn" onclick="saveDiaper()">Spremi</button>
+        </div>
+    </div>
+
+    <!-- Modal za kupanje -->
+    <div id="bathModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🛁 Kupanje</h2>
+                <span class="close-btn" onclick="closeModal('bath')">&times;</span>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Vrijeme</label>
+                <input type="datetime-local" id="bathTime" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Temperatura vode</label>
+                <input type="text" id="bathTemp" class="form-input" placeholder="npr. 37°C">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Bilješke</label>
+                <textarea id="bathNotes" class="form-textarea" placeholder="Dodatne bilješke..."></textarea>
+            </div>
+            <button class="submit-btn" onclick="saveBath()">Spremi</button>
+        </div>
+    </div>
+
+    <!-- Modal za lijekove -->
+    <div id="medicineModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">💊 Lijekovi/Kapi</h2>
+                <span class="close-btn" onclick="closeModal('medicine')">&times;</span>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Vrijeme</label>
+                <input type="datetime-local" id="medicineTime" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Naziv lijeka/kapi</label>
+                <input type="text" id="medicineName" class="form-input" placeholder="npr. Espumisan kapi">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Doza</label>
+                <input type="text" id="medicineDose" class="form-input" placeholder="npr. 10 kapi">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Bilješke</label>
+                <textarea id="medicineNotes" class="form-textarea" placeholder="Dodatne bilješke..."></textarea>
+            </div>
+            <button class="submit-btn" onclick="saveMedicine()">Spremi</button>
+        </div>
+    </div>
+
+    <!-- Modal za grčeve -->
+    <div id="colicModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">😣 Grčevi</h2>
+                <span class="close-btn" onclick="closeModal('colic')">&times;</span>
+            </div>
+            <div id="colicTimer" class="timer-display" style="display: none;">
+                <div class="timer-text" id="colicTimerText">00:00:00</div>
+                <div class="timer-label">Trajanje grčeva</div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Početak</label>
+                <input type="datetime-local" id="colicStartTime" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Trajanje (minute)</label>
+                <input type="number" id="colicDuration" class="form-input" min="1" placeholder="npr. 30">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Intenzitet</label>
+                <div class="button-group">
+                    <button class="toggle-btn" data-value="mild" onclick="selectIntensity(this)">Blago</button>
+                    <button class="toggle-btn" data-value="moderate" onclick="selectIntensity(this)">Umjereno</button>
+                    <button class="toggle-btn" data-value="severe" onclick="selectIntensity(this)">Jako</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Bilješke</label>
+                <textarea id="colicNotes" class="form-textarea" placeholder="Što je pomoglo..."></textarea>
+            </div>
+            <button class="submit-btn" id="colicSubmitBtn" onclick="saveColic()">Spremi</button>
+            <button class="submit-btn" id="colicStartBtn" onclick="startColicTimer()" style="background: var(--color-orange-500);">Pokreni tajmer</button>
+            <button class="submit-btn" id="colicStopBtn" onclick="stopColicTimer()" style="display: none; background: var(--color-green-500);">Zaustavi tajmer</button>
+        </div>
+    </div>
+
+    <!-- Modal za kontrolu -->
+    <div id="checkupModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🏥 Kontrola</h2>
+                <span class="close-btn" onclick="closeModal('checkup')">&times;</span>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Datum i vrijeme kontrole</label>
+                <input type="datetime-local" id="checkupTime" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Doktor/Klinika</label>
+                <input type="text" id="checkupDoctor" class="form-input" placeholder="npr. Dr. Horvat">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Težina (kg)</label>
+                <input type="number" id="checkupWeight" class="form-input" step="0.1" placeholder="npr. 4.5">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Visina (cm)</label>
+                <input type="number" id="checkupHeight" class="form-input" step="0.5" placeholder="npr. 55">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Bilješke</label>
+                <textarea id="checkupNotes" class="form-textarea" placeholder="Nalazi, preporuke..."></textarea>
+            </div>
+            <button class="submit-btn" onclick="saveCheckup()">Spremi</button>
+        </div>
+    </div>
+
+    <!-- Modal za podsjetnik -->
+    <div id="reminderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🔔 Podsjetnik</h2>
+                <span class="close-btn" onclick="closeModal('reminder')">&times;</span>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Naslov</label>
+                <input type="text" id="reminderTitle" class="form-input" placeholder="npr. Vakcinacija">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Datum i vrijeme</label>
+                <input type="datetime-local" id="reminderTime" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Opis</label>
+                <textarea id="reminderDesc" class="form-textarea" placeholder="Detalji..."></textarea>
+            </div>
+            <button class="submit-btn" onclick="saveReminder()">Spremi</button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="switchPage('home')">
+            <div class="nav-icon">🏠</div>
+            <div class="nav-label">Početna</div>
+        </div>
+        <div class="nav-item" onclick="switchPage('history')">
+            <div class="nav-icon">📊</div>
+            <div class="nav-label">Historija</div>
+        </div>
+        <div class="nav-item" onclick="switchPage('checkup')">
+            <div class="nav-icon">🏥</div>
+            <div class="nav-label">Kontrole</div>
+        </div>
+        <div class="nav-item" onclick="switchPage('reminders')">
+            <div class="nav-icon" style="position: relative;">
+                🔔
+                <span id="reminderBadge" class="notification-badge" style="display: none;">0</span>
+            </div>
+            <div class="nav-label">Podsjetnici</div>
+        </div>
+    </div>
+
+    <script>
+        // Inicijalizacija
+        let activities = JSON.parse(localStorage.getItem('babyActivities') || '[]');
+        let checkups = JSON.parse(localStorage.getItem('babyCheckups') || '[]');
+        let reminders = JSON.parse(localStorage.getItem('babyReminders') || '[]');
+        let sleepTimer = null;
+        let sleepStartTimestamp = null;
+        let colicTimer = null;
+        let colicStartTimestamp = null;
+        let selectedBreast = null;
+        let selectedDiaperType = null;
+        let selectedIntensity = null;
+
+        // Postavi trenutno vrijeme u polja (bosansko vrijeme)
+        function setCurrentTime(elementId) {
+            const now = new Date();
+            // Konvertuj u bosansko vrijeme (CET/CEST)
+            const bosnianTime = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Sarajevo' }));
+            const year = bosnianTime.getFullYear();
+            const month = String(bosnianTime.getMonth() + 1).padStart(2, '0');
+            const day = String(bosnianTime.getDate()).padStart(2, '0');
+            const hours = String(bosnianTime.getHours()).padStart(2, '0');
+            const minutes = String(bosnianTime.getMinutes()).padStart(2, '0');
+            const formatted = `${year}-${month}-${day}T${hours}:${minutes}`;
+            document.getElementById(elementId).value = formatted;
+        }
+
+        // Auto-update vremena u real-time
+        function startRealtimeUpdate(elementId) {
+            const interval = setInterval(() => {
+                const element = document.getElementById(elementId);
+                if (!element || !document.getElementById(elementId.replace('Time', 'Modal').replace('StartTime', 'Modal')).classList.contains('active')) {
+                    clearInterval(interval);
+                    return;
+                }
+                setCurrentTime(elementId);
+            }, 1000);
+            return interval;
+        }
+
+        // Otvori modal
+        function openModal(type) {
+            const modal = document.getElementById(type + 'Modal');
+            modal.classList.add('active');
+            
+            // Postavi trenutno vrijeme i pokreni real-time ažuriranje
+            const timeFields = {
+                sleep: 'sleepStartTime',
+                feeding: 'feedingTime',
+                diaper: 'diaperTime',
+                bath: 'bathTime',
+                medicine: 'medicineTime',
+                colic: 'colicStartTime',
+                checkup: 'checkupTime',
+                reminder: 'reminderTime'
+            };
+            
+            if (timeFields[type]) {
+                setCurrentTime(timeFields[type]);
+                startRealtimeUpdate(timeFields[type]);
+            }
+        }
+
+        // Zatvori modal
+        function closeModal(type) {
+            const modal = document.getElementById(type + 'Modal');
+            modal.classList.remove('active');
+            
+            // Reset form
+            if (type === 'sleep') {
+                if (sleepTimer) stopSleepTimer();
+                document.getElementById('sleepDuration').value = '';
+                document.getElementById('sleepNotes').value = '';
+            } else if (type === 'colic') {
+                if (colicTimer) stopColicTimer();
+                document.getElementById('colicDuration').value = '';
+                document.getElementById('colicNotes').value = '';
+                selectedIntensity = null;
+                document.querySelectorAll('#colicModal .toggle-btn').forEach(btn => btn.classList.remove('active'));
+            }
+        }
+
+        // Tajmer za san
+        function startSleepTimer() {
+            sleepStartTimestamp = Date.now();
+            document.getElementById('sleepTimer').style.display = 'block';
+            document.getElementById('sleepSubmitBtn').style.display = 'none';
+            document.getElementById('sleepStartBtn').style.display = 'none';
+            document.getElementById('sleepStopBtn').style.display = 'block';
+            
+            sleepTimer = setInterval(() => {
+                const elapsed = Date.now() - sleepStartTimestamp;
+                const hours = Math.floor(elapsed / 3600000);
+                const minutes = Math.floor((elapsed % 3600000) / 60000);
+                const seconds = Math.floor((elapsed % 60000) / 1000);
+                document.getElementById('sleepTimerText').textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function stopSleepTimer() {
+            if (sleepTimer) {
+                clearInterval(sleepTimer);
+                const duration = (Date.now() - sleepStartTimestamp) / 3600000;
+                document.getElementById('sleepDuration').value = duration.toFixed(2);
+                sleepTimer = null;
+                document.getElementById('sleepTimer').style.display = 'none';
+                document.getElementById('sleepSubmitBtn').style.display = 'block';
+                document.getElementById('sleepStartBtn').style.display = 'block';
+                document.getElementById('sleepStopBtn').style.display = 'none';
+            }
+        }
+
+        // Tajmer za grčeve
+        function startColicTimer() {
+            colicStartTimestamp = Date.now();
+            document.getElementById('colicTimer').style.display = 'block';
+            document.getElementById('colicSubmitBtn').style.display = 'none';
+            document.getElementById('colicStartBtn').style.display = 'none';
+            document.getElementById('colicStopBtn').style.display = 'block';
+            
+            colicTimer = setInterval(() => {
+                const elapsed = Date.now() - colicStartTimestamp;
+                const hours = Math.floor(elapsed / 3600000);
+                const minutes = Math.floor((elapsed % 3600000) / 60000);
+                const seconds = Math.floor((elapsed % 60000) / 1000);
+                document.getElementById('colicTimerText').textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function stopColicTimer() {
+            if (colicTimer) {
+                clearInterval(colicTimer);
+                const duration = Math.round((Date.now() - colicStartTimestamp) / 60000);
+                document.getElementById('colicDuration').value = duration;
+                colicTimer = null;
+                document.getElementById('colicTimer').style.display = 'none';
+                document.getElementById('colicSubmitBtn').style.display = 'block';
+                document.getElementById('colicStartBtn').style.display = 'block';
+                document.getElementById('colicStopBtn').style.display = 'none';
+            }
+        }
+
+        // Odabir dojke
+        function selectBreast(btn) {
+            document.querySelectorAll('#feedingModal .toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedBreast = btn.dataset.value;
+        }
+
+        // Odabir tipa pelene
+        function selectDiaperType(btn) {
+            document.querySelectorAll('#diaperModal .toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedDiaperType = btn.dataset.value;
+        }
+
+        // Odabir intenziteta grčeva
+        function selectIntensity(btn) {
+            document.querySelectorAll('#colicModal .toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedIntensity = btn.dataset.value;
+        }
+
+        // Spremi san
+        function saveSleep() {
+            const time = document.getElementById('sleepStartTime').value;
+            const duration = parseFloat(document.getElementById('sleepDuration').value);
+            const notes = document.getElementById('sleepNotes').value;
+
+            if (!time || !duration) {
+                alert('Molimo unesite vrijeme i trajanje!');
+                return;
+            }
+
+            activities.push({
+                type: 'sleep',
+                time: new Date(time).toISOString(),
+                duration: duration,
+                notes: notes,
+                timestamp: Date.now()
+            });
+
+            saveAndRefresh();
+            closeModal('sleep');
+        }
+
+        // Spremi hranjenje
+        function saveFeeding() {
+            const time = document.getElementById('feedingTime').value;
+            const duration = document.getElementById('feedingDuration').value;
+            const notes = document.getElementById('feedingNotes').value;
+
+            if (!time || !selectedBreast) {
+                alert('Molimo unesite vrijeme i odaberite dojku!');
+                return;
+            }
+
+            activities.push({
+                type: 'feeding',
+                time: new Date(time).toISOString(),
+                breast: selectedBreast,
+                duration: duration ? parseInt(duration) : null,
+                notes: notes,
+                timestamp: Date.now()
+            });
+
+            saveAndRefresh();
+            closeModal('feeding');
+            selectedBreast = null;
+            document.querySelectorAll('#feedingModal .toggle-btn').forEach(b => b.classList.remove('active'));
+        }
+
+        // Spremi pelenu
+        function saveDiaper() {
+            const time = document.getElementById('diaperTime').value;
+            const notes = document.getElementById('diaperNotes').value;
+
+            if (!time || !selectedDiaperType) {
+                alert('Molimo unesite vrijeme i odaberite tip!');
+                return;
+            }
+
+            activities.push({
+                type: 'diaper',
+                time: new Date(time).toISOString(),
+                diaperType: selectedDiaperType,
+                notes: notes,
+                timestamp: Date.now()
+            });
+
+            saveAndRefresh();
+            closeModal('diaper');
+            selectedDiaperType = null;
+            document.querySelectorAll('#diaperModal .toggle-btn').forEach(b => b.classList.remove('active'));
+        }
+
+        // Spremi kupanje
+        function saveBath() {
+            const time = document.getElementById('bathTime').value;
+            const temp = document.getElementById('bathTemp').value;
+            const notes = document.getElementById('bathNotes').value;
+
+            if (!time) {
+                alert('Molimo unesite vrijeme!');
+                return;
+            }
+
+            activities.push({
+                type: 'bath',
+                time: new Date(time).toISOString(),
+                temperature: temp,
+                notes: notes,
+                timestamp: Date.now()
+            });
+
+            saveAndRefresh();
+            closeModal('bath');
+        }
+
+        // Spremi lijek
+        function saveMedicine() {
+            const time = document.getElementById('medicineTime').value;
+            const name = document.getElementById('medicineName').value;
+            const dose = document.getElementById('medicineDose').value;
+            const notes = document.getElementById('medicineNotes').value;
+
+            if (!time || !name) {
+                alert('Molimo unesite vrijeme i naziv!');
+                return;
+            }
+
+            activities.push({
+                type: 'medicine',
+                time: new Date(time).toISOString(),
+                name: name,
+                dose: dose,
+                notes: notes,
+                timestamp: Date.now()
+            });
+
+            saveAndRefresh();
+            closeModal('medicine');
+        }
+
+        // Spremi grčeve
+        function saveColic() {
+            const time = document.getElementById('colicStartTime').value;
+            const duration = document.getElementById('colicDuration').value;
+            const notes = document.getElementById('colicNotes').value;
+
+            if (!time || !duration || !selectedIntensity) {
+                alert('Molimo unesite sve podatke!');
+                return;
+            }
+
+            activities.push({
+                type: 'colic',
+                time: new Date(time).toISOString(),
+                duration: parseInt(duration),
+                intensity: selectedIntensity,
+                notes: notes,
+                timestamp: Date.now()
+            });
+
+            saveAndRefresh();
+            closeModal('colic');
+            selectedIntensity = null;
+            document.querySelectorAll('#colicModal .toggle-btn').forEach(b => b.classList.remove('active'));
+        }
+
+        // Spremi kontrolu
+        function saveCheckup() {
+            const time = document.getElementById('checkupTime').value;
+            const doctor = document.getElementById('checkupDoctor').value;
+            const weight = document.getElementById('checkupWeight').value;
+            const height = document.getElementById('checkupHeight').value;
+            const notes = document.getElementById('checkupNotes').value;
+
+            if (!time) {
+                alert('Molimo unesite vrijeme!');
+                return;
+            }
+
+            checkups.push({
+                time: new Date(time).toISOString(),
+                doctor: doctor,
+                weight: weight ? parseFloat(weight) : null,
+                height: height ? parseFloat(height) : null,
+                notes: notes,
+                timestamp: Date.now()
+            });
+
+            localStorage.setItem('babyCheckups', JSON.stringify(checkups));
+            renderCheckups();
+            closeModal('checkup');
+        }
+
+        // Spremi podsjetnik
+        function saveReminder() {
+            const title = document.getElementById('reminderTitle').value;
+            const time = document.getElementById('reminderTime').value;
+            const desc = document.getElementById('reminderDesc').value;
+
+            if (!title || !time) {
+                alert('Molimo unesite naslov i vrijeme!');
+                return;
+            }
+
+            reminders.push({
+                title: title,
+                time: new Date(time).toISOString(),
+                description: desc,
+                timestamp: Date.now()
+            });
+
+            localStorage.setItem('babyReminders', JSON.stringify(reminders));
+            renderReminders();
+            closeModal('reminder');
+            checkReminders();
+        }
+
+        // Obriši podsjetnik
+        function deleteReminder(index) {
+            if (confirm('Obrisati podsjetnik?')) {
+                reminders.splice(index, 1);
+                localStorage.setItem('babyReminders', JSON.stringify(reminders));
+                renderReminders();
+                checkReminders();
+            }
+        }
+
+        // Provjeri podsjetnike i prikaži notifikacije
+        function checkReminders() {
+            const now = new Date();
+            let count = 0;
+            let shownReminders = JSON.parse(localStorage.getItem('shownReminders') || '[]');
+            
+            reminders.forEach((reminder, index) => {
+                const reminderTime = new Date(reminder.time);
+                const diff = reminderTime - now;
+                
+                // Ako je vrijeme za podsjetnik (u rasponu od -1 min do +5 min)
+                if (diff > -60000 && diff < 300000 && !shownReminders.includes(reminder.timestamp)) {
+                    showReminderNotification(reminder);
+                    shownReminders.push(reminder.timestamp);
+                    localStorage.setItem('shownReminders', JSON.stringify(shownReminders));
+                }
+                
+                // Broji nadolazeće podsjetnike (narednih sat vremena)
+                if (diff > 0 && diff < 3600000) {
+                    count++;
+                }
+            });
+
+            const badge = document.getElementById('reminderBadge');
+            if (count > 0) {
+                badge.textContent = count;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        // Prikaži browser notifikaciju za podsjetnik
+        function showReminderNotification(reminder) {
+            // Provjeri podršku za notifikacije
+            if (!("Notification" in window)) {
+                alert(`🔔 Podsjetnik: ${reminder.title}\n${reminder.description || ''}`);
+                return;
+            }
+
+            // Zatraži dozvolu ako nije već data
+            if (Notification.permission === "granted") {
+                createNotification(reminder);
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        createNotification(reminder);
+                    } else {
+                        alert(`🔔 Podsjetnik: ${reminder.title}\n${reminder.description || ''}`);
+                    }
+                });
+            } else {
+                alert(`🔔 Podsjetnik: ${reminder.title}\n${reminder.description || ''}`);
+            }
+        }
+
+        function createNotification(reminder) {
+            const notification = new Notification('🔔 Baby Tracker Podsjetnik', {
+                body: `${reminder.title}\n${reminder.description || ''}`,
+                icon: '👶',
+                badge: '🔔',
+                tag: 'baby-tracker-reminder',
+                requireInteraction: true
+            });
+
+            notification.onclick = function() {
+                window.focus();
+                switchPage('reminders');
+                notification.close();
+            };
+        }
+
+        // Zatraži dozvolu za notifikacije pri učitavanju
+        function requestNotificationPermission() {
+            if ("Notification" in window && Notification.permission === "default") {
+                Notification.requestPermission();
+            }
+        }
+
+        // Spremi i osvježi
+        function saveAndRefresh() {
+            localStorage.setItem('babyActivities', JSON.stringify(activities));
+            renderActivities();
+            updateStats();
+            updateLastTimes();
+        }
+
+        // Prikaz aktivnosti
+        function renderActivities() {
+            const sorted = [...activities].sort((a, b) => b.timestamp - a.timestamp);
+            const recent = sorted.slice(0, 5);
+
+            const recentHtml = recent.map(activity => {
+                const icon = getActivityIcon(activity.type);
+                const title = getActivityTitle(activity);
+                const details = getActivityDetails(activity);
+                const timeAgo = formatTimeAgo(activity.time);
+
+                return `
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: ${getActivityColor(activity.type)};">${icon}</div>
+                        <div class="activity-content">
+                            <div class="activity-title">${title}</div>
+                            <div class="activity-details">${details}</div>
+                        </div>
+                        <div class="activity-time">${timeAgo}</div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('recentActivities').innerHTML = recentHtml || '<div class="empty-state">Nema aktivnosti</div>';
+
+            const allHtml = sorted.map(activity => {
+                const icon = getActivityIcon(activity.type);
+                const title = getActivityTitle(activity);
+                const details = getActivityDetails(activity);
+                const timeAgo = formatTimeAgo(activity.time);
+
+                return `
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: ${getActivityColor(activity.type)};">${icon}</div>
+                        <div class="activity-content">
+                            <div class="activity-title">${title}</div>
+                            <div class="activity-details">${details}</div>
+                        </div>
+                        <div class="activity-time">${timeAgo}</div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('allActivities').innerHTML = allHtml || '<div class="empty-state">Nema aktivnosti</div>';
+        }
+
+        // Prikaz kontrola
+        function renderCheckups() {
+            const sorted = [...checkups].sort((a, b) => b.timestamp - a.timestamp);
+
+            const html = sorted.map(checkup => {
+                const details = [];
+                if (checkup.doctor) details.push(`Doktor: ${checkup.doctor}`);
+                if (checkup.weight) details.push(`Težina: ${checkup.weight} kg`);
+                if (checkup.height) details.push(`Visina: ${checkup.height} cm`);
+                if (checkup.notes) details.push(checkup.notes);
+
+                return `
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: rgba(34, 197, 94, 0.15);">🏥</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Kontrola</div>
+                            <div class="activity-details">${details.join(' • ')}</div>
+                        </div>
+                        <div class="activity-time">${formatTimeAgo(checkup.time)}</div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('checkupList').innerHTML = html || '<div class="empty-state">Nema kontrola</div>';
+        }
+
+        // Prikaz podsjetnika
+        function renderReminders() {
+            const sorted = [...reminders].sort((a, b) => new Date(a.time) - new Date(b.time));
+
+            const html = sorted.map((reminder, index) => {
+                const time = new Date(reminder.time);
+                const formatted = time.toLocaleString('hr-HR', { 
+                    day: 'numeric', 
+                    month: 'short', 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                });
+
+                return `
+                    <div class="reminder-item">
+                        <div class="reminder-content">
+                            <div class="reminder-title">${reminder.title}</div>
+                            <div class="reminder-time">${formatted}${reminder.description ? ' • ' + reminder.description : ''}</div>
+                        </div>
+                        <div class="delete-btn" onclick="deleteReminder(${index})">🗑️</div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('remindersList').innerHTML = html || '<div class="empty-state">Nema podsjetnika</div>';
+        }
+
+        // Ažuriraj statistiku
+        function updateStats() {
+            const today = new Date().toDateString();
+            const todayActivities = activities.filter(a => new Date(a.time).toDateString() === today);
+
+            document.getElementById('todaySleepCount').textContent = todayActivities.filter(a => a.type === 'sleep').length;
+            document.getElementById('todayFeedingCount').textContent = todayActivities.filter(a => a.type === 'feeding').length;
+            document.getElementById('todayDiaperCount').textContent = todayActivities.filter(a => a.type === 'diaper').length;
+
+            const totalSleep = todayActivities
+                .filter(a => a.type === 'sleep')
+                .reduce((sum, a) => sum + (a.duration || 0), 0);
+            document.getElementById('todayTotalSleep').textContent = totalSleep.toFixed(1) + 'h';
+        }
+
+        // Ažuriraj posljednja vremena
+        function updateLastTimes() {
+            const types = ['sleep', 'feeding', 'diaper', 'bath', 'medicine', 'colic'];
+            
+            types.forEach(type => {
+                const last = activities.filter(a => a.type === type).sort((a, b) => b.timestamp - a.timestamp)[0];
+                const element = document.getElementById(type + 'LastTime');
+                if (element && last) {
+                    element.textContent = formatTimeAgo(last.time);
+                }
+            });
+
+            const lastSleep = activities.filter(a => a.type === 'sleep').sort((a, b) => b.timestamp - a.timestamp)[0];
+            const lastFeeding = activities.filter(a => a.type === 'feeding').sort((a, b) => b.timestamp - a.timestamp)[0];
+
+            if (lastSleep) {
+                document.getElementById('lastSleepTime').textContent = formatTimeAgo(lastSleep.time);
+            }
+            if (lastFeeding) {
+                document.getElementById('lastFeedingTime').textContent = formatTimeAgo(lastFeeding.time);
+            }
+        }
+
+        // Helper funkcije
+        function getActivityIcon(type) {
+            const icons = {
+                sleep: '😴',
+                feeding: '🍼',
+                diaper: '👶',
+                bath: '🛁',
+                medicine: '💊',
+                colic: '😣'
+            };
+            return icons[type] || '📝';
+        }
+
+        function getActivityColor(type) {
+            const colors = {
+                sleep: 'rgba(192, 132, 252, 0.15)',
+                feeding: 'rgba(236, 72, 153, 0.15)',
+                diaper: 'rgba(96, 165, 250, 0.15)',
+                bath: 'rgba(33, 128, 141, 0.15)',
+                medicine: 'rgba(251, 146, 60, 0.15)',
+                colic: 'rgba(239, 68, 68, 0.15)'
+            };
+            return colors[type] || 'rgba(167, 169, 169, 0.15)';
+        }
+
+        function getActivityTitle(activity) {
+            const titles = {
+                sleep: 'San',
+                feeding: 'Hranjenje',
+                diaper: 'Promjena pelene',
+                bath: 'Kupanje',
+                medicine: 'Lijek/Kapi',
+                colic: 'Grčevi'
+            };
+            return titles[activity.type] || 'Aktivnost';
+        }
+
+        function getActivityDetails(activity) {
+            const details = [];
+
+            if (activity.type === 'sleep' && activity.duration) {
+                details.push(`${activity.duration.toFixed(1)}h`);
+            }
+            if (activity.type === 'feeding') {
+                if (activity.breast === 'left') details.push('Lijeva dojka');
+                else if (activity.breast === 'right') details.push('Desna dojka');
+                else if (activity.breast === 'both') details.push('Obje dojke');
+                if (activity.duration) details.push(`${activity.duration} min`);
+            }
+            if (activity.type === 'diaper') {
+                if (activity.diaperType === 'wet') details.push('Mokra');
+                else if (activity.diaperType === 'dirty') details.push('Prljava');
+                else if (activity.diaperType === 'both') details.push('Mokra i prljava');
+            }
+            if (activity.type === 'bath' && activity.temperature) {
+                details.push(activity.temperature);
+            }
+            if (activity.type === 'medicine') {
+                if (activity.name) details.push(activity.name);
+                if (activity.dose) details.push(activity.dose);
+            }
+            if (activity.type === 'colic') {
+                if (activity.duration) details.push(`${activity.duration} min`);
+                if (activity.intensity === 'mild') details.push('Blago');
+                else if (activity.intensity === 'moderate') details.push('Umjereno');
+                else if (activity.intensity === 'severe') details.push('Jako');
+            }
+
+            if (activity.notes) {
+                details.push(activity.notes);
+            }
+
+            return details.join(' • ') || '-';
+        }
+
+        function formatTimeAgo(timeString) {
+            const time = new Date(timeString);
+            const now = new Date();
+            const diff = now - time;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+
+            if (days > 0) return `prije ${days}d`;
+            if (hours > 0) return `prije ${hours}h`;
+            if (minutes > 0) return `prije ${minutes}min`;
+            return 'upravo';
+        }
+
+        // Promjena stranice
+        function switchPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+            document.getElementById(page + 'Page').classList.add('active');
+            document.querySelector(`.nav-item[onclick="switchPage('${page}')"]`).classList.add('active');
+        }
+
+        // Zatvori modal klikom izvan
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    const type = modal.id.replace('Modal', '');
+                    closeModal(type);
+                }
+            });
+        });
+
+        // Inicijalizacija
+        renderActivities();
+        renderCheckups();
+        renderReminders();
+        updateStats();
+        updateLastTimes();
+        checkReminders();
+        requestNotificationPermission();
+        
+        // Provjeri podsjetnike svake minute
+        setInterval(checkReminders, 60000);
+        
+        // Ažuriraj "prije X min" svake minute
+        setInterval(() => {
+            updateLastTimes();
+            renderActivities();
+        }, 60000);
+    </script>
+</body>
+</html>
