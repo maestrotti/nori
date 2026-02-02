@@ -630,20 +630,19 @@
                 <div class="timer-label">Vrijeme spavanja</div>
             </div>
             <div class="form-group">
-                <label class="form-label">Vrijeme</label>
+                <label class="form-label">Početak spavanja</label>
                 <input type="datetime-local" id="sleepStartTime" class="form-input">
             </div>
-            <div class="form-group">
-                <label class="form-label">Trajanje (sati)</label>
-                <input type="number" id="sleepDuration" class="form-input" min="0" step="0.25" placeholder="npr. 2.5">
+            <div class="form-group" id="sleepEndGroup" style="display: none;">
+                <label class="form-label">Buđenje</label>
+                <input type="datetime-local" id="sleepEndTime" class="form-input">
             </div>
             <div class="form-group">
                 <label class="form-label">Bilješke</label>
                 <textarea id="sleepNotes" class="form-textarea" placeholder="Dodatne bilješke..."></textarea>
             </div>
-            <button class="submit-btn" id="sleepSubmitBtn" onclick="saveSleep()">Spremi</button>
-            <button class="submit-btn" id="sleepStartBtn" onclick="startSleepTimer()" style="background: var(--color-purple-500);">Pokreni tajmer</button>
-            <button class="submit-btn" id="sleepStopBtn" onclick="stopSleepTimer()" style="display: none; background: var(--color-orange-500);">Zaustavi tajmer</button>
+            <button class="submit-btn" id="sleepStartBtn" onclick="startSleep()" style="background: var(--color-purple-500);">🛏️ Dijete zaspalo</button>
+            <button class="submit-btn" id="sleepWakeBtn" onclick="wakeSleep()" style="display: none; background: var(--color-orange-500);">☀️ Dijete se probudilo</button>
         </div>
     </div>
 
@@ -655,8 +654,12 @@
                 <span class="close-btn" onclick="closeModal('feeding')">&times;</span>
             </div>
             <div class="form-group">
-                <label class="form-label">Vrijeme</label>
-                <input type="datetime-local" id="feedingTime" class="form-input">
+                <label class="form-label">Početak hranjenja</label>
+                <input type="datetime-local" id="feedingStartTime" class="form-input">
+            </div>
+            <div class="form-group" id="feedingEndGroup" style="display: none;">
+                <label class="form-label">Kraj hranjenja</label>
+                <input type="datetime-local" id="feedingEndTime" class="form-input">
             </div>
             <div class="form-group">
                 <label class="form-label">Dojka</label>
@@ -667,14 +670,11 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-label">Trajanje (minute)</label>
-                <input type="number" id="feedingDuration" class="form-input" min="1" placeholder="npr. 15">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Bilješke</label>
+                <label class="form-label">Bilješke (opciono)</label>
                 <textarea id="feedingNotes" class="form-textarea" placeholder="Dodatne bilješke..."></textarea>
             </div>
-            <button class="submit-btn" onclick="saveFeeding()">Spremi</button>
+            <button class="submit-btn" id="feedingStartBtn" onclick="startFeeding()" style="background: var(--color-pink-500);">🍼 Počinje jesti</button>
+            <button class="submit-btn" id="feedingEndBtn" onclick="endFeeding()" style="display: none; background: var(--color-green-500);">✓ Završio jesti</button>
         </div>
     </div>
 
@@ -870,7 +870,7 @@
     </div>
 
     <script>
-        // Inicijalizacija
+        // Inicijalizacija - učitaj aktivne tajmere iz localStorage
         let activities = JSON.parse(localStorage.getItem('babyActivities') || '[]');
         let checkups = JSON.parse(localStorage.getItem('babyCheckups') || '[]');
         let reminders = JSON.parse(localStorage.getItem('babyReminders') || '[]');
@@ -881,6 +881,61 @@
         let selectedBreast = null;
         let selectedDiaperType = null;
         let selectedIntensity = null;
+        let activeSleep = JSON.parse(localStorage.getItem('activeSleep') || 'null');
+        let activeFeeding = JSON.parse(localStorage.getItem('activeFeeding') || 'null');
+
+        // Automatski pokreni tajmere ako postoje aktivni procesi
+        window.addEventListener('load', () => {
+            if (activeSleep) {
+                resumeSleepTimer();
+            }
+            if (activeFeeding) {
+                updateFeedingDisplay();
+            }
+        });
+
+        // Nastavi tajmer za san
+        function resumeSleepTimer() {
+            if (!activeSleep) return;
+            
+            sleepStartTimestamp = new Date(activeSleep.startTime).getTime();
+            
+            // Ažuriraj prikaz u quick button
+            updateSleepQuickButton();
+            
+            sleepTimer = setInterval(() => {
+                updateSleepQuickButton();
+            }, 1000);
+        }
+
+        // Ažuriraj prikaz na quick buttonu za san
+        function updateSleepQuickButton() {
+            const elapsed = Date.now() - sleepStartTimestamp;
+            const hours = Math.floor(elapsed / 3600000);
+            const minutes = Math.floor((elapsed % 3600000) / 60000);
+            
+            const quickBtn = document.getElementById('sleepLastTime');
+            if (quickBtn) {
+                quickBtn.textContent = `🛏️ Spava ${hours}h ${minutes}min`;
+                quickBtn.style.color = 'var(--color-purple-500)';
+                quickBtn.style.fontWeight = '600';
+            }
+        }
+
+        // Ažuriraj prikaz za hranjenje
+        function updateFeedingDisplay() {
+            if (!activeFeeding) return;
+            
+            const breastText = activeFeeding.breast === 'left' ? 'lijeva' : 
+                              activeFeeding.breast === 'right' ? 'desna' : 'obje';
+            
+            const quickBtn = document.getElementById('feedingLastTime');
+            if (quickBtn) {
+                quickBtn.textContent = `🍼 Jede (${breastText}) od ${activeFeeding.startTimeDisplay}`;
+                quickBtn.style.color = 'var(--color-pink-500)';
+                quickBtn.style.fontWeight = '600';
+            }
+        }
 
         // Postavi trenutno vrijeme u polja (bosansko vrijeme)
         function setCurrentTime(elementId) {
@@ -917,7 +972,7 @@
             // Postavi trenutno vrijeme i pokreni real-time ažuriranje
             const timeFields = {
                 sleep: 'sleepStartTime',
-                feeding: 'feedingTime',
+                feeding: 'feedingStartTime',
                 diaper: 'diaperTime',
                 bath: 'bathTime',
                 medicine: 'medicineTime',
@@ -930,6 +985,51 @@
                 setCurrentTime(timeFields[type]);
                 startRealtimeUpdate(timeFields[type]);
             }
+
+            // Provjeri da li postoji aktivni san ili hranjenje
+            if (type === 'sleep' && activeSleep) {
+                // Vrati stanje aktivnog sna
+                sleepStartTimestamp = new Date(activeSleep.startTime).getTime();
+                document.getElementById('sleepTimer').style.display = 'block';
+                document.getElementById('sleepStartBtn').style.display = 'none';
+                document.getElementById('sleepWakeBtn').style.display = 'block';
+                document.getElementById('sleepStartTime').parentElement.style.display = 'none';
+                
+                sleepTimer = setInterval(() => {
+                    const elapsed = Date.now() - sleepStartTimestamp;
+                    const hours = Math.floor(elapsed / 3600000);
+                    const minutes = Math.floor((elapsed % 3600000) / 60000);
+                    const seconds = Math.floor((elapsed % 60000) / 1000);
+                    document.getElementById('sleepTimerText').textContent = 
+                        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    document.getElementById('sleepTimer').querySelector('.timer-label').textContent = 
+                        `Počeo spavati u ${activeSleep.startTimeDisplay}`;
+                }, 1000);
+            }
+            if (type === 'feeding' && activeFeeding) {
+                selectedBreast = activeFeeding.breast;
+                document.querySelectorAll('#feedingModal .toggle-btn').forEach(btn => {
+                    if (btn.dataset.value === activeFeeding.breast) {
+                        btn.classList.add('active');
+                    }
+                });
+                document.getElementById('feedingStartBtn').style.display = 'none';
+                document.getElementById('feedingEndBtn').style.display = 'block';
+                document.getElementById('feedingStartTime').parentElement.style.display = 'none';
+                document.getElementById('feedingEndGroup').style.display = 'block';
+                
+                // Postavi trenutno vrijeme u polje za završetak i ažuriraj u real-time
+                setCurrentTime('feedingEndTime');
+                startRealtimeUpdate('feedingEndTime');
+                
+                const infoDiv = document.createElement('div');
+                infoDiv.id = 'feedingInfo';
+                infoDiv.className = 'timer-display';
+                infoDiv.innerHTML = `
+                    <div class="timer-label">Počeo jesti u ${activeFeeding.startTimeDisplay}</div>
+                `;
+                document.querySelector('#feedingModal .form-group').before(infoDiv);
+            }
         }
 
         // Zatvori modal
@@ -939,9 +1039,25 @@
             
             // Reset form
             if (type === 'sleep') {
-                if (sleepTimer) stopSleepTimer();
-                document.getElementById('sleepDuration').value = '';
+                document.getElementById('sleepTimer').style.display = 'none';
+                document.getElementById('sleepStartTime').parentElement.style.display = 'block';
+                document.getElementById('sleepEndGroup').style.display = 'none';
+                document.getElementById('sleepStartBtn').style.display = 'block';
+                document.getElementById('sleepWakeBtn').style.display = 'none';
                 document.getElementById('sleepNotes').value = '';
+                if (sleepTimer) clearInterval(sleepTimer);
+                sleepTimer = null;
+            } else if (type === 'feeding') {
+                document.getElementById('feedingStartTime').parentElement.style.display = 'block';
+                document.getElementById('feedingEndGroup').style.display = 'none';
+                document.getElementById('feedingStartBtn').style.display = 'block';
+                document.getElementById('feedingEndBtn').style.display = 'none';
+                document.getElementById('feedingNotes').value = '';
+                document.getElementById('feedingEndTime').value = '';
+                selectedBreast = null;
+                document.querySelectorAll('#feedingModal .toggle-btn').forEach(b => b.classList.remove('active'));
+                const infoDiv = document.getElementById('feedingInfo');
+                if (infoDiv) infoDiv.remove();
             } else if (type === 'colic') {
                 if (colicTimer) stopColicTimer();
                 document.getElementById('colicDuration').value = '';
@@ -951,13 +1067,28 @@
             }
         }
 
-        // Tajmer za san
-        function startSleepTimer() {
-            sleepStartTimestamp = Date.now();
+        // San - Početak/Kraj
+        function startSleep() {
+            // Postavi trenutno vrijeme automatski
+            const now = new Date();
+            const bosnianTime = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Sarajevo' }));
+            
+            activeSleep = {
+                startTime: bosnianTime.toISOString(),
+                startTimeDisplay: bosnianTime.toLocaleString('hr-HR', { hour: '2-digit', minute: '2-digit' }),
+                timestamp: Date.now()
+            };
+            localStorage.setItem('activeSleep', JSON.stringify(activeSleep));
+
+            // Pokreni tajmer
+            sleepStartTimestamp = bosnianTime.getTime();
             document.getElementById('sleepTimer').style.display = 'block';
-            document.getElementById('sleepSubmitBtn').style.display = 'none';
             document.getElementById('sleepStartBtn').style.display = 'none';
-            document.getElementById('sleepStopBtn').style.display = 'block';
+            document.getElementById('sleepWakeBtn').style.display = 'block';
+            
+            // Sakrij input polja
+            document.getElementById('sleepStartTime').parentElement.style.display = 'none';
+            document.getElementById('sleepEndGroup').style.display = 'none';
             
             sleepTimer = setInterval(() => {
                 const elapsed = Date.now() - sleepStartTimestamp;
@@ -966,20 +1097,60 @@
                 const seconds = Math.floor((elapsed % 60000) / 1000);
                 document.getElementById('sleepTimerText').textContent = 
                     `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                document.getElementById('sleepTimer').querySelector('.timer-label').textContent = 
+                    `Počeo spavati u ${activeSleep.startTimeDisplay}`;
             }, 1000);
+            
+            // Zatvori modal i ažuriraj prikaz
+            closeModal('sleep');
+            updateSleepQuickButton();
         }
 
-        function stopSleepTimer() {
-            if (sleepTimer) {
-                clearInterval(sleepTimer);
-                const duration = (Date.now() - sleepStartTimestamp) / 3600000;
-                document.getElementById('sleepDuration').value = duration.toFixed(2);
-                sleepTimer = null;
-                document.getElementById('sleepTimer').style.display = 'none';
-                document.getElementById('sleepSubmitBtn').style.display = 'block';
-                document.getElementById('sleepStartBtn').style.display = 'block';
-                document.getElementById('sleepStopBtn').style.display = 'none';
+        function wakeSleep() {
+            if (!activeSleep) return;
+
+            // Postavi trenutno vrijeme automatski
+            const now = new Date();
+            const bosnianTime = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Sarajevo' }));
+            
+            const start = new Date(activeSleep.startTime);
+            const end = bosnianTime;
+            const duration = (end - start) / 3600000; // u satima
+
+            if (duration <= 0) {
+                alert('Greška u vremenima!');
+                return;
             }
+
+            const notes = document.getElementById('sleepNotes').value;
+            const endTimeDisplay = bosnianTime.toLocaleString('hr-HR', { hour: '2-digit', minute: '2-digit' });
+
+            activities.push({
+                type: 'sleep',
+                time: activeSleep.startTime,
+                endTime: end.toISOString(),
+                duration: duration,
+                notes: notes,
+                startTimeDisplay: activeSleep.startTimeDisplay,
+                endTimeDisplay: endTimeDisplay,
+                timestamp: Date.now()
+            });
+
+            // Resetuj aktivni san
+            activeSleep = null;
+            localStorage.removeItem('activeSleep');
+            if (sleepTimer) clearInterval(sleepTimer);
+            sleepTimer = null;
+
+            // Resetuj prikaz quick buttona
+            const quickBtn = document.getElementById('sleepLastTime');
+            if (quickBtn) {
+                quickBtn.style.color = '';
+                quickBtn.style.fontWeight = '';
+            }
+
+            saveAndRefresh();
+            closeModal('sleep');
         }
 
         // Tajmer za grčeve
@@ -1034,53 +1205,104 @@
             selectedIntensity = btn.dataset.value;
         }
 
-        // Spremi san
-        function saveSleep() {
-            const time = document.getElementById('sleepStartTime').value;
-            const duration = parseFloat(document.getElementById('sleepDuration').value);
-            const notes = document.getElementById('sleepNotes').value;
-
-            if (!time || !duration) {
-                alert('Molimo unesite vrijeme i trajanje!');
+        // Hranjenje - Početak/Kraj
+        function startFeeding() {
+            if (!selectedBreast) {
+                alert('Molimo odaberite dojku!');
                 return;
             }
 
-            activities.push({
-                type: 'sleep',
-                time: new Date(time).toISOString(),
-                duration: duration,
-                notes: notes,
+            // Postavi trenutno vrijeme automatski
+            const now = new Date();
+            const bosnianTime = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Sarajevo' }));
+            
+            const startTimeDisplay = `${bosnianTime.getDate()}.${(bosnianTime.getMonth() + 1).toString().padStart(2, '0')}.${bosnianTime.getFullYear()} ${bosnianTime.getHours().toString().padStart(2, '0')}:${bosnianTime.getMinutes().toString().padStart(2, '0')}`;
+            
+            activeFeeding = {
+                startTime: bosnianTime.toISOString(),
+                startTimeDisplay: startTimeDisplay,
+                breast: selectedBreast,
                 timestamp: Date.now()
-            });
+            };
+            localStorage.setItem('activeFeeding', JSON.stringify(activeFeeding));
 
-            saveAndRefresh();
-            closeModal('sleep');
+            document.getElementById('feedingStartBtn').style.display = 'none';
+            document.getElementById('feedingEndBtn').style.display = 'block';
+            
+            // Sakrij input polja i prikaži info
+            document.getElementById('feedingStartTime').parentElement.style.display = 'none';
+            document.getElementById('feedingEndGroup').style.display = 'none';
+            
+            // Dodaj info poruku
+            const infoDiv = document.createElement('div');
+            infoDiv.id = 'feedingInfo';
+            infoDiv.className = 'timer-display';
+            infoDiv.innerHTML = `
+                <div class="timer-label">Počeo jesti: ${activeFeeding.startTimeDisplay}</div>
+            `;
+            document.querySelector('#feedingModal .form-group').before(infoDiv);
+            
+            // Zatvori modal i ažuriraj prikaz
+            closeModal('feeding');
+            updateFeedingDisplay();
         }
 
-        // Spremi hranjenje
-        function saveFeeding() {
-            const time = document.getElementById('feedingTime').value;
-            const duration = document.getElementById('feedingDuration').value;
-            const notes = document.getElementById('feedingNotes').value;
+        function endFeeding() {
+            if (!activeFeeding) return;
 
-            if (!time || !selectedBreast) {
-                alert('Molimo unesite vrijeme i odaberite dojku!');
+            // Uzmi vrijeme iz polja ili koristi trenutno vrijeme
+            const endTimeValue = document.getElementById('feedingEndTime').value;
+            let end;
+            
+            if (endTimeValue) {
+                end = new Date(endTimeValue);
+            } else {
+                const now = new Date();
+                end = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Sarajevo' }));
+            }
+            
+            const start = new Date(activeFeeding.startTime);
+            const duration = Math.round((end - start) / 60000); // u minutama
+
+            if (duration <= 0) {
+                alert('Greška u vremenima!');
                 return;
             }
+
+            const notes = document.getElementById('feedingNotes').value;
+            const endTimeDisplay = `${end.getDate()}.${(end.getMonth() + 1).toString().padStart(2, '0')}.${end.getFullYear()} ${end.getHours().toString().padStart(2, '0')}:${end.getMinutes().toString().padStart(2, '0')}`;
 
             activities.push({
                 type: 'feeding',
-                time: new Date(time).toISOString(),
-                breast: selectedBreast,
-                duration: duration ? parseInt(duration) : null,
+                time: activeFeeding.startTime,
+                endTime: end.toISOString(),
+                breast: activeFeeding.breast,
+                duration: duration,
                 notes: notes,
+                startTimeDisplay: activeFeeding.startTimeDisplay,
+                endTimeDisplay: endTimeDisplay,
                 timestamp: Date.now()
             });
 
-            saveAndRefresh();
-            closeModal('feeding');
+            // Resetuj aktivno hranjenje
+            activeFeeding = null;
+            localStorage.removeItem('activeFeeding');
             selectedBreast = null;
             document.querySelectorAll('#feedingModal .toggle-btn').forEach(b => b.classList.remove('active'));
+            
+            // Ukloni info poruku
+            const infoDiv = document.getElementById('feedingInfo');
+            if (infoDiv) infoDiv.remove();
+
+            // Resetuj prikaz quick buttona
+            const quickBtn = document.getElementById('feedingLastTime');
+            if (quickBtn) {
+                quickBtn.style.color = '';
+                quickBtn.style.fontWeight = '';
+            }
+
+            saveAndRefresh();
+            closeModal('feeding');
         }
 
         // Spremi pelenu
@@ -1276,9 +1498,12 @@
 
         // Prikaži browser notifikaciju za podsjetnik
         function showReminderNotification(reminder) {
+            // Zvučna notifikacija - ponavlja se 3 puta
+            playReminderSound();
+
             // Provjeri podršku za notifikacije
             if (!("Notification" in window)) {
-                alert(`🔔 Podsjetnik: ${reminder.title}\n${reminder.description || ''}`);
+                alert(`🔔 PODSJETNIK!\n\n${reminder.title}\n${reminder.description || ''}`);
                 return;
             }
 
@@ -1290,21 +1515,22 @@
                     if (permission === "granted") {
                         createNotification(reminder);
                     } else {
-                        alert(`🔔 Podsjetnik: ${reminder.title}\n${reminder.description || ''}`);
+                        alert(`🔔 PODSJETNIK!\n\n${reminder.title}\n${reminder.description || ''}`);
                     }
                 });
             } else {
-                alert(`🔔 Podsjetnik: ${reminder.title}\n${reminder.description || ''}`);
+                alert(`🔔 PODSJETNIK!\n\n${reminder.title}\n${reminder.description || ''}`);
             }
         }
 
         function createNotification(reminder) {
-            const notification = new Notification('🔔 Baby Tracker Podsjetnik', {
+            const notification = new Notification('🔔 Baby Tracker - PODSJETNIK!', {
                 body: `${reminder.title}\n${reminder.description || ''}`,
                 icon: '👶',
                 badge: '🔔',
                 tag: 'baby-tracker-reminder',
-                requireInteraction: true
+                requireInteraction: true,
+                vibrate: [200, 100, 200, 100, 200, 100, 200]
             });
 
             notification.onclick = function() {
@@ -1312,6 +1538,31 @@
                 switchPage('reminders');
                 notification.close();
             };
+        }
+
+        // Zvučna notifikacija (beep zvuk)
+        function playReminderSound() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Ponavlja zvuk 3 puta
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.value = 800; // Frekvencija zvuka
+                    oscillator.type = 'sine';
+                    
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.5);
+                }, i * 700); // Pauza između zvukova
+            }
         }
 
         // Zatraži dozvolu za notifikacije pri učitavanju
@@ -1507,13 +1758,20 @@
             const details = [];
 
             if (activity.type === 'sleep' && activity.duration) {
-                details.push(`${activity.duration.toFixed(1)}h`);
+                if (activity.startTimeDisplay && activity.endTimeDisplay) {
+                    details.push(`${activity.startTimeDisplay} - ${activity.endTimeDisplay}`);
+                }
+                details.push(`Ukupno: ${activity.duration.toFixed(1)}h`);
             }
             if (activity.type === 'feeding') {
                 if (activity.breast === 'left') details.push('Lijeva dojka');
                 else if (activity.breast === 'right') details.push('Desna dojka');
                 else if (activity.breast === 'both') details.push('Obje dojke');
-                if (activity.duration) details.push(`${activity.duration} min`);
+                if (activity.startTimeDisplay && activity.endTimeDisplay) {
+                    details.push(`Počeo: ${activity.startTimeDisplay}`);
+                    details.push(`Završio: ${activity.endTimeDisplay}`);
+                }
+                if (activity.duration) details.push(`Trajanje: ${activity.duration} min`);
             }
             if (activity.type === 'diaper') {
                 if (activity.diaperType === 'wet') details.push('Mokra');
@@ -1582,6 +1840,14 @@
         updateLastTimes();
         checkReminders();
         requestNotificationPermission();
+        
+        // Pokreni aktivne tajmere ako postoje
+        if (activeSleep) {
+            resumeSleepTimer();
+        }
+        if (activeFeeding) {
+            updateFeedingDisplay();
+        }
         
         // Provjeri podsjetnike svake minute
         setInterval(checkReminders, 60000);
