@@ -673,6 +673,21 @@
                 <label class="form-label">Bilješke (opciono)</label>
                 <textarea id="feedingNotes" class="form-textarea" placeholder="Dodatne bilješke..."></textarea>
             </div>
+            <div class="form-group">
+                <label class="form-label">
+                    <input type="checkbox" id="feedingReminderCheck" style="margin-right: 8px;">
+                    Postavi podsjetnik za sljedeće hranjenje
+                </label>
+            </div>
+            <div class="form-group" id="feedingReminderGroup" style="display: none;">
+                <label class="form-label">Za koliko sati?</label>
+                <div class="button-group">
+                    <button type="button" class="toggle-btn" data-value="1.5" onclick="selectFeedingReminderHours(this)">1.5h</button>
+                    <button type="button" class="toggle-btn" data-value="2" onclick="selectFeedingReminderHours(this)">2h</button>
+                    <button type="button" class="toggle-btn" data-value="2.5" onclick="selectFeedingReminderHours(this)">2.5h</button>
+                    <button type="button" class="toggle-btn" data-value="3" onclick="selectFeedingReminderHours(this)">3h</button>
+                </div>
+            </div>
             <button class="submit-btn" id="feedingStartBtn" onclick="startFeeding()" style="background: var(--color-pink-500);">🍼 Počinje jesti</button>
             <button class="submit-btn" id="feedingEndBtn" onclick="endFeeding()" style="display: none; background: var(--color-green-500);">✓ Završio jesti</button>
         </div>
@@ -881,6 +896,7 @@
         let selectedBreast = null;
         let selectedDiaperType = null;
         let selectedIntensity = null;
+        let selectedFeedingReminderHours = null;
         let activeSleep = JSON.parse(localStorage.getItem('activeSleep') || 'null');
         let activeFeeding = JSON.parse(localStorage.getItem('activeFeeding') || 'null');
 
@@ -983,7 +999,9 @@
             
             if (timeFields[type]) {
                 setCurrentTime(timeFields[type]);
-                startRealtimeUpdate(timeFields[type]);
+                if (type !== 'reminder') {
+                    startRealtimeUpdate(timeFields[type]);
+                }
             }
 
             // Provjeri da li postoji aktivni san ili hranjenje
@@ -1205,6 +1223,30 @@
             selectedIntensity = btn.dataset.value;
         }
 
+        // Odabir vremena za podsjetnik hranjenja
+        function selectFeedingReminderHours(btn) {
+            document.querySelectorAll('#feedingReminderGroup .toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedFeedingReminderHours = parseFloat(btn.dataset.value);
+        }
+
+        // Toggle prikaza podsjetnika za hranjenje
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkbox = document.getElementById('feedingReminderCheck');
+            if (checkbox) {
+                checkbox.addEventListener('change', (e) => {
+                    const reminderGroup = document.getElementById('feedingReminderGroup');
+                    if (e.target.checked) {
+                        reminderGroup.style.display = 'block';
+                    } else {
+                        reminderGroup.style.display = 'none';
+                        selectedFeedingReminderHours = null;
+                        document.querySelectorAll('#feedingReminderGroup .toggle-btn').forEach(b => b.classList.remove('active'));
+                    }
+                });
+            }
+        });
+
         // Hranjenje - Početak/Kraj
         function startFeeding() {
             if (!selectedBreast) {
@@ -1301,8 +1343,31 @@
                 quickBtn.style.fontWeight = '';
             }
 
+            // Dodaj podsjetnik za sljedeće hranjenje ako je checkbox označen
+            const reminderCheck = document.getElementById('feedingReminderCheck');
+            if (reminderCheck && reminderCheck.checked && selectedFeedingReminderHours) {
+                const reminderTime = new Date(end.getTime() + (selectedFeedingReminderHours * 3600000));
+                
+                reminders.push({
+                    title: 'Vrijeme za hranjenje',
+                    time: reminderTime.toISOString(),
+                    description: `Prošlo je ${selectedFeedingReminderHours}h od posljednjeg hranjenja`,
+                    timestamp: Date.now()
+                });
+                
+                localStorage.setItem('babyReminders', JSON.stringify(reminders));
+                renderReminders();
+                
+                // Resetuj podsjetnik opcije
+                reminderCheck.checked = false;
+                document.getElementById('feedingReminderGroup').style.display = 'none';
+                selectedFeedingReminderHours = null;
+                document.querySelectorAll('#feedingReminderGroup .toggle-btn').forEach(b => b.classList.remove('active'));
+            }
+
             saveAndRefresh();
             closeModal('feeding');
+            checkReminders();
         }
 
         // Spremi pelenu
@@ -1474,8 +1539,8 @@
                 const reminderTime = new Date(reminder.time);
                 const diff = reminderTime - now;
                 
-                // Ako je vrijeme za podsjetnik (u rasponu od -1 min do +5 min)
-                if (diff > -60000 && diff < 300000 && !shownReminders.includes(reminder.timestamp)) {
+                // Ako je vrijeme za podsjetnik (u rasponu od -30 sec do +5 min)
+                if (diff > -30000 && diff < 300000 && !shownReminders.includes(reminder.timestamp)) {
                     showReminderNotification(reminder);
                     shownReminders.push(reminder.timestamp);
                     localStorage.setItem('shownReminders', JSON.stringify(shownReminders));
@@ -1571,6 +1636,51 @@
                 Notification.requestPermission();
             }
         }
+
+        // Service Worker za notifikacije u pozadini
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:text/javascript;base64,' + btoa(`
+                self.addEventListener('install', (event) => {
+                    self.skipWaiting();
+                });
+
+                self.addEventListener('activate', (event) => {
+                    event.waitUntil(clients.claim());
+                });
+
+                self.addEventListener('notificationclick', (event) => {
+                    event.notification.close();
+                    event.waitUntil(
+                        clients.openWindow('/')
+                    );
+                });
+            `)).catch(err => console.log('SW registration failed:', err));
+        }
+
+        // Provjeri podsjetnike čak i kada je tab neaktivan
+        let reminderInterval;
+        
+        function startReminderCheck() {
+            if (reminderInterval) clearInterval(reminderInterval);
+            
+            // Provjeri svakih 30 sekundi
+            reminderInterval = setInterval(() => {
+                checkReminders();
+            }, 30000);
+            
+            // Prva provjera odmah
+            checkReminders();
+        }
+
+        // Pokreni provjeru podsjetnika na load
+        window.addEventListener('load', startReminderCheck);
+        
+        // Nastavi sa provjerom čak i kada je tab neaktivan
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                checkReminders();
+            }
+        });
 
         // Spremi i osvježi
         function saveAndRefresh() {
@@ -1848,9 +1958,6 @@
         if (activeFeeding) {
             updateFeedingDisplay();
         }
-        
-        // Provjeri podsjetnike svake minute
-        setInterval(checkReminders, 60000);
         
         // Ažuriraj "prije X min" svake minute
         setInterval(() => {
