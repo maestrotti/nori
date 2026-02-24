@@ -502,7 +502,7 @@
     <div class="hero">
       <div class="heroIn">
         <div class="heroTop">
-          <div class="heroTag" id="heroTag">STATUS</div>
+          <div class="heroTag" id="heroTag"></div>
           <div class="dot" id="dot"></div>
         </div>
         <div class="heroMain" id="heroMain">-</div>
@@ -962,7 +962,7 @@
     const lastAwake = activities.filter(a=>a.type==="awake" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
 
     main.textContent = lastAwake ? `Zadnji kraj budnosti • ${agoPrecise(lastAwake.endMs)}` : "";
-    sub.textContent  = lastFeed ? `Zadnje hranjenje: ${agoPrecise(lastFeed.endMs)}` : "Unesi budan ili hranjenje.";
+    sub.textContent  = lastFeed ? `Zadnje hranjenje: ${agoPrecise(lastFeed.endMs)}` : "";
     document.getElementById("ctaAwakeSub").textContent = "Dodaj";
     document.getElementById("ctaAwakeR").textContent = "⟶";
     document.getElementById("ctaFeedSub").textContent = "Dodaj";
@@ -1365,4 +1365,5 @@
 </script>
 </body>
 </html>
+
 
