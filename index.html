@@ -60,7 +60,6 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* watermark */
     body::before{
       content:"NORIAN";
       position: fixed;
@@ -341,6 +340,35 @@
       z-index: 1;
     }
 
+    .rowBtns{
+      margin-top: 10px;
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      position:relative;
+      z-index:1;
+    }
+
+    .smallBtn{
+      min-height: var(--tapMin);
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(245,248,255,.92);
+      font-weight: 1000;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .12s ease, background .12s ease;
+      white-space:nowrap;
+    }
+    .smallBtn:active{ transform: scale(.985); }
+    .smallBtn.danger{
+      border-color: rgba(251,146,60,.35);
+      background: rgba(251,146,60,.10);
+      color: rgba(251,146,60,1);
+    }
+
     .empty{
       text-align:center;
       padding: 18px 10px;
@@ -348,7 +376,6 @@
       font-size: 13px;
     }
 
-    /* Bottom nav - S22 safe */
     .nav{
       position: fixed;
       left:0; right:0; bottom:0;
@@ -395,7 +422,6 @@
     .navIco{ font-size: 20px; line-height:1; }
     .navLbl{ font-size: 11px; font-weight: 1000; }
 
-    /* Modal bottom sheet */
     .modal{
       display:none;
       position: fixed;
@@ -429,7 +455,6 @@
     .mTitle{ font-size: 18px; font-weight: 1000; }
     .x{ font-size: 28px; color: rgba(245,248,255,.70); cursor:pointer; user-select:none; line-height:1; }
 
-    /* Mechanical clock block */
     .mech{
       border-radius: 24px;
       border: 1px solid rgba(255,255,255,.14);
@@ -547,7 +572,6 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.35);
     }
 
-    /* mechanical tick (visual) */
     .tick{
       animation: tick .12s ease-out;
     }
@@ -602,6 +626,23 @@
       font-family: inherit;
     }
     .textarea:focus{
+      border-color: rgba(34,211,238,.30);
+      box-shadow: 0 0 0 3px rgba(34,211,238,.12);
+    }
+
+    .input{
+      width:100%;
+      min-height: var(--tapMin);
+      height: 52px;
+      padding: 12px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(245,248,255,.95);
+      outline:none;
+      font-size: 15px;
+    }
+    .input:focus{
       border-color: rgba(34,211,238,.30);
       box-shadow: 0 0 0 3px rgba(34,211,238,.12);
     }
@@ -828,8 +869,44 @@
     </div>
   </div>
 
+  <!-- Edit -->
+  <div class="modal" id="editModal">
+    <div class="sheet">
+      <div class="mHead">
+        <div class="mTitle">Ispravka unosa</div>
+        <div class="x" data-close="editModal">×</div>
+      </div>
+
+      <div class="group">
+        <label class="label">Početak</label>
+        <input class="input" id="editStart" type="datetime-local">
+      </div>
+
+      <div class="group">
+        <label class="label">Kraj</label>
+        <input class="input" id="editEnd" type="datetime-local">
+      </div>
+
+      <div class="group" id="editBreastWrap" style="display:none;">
+        <label class="label">Dojka</label>
+        <div class="togRow" id="editBreastRow">
+          <button class="tog" data-b="left">Lijeva</button>
+          <button class="tog" data-b="right">Desna</button>
+          <button class="tog" data-b="both">Obje</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <label class="label">Bilješke</label>
+        <textarea class="textarea" id="editNotes" placeholder="..."></textarea>
+      </div>
+
+      <button class="btn ok" id="editSave">Spremi ispravku</button>
+    </div>
+  </div>
+
 <script>
-  // Use your OLD keys so all existing data stays visible/usable. [file:2]
+  // OLD keys (existing data) [file:2]
   const KEY_ACTS = "babyActivities";
   const KEY_ACTIVE_SLEEP = "activeSleep";
   const KEY_ACTIVE_FEED  = "activeFeeding";
@@ -842,6 +919,9 @@
 
   let isHistory = false;
   let selectedBreast = null;
+
+  let editId = null;
+  let editBreast = null;
 
   normalizeAll();
 
@@ -869,7 +949,6 @@
     return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
   }
 
-  // precise in seconds (your request)
   function agoPrecise(ms){
     let diff = Date.now() - ms;
     if(diff < 0) diff = 0;
@@ -883,9 +962,20 @@
     return sec <= 1 ? "Upravo" : `Prije ${sec}s`;
   }
 
-  function formatStamp(ms){
+  function relativeDayTime(ms){
     const d = new Date(ms);
-    return `${pad2(d.getDate())}.${pad2(d.getMonth()+1)}.${d.getFullYear()} ${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
+    const today = new Date(); today.setHours(0,0,0,0);
+    const that  = new Date(ms); that.setHours(0,0,0,0);
+    const diffDays = Math.round((today.getTime() - that.getTime())/86400000);
+
+    const hh = pad2(d.getHours());
+    const mi = pad2(d.getMinutes());
+    const ss = pad2(d.getSeconds());
+
+    if(diffDays === 0) return `Danas ${hh}:${mi}:${ss}`;
+    if(diffDays === 1) return `Jučer ${hh}:${mi}:${ss}`;
+    if(diffDays > 1)   return `Prije ${diffDays} dana ${hh}:${mi}:${ss}`;
+    return `${hh}:${mi}:${ss}`;
   }
 
   function dayKey(ms){
@@ -900,6 +990,8 @@
     const yest = new Date(today); yest.setDate(yest.getDate()-1);
     if(dt.getTime() === today.getTime()) return "Danas";
     if(dt.getTime() === yest.getTime()) return "Jučer";
+    const diff = Math.round((today.getTime() - dt.getTime())/86400000);
+    if(diff > 1) return `Prije ${diff} dana`;
     return `${pad2(d)}.${pad2(m)}.${y}`;
   }
 
@@ -911,7 +1003,7 @@
     else localStorage.removeItem(KEY_ACTIVE_FEED);
   }
 
-  // ===== normalization (old format -> add startMs/endMs) =====
+  // ===== normalization =====
   function normalizeActivity(a){
     if(!a || !a.type) return null;
     if(!a.id) a.id = uid();
@@ -983,7 +1075,7 @@
     saveActive();
   }
 
-  // ===== UI builders =====
+  // ===== UI =====
   function setActiveNav(which){
     document.querySelectorAll(".navItem").forEach(x=>x.classList.remove("active"));
     document.getElementById(which).classList.add("active");
@@ -996,15 +1088,15 @@
   }
 
   function detailsFor(a){
-    const start = formatStamp(a.startMs);
-    const end   = formatStamp(a.endMs);
+    const start = relativeDayTime(a.startMs);
+    const end   = relativeDayTime(a.endMs);
     const dur   = hmsFromMs(a.endMs - a.startMs);
     const notes = a.notes ? ` • ${escapeHtml(a.notes)}` : "";
     if(a.type==="sleep"){
-      return `Start: ${start} • Kraj: ${end} • Trajanje: ${dur} • Budan: ${agoPrecise(a.endMs)}${notes}`;
+      return `Start: ${start} • Kraj: ${end} • Trajanje: ${dur}${notes}`;
     }
     const b = a.breast==="left" ? "Lijeva" : a.breast==="right" ? "Desna" : a.breast==="both" ? "Obje" : "—";
-    return `Start: ${start} • Kraj: ${end} • Trajanje: ${dur} • Dojka: ${b} • Zadnje: ${agoPrecise(a.endMs)}${notes}`;
+    return `Start: ${start} • Kraj: ${end} • Trajanje: ${dur} • Dojka: ${b}${notes}`;
   }
 
   function cardHTML(a){
@@ -1015,8 +1107,11 @@
         <div class="cc">
           <div class="ct">${escapeHtml(titleFor(a))}</div>
           <div class="cd">${detailsFor(a)}</div>
+          <div class="rowBtns">
+            <button class="smallBtn" data-edit="${a.id}">Uredi</button>
+          </div>
         </div>
-        <div class="time">${agoPrecise(a.startMs)}</div>
+        <div class="time">${agoPrecise(a.endMs || a.startMs)}</div>
       </div>
     `;
   }
@@ -1029,7 +1124,7 @@
           <div class="ico"><span>😴</span></div>
           <div class="cc">
             <div class="ct">San u toku</div>
-            <div class="cd">Počeo: ${formatStamp(activeSleep.startMs)} • Traje: ${hmsFromMs(el)}</div>
+            <div class="cd">Počeo: ${relativeDayTime(activeSleep.startMs)} • Traje: ${hmsFromMs(el)}</div>
           </div>
           <div class="time">Sada</div>
         </div>`;
@@ -1042,7 +1137,7 @@
           <div class="ico"><span>🍼</span></div>
           <div class="cc">
             <div class="ct">Hranjenje u toku — ${b}</div>
-            <div class="cd">Počelo: ${formatStamp(activeFeeding.startMs)} • Traje: ${hmsFromMs(el)}</div>
+            <div class="cd">Počelo: ${relativeDayTime(activeFeeding.startMs)} • Traje: ${hmsFromMs(el)}</div>
           </div>
           <div class="time">Sada</div>
         </div>`;
@@ -1066,7 +1161,7 @@
     if(activeSleep){
       tag.textContent = "SAN U TOKU";
       main.textContent = `Spava • ${hmsFromMs(Date.now() - activeSleep.startMs)}`;
-      sub.textContent  = `Počeo: ${formatStamp(activeSleep.startMs)} • ${agoPrecise(activeSleep.startMs)}`;
+      sub.textContent  = `Počeo: ${relativeDayTime(activeSleep.startMs)} • ${agoPrecise(activeSleep.startMs)}`;
       dot.style.display = "block";
       document.getElementById("ctaSleepSub").textContent = "Zaustavi";
       document.getElementById("ctaSleepR").textContent = "STOP";
@@ -1076,7 +1171,7 @@
       const b = activeFeeding.breast==="left" ? "Lijeva" : activeFeeding.breast==="right" ? "Desna" : activeFeeding.breast==="both" ? "Obje" : "—";
       tag.textContent = "HRANJENJE U TOKU";
       main.textContent = `Jede (${b}) • ${hmsFromMs(Date.now() - activeFeeding.startMs)}`;
-      sub.textContent  = `Počelo: ${formatStamp(activeFeeding.startMs)} • ${agoPrecise(activeFeeding.startMs)}`;
+      sub.textContent  = `Počelo: ${relativeDayTime(activeFeeding.startMs)} • ${agoPrecise(activeFeeding.startMs)}`;
       dot.style.display = "block";
       document.getElementById("ctaFeedSub").textContent = "Zaustavi";
       document.getElementById("ctaFeedR").textContent = "STOP";
@@ -1167,7 +1262,7 @@
     x.addEventListener("click", ()=> closeModal(x.dataset.close));
   });
 
-  // ===== roman dial (build once) =====
+  // ===== roman dial =====
   function buildRoman(elId){
     const el = document.getElementById(elId);
     if(!el || el.dataset.built==="1") return;
@@ -1181,17 +1276,15 @@
   buildRoman("sleepRoman");
   buildRoman("feedRoman");
 
-  // ===== mechanical clock: discrete second tick + tiny "kick" =====
+  // ===== mechanical clock =====
   function setAnalog(elH, elM, elS, elapsedMs){
     const totalSec = Math.floor(Math.max(0, elapsedMs)/1000);
     const sec = totalSec % 60;
     const min = Math.floor(totalSec/60) % 60;
     const hr  = Math.floor(totalSec/3600) % 12;
 
-    // discrete second (tick)
-    const sDeg = sec * 6;
-    // minute/hour a bit smooth by seconds but still aligned
-    const mDeg = min * 6 + sec * 0.1;
+    const sDeg = sec * 6;                 // discrete tick
+    const mDeg = min * 6 + sec * 0.1;     // slight smooth
     const hDeg = hr * 30 + min * 0.5;
 
     elS.style.transform = `translate(-50%,-100%) rotate(${sDeg}deg)`;
@@ -1204,12 +1297,11 @@
     const el = document.getElementById(clockId);
     if(!el) return;
     el.classList.remove("tick");
-    // force reflow so animation always re-triggers
     void el.offsetWidth;
     el.classList.add("tick");
   }
 
-  // ===== Sleep =====  [file:2]
+  // ===== Sleep ===== [file:2]
   function paintSleepModal(){
     if(activeSleep){
       document.getElementById("sleepMech").style.display = "block";
@@ -1264,7 +1356,7 @@
     updateAll();
   });
 
-  // ===== Feeding =====  [file:2]
+  // ===== Feeding ===== [file:2]
   function setBreast(b){
     selectedBreast = b;
     document.querySelectorAll("#breastRow .tog").forEach(btn=>{
@@ -1334,7 +1426,92 @@
     updateAll();
   });
 
-  // ===== nav + toggles =====
+  // ===== edit helpers =====
+  function toDTLocal(ms){
+    const d = new Date(ms);
+    const y = d.getFullYear();
+    const m = pad2(d.getMonth()+1);
+    const da= pad2(d.getDate());
+    const hh= pad2(d.getHours());
+    const mi= pad2(d.getMinutes());
+    return `${y}-${m}-${da}T${hh}:${mi}`;
+  }
+  function fromDTLocal(val){
+    const d = new Date(val);
+    const t = d.getTime();
+    return Number.isFinite(t) ? t : null;
+  }
+
+  function openEdit(id){
+    const a = activities.find(x => x && x.id === id);
+    if(!a) return;
+
+    editId = id;
+    document.getElementById("editStart").value = a.startMs ? toDTLocal(a.startMs) : "";
+    document.getElementById("editEnd").value   = a.endMs ? toDTLocal(a.endMs) : "";
+    document.getElementById("editNotes").value = a.notes || "";
+
+    if(a.type === "feeding"){
+      document.getElementById("editBreastWrap").style.display = "block";
+      editBreast = a.breast || null;
+      document.querySelectorAll("#editBreastRow .tog").forEach(btn=>{
+        btn.classList.toggle("active", btn.dataset.b === editBreast);
+      });
+    }else{
+      document.getElementById("editBreastWrap").style.display = "none";
+      editBreast = null;
+    }
+
+    openModal("editModal");
+  }
+
+  document.querySelectorAll("#editBreastRow .tog").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      editBreast = btn.dataset.b;
+      document.querySelectorAll("#editBreastRow .tog").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+    });
+  });
+
+  document.getElementById("editSave").addEventListener("click", ()=>{
+    if(!editId) return;
+    const a = activities.find(x => x && x.id === editId);
+    if(!a) return;
+
+    const s = fromDTLocal(document.getElementById("editStart").value);
+    const e = fromDTLocal(document.getElementById("editEnd").value);
+    if(!s || !e) return alert("Unesi početak i kraj.");
+    if(e <= s) return alert("Kraj ne može biti prije početka.");
+
+    a.startMs = s; a.endMs = e;
+    a.startIso = msToISO(s);
+    a.endIso = msToISO(e);
+    a.time = a.startIso;
+    a.endTime = a.endIso;
+    a.notes = document.getElementById("editNotes").value || "";
+
+    if(a.type === "sleep"){
+      a.duration = (e - s)/3600000;
+    }else if(a.type === "feeding"){
+      if(!editBreast) return alert("Odaberi dojku.");
+      a.breast = editBreast;
+      a.duration = Math.round((e - s)/60000);
+    }
+
+    normalizeAll();
+    saveActs();
+    closeModal("editModal");
+    updateAll();
+  });
+
+  // Hook edit click
+  document.addEventListener("click", (e)=>{
+    const btn = e.target.closest("[data-edit]");
+    if(!btn) return;
+    openEdit(btn.dataset.edit);
+  });
+
+  // ===== nav =====
   document.getElementById("navHome").addEventListener("click", ()=>{
     isHistory = false; setActiveNav("navHome"); updateAll(); window.scrollTo({top:0, behavior:"instant"});
   });
@@ -1353,9 +1530,8 @@
   document.getElementById("openSleep").addEventListener("click", ()=> openModal("sleepModal"));
   document.getElementById("openFeed").addEventListener("click", ()=> openModal("feedModal"));
 
-  // ===== live tick @1s (precision by Date.now; UI updates every second) =====
+  // ===== live tick =====
   function tick(){
-    // refresh from storage (multi-tab safe) [file:2]
     activities = safeParse(localStorage.getItem(KEY_ACTS) || "[]", []);
     activeSleep = safeParse(localStorage.getItem(KEY_ACTIVE_SLEEP) || "null", null);
     activeFeeding = safeParse(localStorage.getItem(KEY_ACTIVE_FEED) || "null", null);
@@ -1363,9 +1539,8 @@
 
     updatePills();
     updateHero();
-    if(!isHistory) updateList();
+    updateList();
 
-    // mechanical clocks in modals
     const nowSec = Math.floor(Date.now()/1000);
     if(lastTickSec === null) lastTickSec = nowSec;
     const isNewSecond = nowSec !== lastTickSec;
@@ -1374,7 +1549,7 @@
     if(document.getElementById("sleepModal").classList.contains("active") && activeSleep){
       const el = Date.now() - activeSleep.startMs;
       document.getElementById("sleepElapsed").textContent = hmsFromMs(el);
-      document.getElementById("sleepMeta").textContent = `Počeo: ${formatStamp(activeSleep.startMs)} • ${agoPrecise(activeSleep.startMs)}`;
+      document.getElementById("sleepMeta").textContent = `Počeo: ${relativeDayTime(activeSleep.startMs)} • ${agoPrecise(activeSleep.startMs)}`;
       setAnalog(
         document.getElementById("sleepH"),
         document.getElementById("sleepM"),
@@ -1389,7 +1564,7 @@
       const el = Date.now() - activeFeeding.startMs;
       const b = activeFeeding.breast==="left" ? "Lijeva" : activeFeeding.breast==="right" ? "Desna" : activeFeeding.breast==="both" ? "Obje" : "—";
       document.getElementById("feedElapsed").textContent = hmsFromMs(el);
-      document.getElementById("feedMeta").textContent = `Počelo: ${formatStamp(activeFeeding.startMs)} • Dojka: ${b} • ${agoPrecise(activeFeeding.startMs)}`;
+      document.getElementById("feedMeta").textContent = `Počelo: ${relativeDayTime(activeFeeding.startMs)} • Dojka: ${b} • ${agoPrecise(activeFeeding.startMs)}`;
       setAnalog(
         document.getElementById("feedH"),
         document.getElementById("feedM"),
@@ -1401,7 +1576,6 @@
     }
   }
 
-  // initial paint
   updateAll();
   paintSleepModal();
   paintFeedModal();
