@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Nori — San & Hranjenje</title>
+  <title>Nori — San & Hranjenje (Vintage)</title>
 
   <style>
     :root{
@@ -20,14 +20,12 @@
       --orange: rgba(249,115,22,1);
       --green: rgba(34,197,94,1);
 
-      /* Warm “vintage” accents for analog clock */
       --brass1: #d2a55b;
       --brass2: #8a5c1c;
       --wood1: rgba(126,86,42,0.26);
       --wood2: rgba(72,48,22,0.22);
 
       --r12: 14px;
-      --r16: 16px;
       --r20: 20px;
       --rfull: 9999px;
 
@@ -37,10 +35,8 @@
 
       --safeT: env(safe-area-inset-top, 0px);
       --safeB: env(safe-area-inset-bottom, 0px);
-
       --tapMin: 48px;
 
-      /* Layout: keep screen filled on tall S22 Ultra */
       --maxW: 560px;
     }
 
@@ -75,8 +71,6 @@
       overflow-x:hidden;
       -webkit-tap-highlight-color: transparent;
     }
-
-    /* Softer watermark so readability is better */
     body::before{
       content:"NORI";
       position:fixed; inset:0;
@@ -95,7 +89,6 @@
       body::before{ color: rgba(74,222,128,0.04); text-shadow: 0 10px 24px rgba(0,0,0,0.35); }
     }
 
-    /* Full-height layout to avoid “empty” area on tall phone */
     .app{
       position:relative;
       z-index:1;
@@ -176,7 +169,6 @@
     .icon-btn:active{ transform: scale(0.98); box-shadow:none; }
     .icon-btn span{ font-size: 18px; }
 
-    /* Hero: makes screen feel full + pro */
     .hero{
       margin-top: 12px;
       border-radius: 22px;
@@ -198,7 +190,7 @@
     }
     .hero-inner{ padding: 16px; }
     .hero-top{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom: 10px; }
-    .hero-title{ font-size: 13px; font-weight: 1000; color: var(--muted); letter-spacing:-0.01em; }
+    .hero-title{ font-size: 13px; font-weight: 1000; color: var(--muted); }
     .hero-chip{
       font-size: 12px; font-weight: 1000;
       padding: 6px 10px;
@@ -221,7 +213,6 @@
       color: var(--muted);
       line-height: 1.35;
     }
-
     .hero-actions{
       margin-top: 14px;
       display:grid;
@@ -244,18 +235,14 @@
       .hero-btn{ background: rgba(255,255,255,0.06); }
     }
     .hero-btn:active{ transform: scale(0.985); }
-    .hero-btn.sleep{ box-shadow: 0 14px 30px rgba(168,85,247,0.10); }
-    .hero-btn.feed{ box-shadow: 0 14px 30px rgba(219,39,119,0.10); }
 
-    /* Content section fills remaining height */
     .content{
       margin-top: 12px;
       flex: 1;
       display:flex;
       flex-direction:column;
-      min-height: 0; /* allow inner scroll */
+      min-height: 0;
     }
-
     .section{
       border-radius: 22px;
       border: 1px solid var(--border);
@@ -276,9 +263,8 @@
       justify-content:space-between;
       align-items:center;
       gap:12px;
-      border-bottom: 1px solid rgba(255,255,255,0.0);
     }
-    .section-title{ font-size: 16px; font-weight: 1000; letter-spacing:-0.01em; }
+    .section-title{ font-size: 16px; font-weight: 1000; }
     .link{
       font-size: 13px;
       color: var(--teal);
@@ -381,7 +367,6 @@
       font-size: 13px;
     }
 
-    /* History view (same container, just switches content) */
     .day-group{
       border:1px solid var(--border);
       border-radius: 18px;
@@ -409,7 +394,6 @@
     .day-meta{ font-size: 11px; color: var(--muted); white-space:nowrap; }
     .day-body{ padding: 10px; display:flex; flex-direction:column; gap:10px; }
 
-    /* Modal base */
     .modal{
       display:none;
       position: fixed;
@@ -437,10 +421,9 @@
       -webkit-backdrop-filter: blur(16px);
     }
     .m-head{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom: 12px; }
-    .m-title{ font-size: 18px; font-weight: 1000; letter-spacing:-0.01em; }
+    .m-title{ font-size: 18px; font-weight: 1000; }
     .close{ font-size: 28px; color: var(--muted); cursor:pointer; user-select:none; line-height:1; }
 
-    /* Vintage analog clock inside timer box */
     .timer-box{
       padding: 16px 14px;
       border-radius: 20px;
@@ -453,12 +436,13 @@
       overflow:hidden;
     }
     @media (prefers-color-scheme: dark){
-      .timer-box{ background:
-        radial-gradient(540px 220px at 30% 0%, rgba(210,165,91,0.10), transparent 60%),
-        radial-gradient(560px 240px at 70% 0%, rgba(138,92,28,0.09), transparent 60%),
-        rgba(255,255,255,0.06); }
+      .timer-box{
+        background:
+          radial-gradient(540px 220px at 30% 0%, rgba(210,165,91,0.10), transparent 60%),
+          radial-gradient(560px 240px at 70% 0%, rgba(138,92,28,0.09), transparent 60%),
+          rgba(255,255,255,0.06);
+      }
     }
-
     .timer-row{
       display:flex;
       gap: 14px;
@@ -472,8 +456,6 @@
       border-radius: 999px;
       position:relative;
       flex-shrink:0;
-
-      /* Brass bezel + inner paper + subtle wood */
       background:
         radial-gradient(circle at 50% 50%, rgba(255,255,255,0.30), rgba(255,255,255,0.00) 55%),
         radial-gradient(circle at 30% 20%, rgba(210,165,91,0.30), transparent 52%),
@@ -493,8 +475,6 @@
           0 18px 38px rgba(0,0,0,0.45);
       }
     }
-
-    /* Inner dial */
     .dial{
       position:absolute;
       inset: 10px;
@@ -513,8 +493,6 @@
         border: 1px solid rgba(170,173,173,0.18);
       }
     }
-
-    /* Glass / shine */
     .glass{
       position:absolute;
       inset: 0;
@@ -532,7 +510,6 @@
           linear-gradient(135deg, rgba(255,255,255,0.08), transparent 35%, rgba(255,255,255,0.03));
       }
     }
-
     .roman{
       position:absolute;
       inset: 14px;
@@ -557,7 +534,6 @@
       left: 50%;
       transform: translate(-50%,-50%) rotate(var(--rot)) translateY(-38px) rotate(calc(var(--rot) * -1));
     }
-
     .ticks{
       position:absolute;
       inset: 16px;
@@ -578,7 +554,6 @@
     @media (prefers-color-scheme: dark){
       .ticks{ opacity: 0.26; }
     }
-
     .hand{
       position:absolute;
       left:50%; top:50%;
@@ -587,32 +562,13 @@
       border-radius: 999px;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.20));
     }
-    .hand.sec{
-      width: 2px;
-      height: 42px;
-      background: linear-gradient(180deg, rgba(249,115,22,1), rgba(138,92,28,0.85));
-    }
-    .hand.min{
-      width: 3px;
-      height: 34px;
-      background: linear-gradient(180deg, rgba(33,128,141,1), rgba(20,22,22,0.75));
-      opacity: 0.95;
-    }
-    .hand.hour{
-      width: 4px;
-      height: 26px;
-      background: linear-gradient(180deg, rgba(20,22,22,0.95), rgba(20,22,22,0.55));
-      opacity: 0.90;
-    }
+    .hand.sec{ width: 2px; height: 42px; background: linear-gradient(180deg, rgba(249,115,22,1), rgba(138,92,28,0.85)); }
+    .hand.min{ width: 3px; height: 34px; background: linear-gradient(180deg, rgba(33,128,141,1), rgba(20,22,22,0.75)); opacity: 0.95; }
+    .hand.hour{ width: 4px; height: 26px; background: linear-gradient(180deg, rgba(20,22,22,0.95), rgba(20,22,22,0.55)); opacity: 0.90; }
     @media (prefers-color-scheme: dark){
-      .hand.hour{
-        background: linear-gradient(180deg, rgba(245,245,245,0.85), rgba(245,245,245,0.45));
-      }
-      .hand.min{
-        background: linear-gradient(180deg, rgba(74,222,128,0.85), rgba(245,245,245,0.25));
-      }
+      .hand.hour{ background: linear-gradient(180deg, rgba(245,245,245,0.85), rgba(245,245,245,0.45)); }
+      .hand.min{ background: linear-gradient(180deg, rgba(74,222,128,0.85), rgba(245,245,245,0.25)); }
     }
-
     .pin{
       position:absolute;
       left:50%; top:50%;
@@ -670,7 +626,6 @@
     .primary.green{ background: var(--green); box-shadow: 0 14px 30px rgba(34,197,94,0.18); }
     .primary.orange{ background: var(--orange); box-shadow: 0 14px 30px rgba(249,115,22,0.18); }
 
-    /* Advanced inputs (hidden by default) */
     .advanced{
       margin-top: 12px;
       border:1px solid var(--border);
@@ -775,24 +730,24 @@
       </div>
     </div>
 
-    <div class="hero" id="heroSection">
+    <div class="hero">
       <div class="hero-inner">
         <div class="hero-top">
           <div class="hero-title">Status (real-time)</div>
-          <div class="hero-chip" id="heroChip">Norian</div>
+          <div class="hero-chip" id="heroChip">Povlači stare podatke</div>
         </div>
         <div class="hero-main" id="heroMain">-</div>
         <div class="hero-sub" id="heroSub">-</div>
 
         <div class="hero-actions">
-          <button class="hero-btn sleep" id="heroSleepBtn"><span>😴</span> San</button>
-          <button class="hero-btn feed" id="heroFeedBtn"><span>🍼</span> Hranjenje</button>
+          <button class="hero-btn" id="heroSleepBtn"><span>😴</span> San</button>
+          <button class="hero-btn" id="heroFeedBtn"><span>🍼</span> Hranjenje</button>
         </div>
       </div>
     </div>
 
     <div class="content">
-      <div class="section" id="mainSection">
+      <div class="section">
         <div class="section-head">
           <div class="section-title" id="sectionTitle">Trenutno / posljednje</div>
           <a class="link" id="toggleView">Historija</a>
@@ -812,11 +767,10 @@
 
       <div class="timer-box" id="sleepTimerBox" style="display:none;">
         <div class="timer-row">
-          <div class="analog" aria-label="Analogni sat">
+          <div class="analog">
             <div class="dial"></div>
             <div class="ticks"></div>
             <div class="roman" id="sleepRoman"></div>
-
             <div class="hand hour" id="sleepH"></div>
             <div class="hand min" id="sleepM"></div>
             <div class="hand sec" id="sleepS"></div>
@@ -866,11 +820,10 @@
 
       <div class="timer-box" id="feedTimerBox" style="display:none;">
         <div class="timer-row">
-          <div class="analog" aria-label="Analogni sat">
+          <div class="analog">
             <div class="dial"></div>
             <div class="ticks"></div>
             <div class="roman" id="feedRoman"></div>
-
             <div class="hand hour" id="feedH"></div>
             <div class="hand min" id="feedM"></div>
             <div class="hand sec" id="feedS"></div>
@@ -975,25 +928,35 @@
   </div>
 
 <script>
-  // Storage keys (local-only). Original concept: activities + active objects. [file:1]
-  const KEY_ACTS = "babyActivities_v3_sleep_feed";
-  const KEY_ACTIVE_SLEEP = "activeSleep_v3";
-  const KEY_ACTIVE_FEED = "activeFeeding_v3";
+  // ====== STORAGE (USE OLD KEYS to keep ALL existing data) ======
+  // Old app keys: babyActivities, activeSleep, activeFeeding [file:2]
+  const KEY_ACTS = "babyActivities";
+  const KEY_ACTIVE_SLEEP = "activeSleep";
+  const KEY_ACTIVE_FEED = "activeFeeding";
 
-  let activities = JSON.parse(localStorage.getItem(KEY_ACTS) || "[]");
-  let activeSleep = JSON.parse(localStorage.getItem(KEY_ACTIVE_SLEEP) || "null");
-  let activeFeeding = JSON.parse(localStorage.getItem(KEY_ACTIVE_FEED) || "null");
+  // We only show these two types, but we never delete other types. [file:2]
+  const SUPPORTED_TYPES = new Set(["sleep", "feeding"]);
+
+  // ====== In-memory ======
+  let activities = safeParse(localStorage.getItem(KEY_ACTS) || "[]", []);
+  let activeSleep = safeParse(localStorage.getItem(KEY_ACTIVE_SLEEP) || "null", null);
+  let activeFeeding = safeParse(localStorage.getItem(KEY_ACTIVE_FEED) || "null", null);
+
+  // Some old entries use "time/endTime" ISO and duration; active objects include startMs/startIso/startDisplay. [file:2]
+  // We'll normalize on load so UI code is simple.
+  normalizeAll();
 
   let homeInterval = null;
-
-  // feeding selections
   let selectedBreast = null;
 
   // edit state
   let editId = null;
   let editBreast = null;
 
-  // ---- Helpers ----
+  // ====== Helpers ======
+  function safeParse(json, fallback){
+    try { return JSON.parse(json); } catch { return fallback; }
+  }
   function pad2(n){ return String(n).padStart(2,"0"); }
   function escapeHtml(s){
     return String(s ?? "")
@@ -1003,6 +966,12 @@
   function uid(){
     return "a_" + Math.random().toString(16).slice(2) + "_" + Date.now().toString(16);
   }
+  function isoToMs(iso){
+    const d = new Date(iso);
+    const t = d.getTime();
+    return Number.isFinite(t) ? t : null;
+  }
+  function msToISO(ms){ return new Date(ms).toISOString(); }
 
   function parseClockToHMS(clock){
     const m = /^(\d{1,2}):(\d{2})(?::(\d{2}))?$/.exec((clock||"").trim());
@@ -1019,7 +988,6 @@
     if(Number.isNaN(d.getTime())) return null;
     return d.getTime();
   }
-  function msToISO(ms){ return new Date(ms).toISOString(); }
   function msToDate(ms){
     const d = new Date(ms);
     return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
@@ -1066,7 +1034,7 @@
     return `${pad2(d)}.${pad2(m)}.${y}`;
   }
 
-  function saveActs(){ localStorage.setItem(KEY_ACTS, JSON.stringify(activities)); }
+  function saveActs(){ localStorage.setItem(KEY_ACTS, JSON.stringify(activities)); } // same as old app [file:2]
   function saveActive(){
     if(activeSleep) localStorage.setItem(KEY_ACTIVE_SLEEP, JSON.stringify(activeSleep));
     else localStorage.removeItem(KEY_ACTIVE_SLEEP);
@@ -1074,28 +1042,120 @@
     else localStorage.removeItem(KEY_ACTIVE_FEED);
   }
 
+  // ====== Normalization of old data ======
+  function normalizeActivity(a){
+    // Old activities: {type, time, endTime, duration, notes, timestamp, breast...} [file:2]
+    // We keep original fields, but ensure startMs/endMs/id exist.
+    if(!a || !a.type) return null;
+
+    // keep id if exists else generate stable-ish one
+    if(!a.id) a.id = uid();
+
+    // only normalize times for supported types, others keep untouched
+    if(!SUPPORTED_TYPES.has(a.type)) return a;
+
+    // start
+    if(typeof a.startMs !== "number"){
+      const s = isoToMs(a.time || a.startIso || a.startTime);
+      if(s) a.startMs = s;
+    }
+    // end
+    if(typeof a.endMs !== "number"){
+      const e = isoToMs(a.endTime || a.endIso || a.end);
+      if(e) a.endMs = e;
+    }
+
+    // If no endTime but has duration (old sleep stored duration hours, feeding duration minutes) [file:2]
+    if((!a.endMs || a.endMs <= a.startMs) && a.startMs && a.duration != null){
+      if(a.type === "sleep"){
+        const hours = Number(a.duration);
+        if(Number.isFinite(hours) && hours > 0) a.endMs = a.startMs + Math.round(hours * 3600 * 1000);
+      }else if(a.type === "feeding"){
+        const mins = Number(a.duration);
+        if(Number.isFinite(mins) && mins > 0) a.endMs = a.startMs + Math.round(mins * 60 * 1000);
+      }
+    }
+
+    // Keep ISO mirrors
+    if(a.startMs && !a.startIso) a.startIso = msToISO(a.startMs);
+    if(a.endMs && !a.endIso) a.endIso = msToISO(a.endMs);
+
+    // notes
+    if(a.notes == null) a.notes = "";
+
+    // feeding breast may be missing
+    if(a.type === "feeding" && !a.breast) a.breast = null;
+
+    // timestamp used heavily in old app [file:2]
+    if(!a.timestamp) a.timestamp = Date.now();
+
+    return a;
+  }
+
+  function normalizeActiveSleep(x){
+    if(!x) return null;
+    // Old activeSleep: {startIso, startMs, startDisplay} [file:2]
+    if(typeof x.startMs !== "number"){
+      const s = isoToMs(x.startIso);
+      if(s) x.startMs = s;
+    }
+    if(x.startMs && !x.startIso) x.startIso = msToISO(x.startMs);
+    if(!x.startDisplay && x.startMs){
+      const d = new Date(x.startMs);
+      x.startDisplay = d.toLocaleString("bs-BA", {hour:"2-digit", minute:"2-digit"});
+    }
+    return x.startMs ? x : null;
+  }
+
+  function normalizeActiveFeeding(x){
+    if(!x) return null;
+    // Old activeFeeding: {startIso, startMs, startDisplay, breast} [file:2]
+    if(typeof x.startMs !== "number"){
+      const s = isoToMs(x.startIso);
+      if(s) x.startMs = s;
+    }
+    if(x.startMs && !x.startIso) x.startIso = msToISO(x.startMs);
+    if(!x.startDisplay && x.startMs){
+      const d = new Date(x.startMs);
+      x.startDisplay = d.toLocaleString("bs-BA", {day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit"});
+    }
+    if(!x.breast) x.breast = null;
+    return x.startMs ? x : null;
+  }
+
+  function normalizeAll(){
+    activities = Array.isArray(activities) ? activities.map(normalizeActivity).filter(Boolean) : [];
+    activeSleep = normalizeActiveSleep(activeSleep);
+    activeFeeding = normalizeActiveFeeding(activeFeeding);
+
+    // Save back normalized versions so future loads are clean (still same old keys). [file:2]
+    saveActs();
+    saveActive();
+  }
+
+  // ====== Icons / UI text ======
   function iconFor(type){
     if(type==="sleep") return {emoji:"😴", bg:"rgba(192,132,252,0.18)", color:"rgba(168,85,247,1)"};
     return {emoji:"🍼", bg:"rgba(236,72,153,0.16)", color:"rgba(219,39,119,1)"};
   }
   function titleFor(a){
     if(a.type==="sleep") return "San";
-    const b = a.breast==="left" ? "Lijeva" : a.breast==="right" ? "Desna" : "Obje";
+    const b = a.breast==="left" ? "Lijeva" : a.breast==="right" ? "Desna" : a.breast==="both" ? "Obje" : "—";
     return `Hranjenje — ${b}`;
   }
+
   function detailsFor(a){
     const start = formatStamp(a.startMs);
     const end = formatStamp(a.endMs);
     const dur = hmsFromMs(a.endMs - a.startMs);
+    const notes = a.notes ? ` • ${escapeHtml(a.notes)}` : "";
     if(a.type==="sleep"){
       const awake = timeAgoSeconds(a.endMs);
-      const notes = a.notes ? ` • ${escapeHtml(a.notes)}` : "";
       return `Start: ${start} • Kraj: ${end} • Trajanje: ${dur} • Budan: ${awake}${notes}`;
-    }else{
-      const since = timeAgoSeconds(a.startMs);
-      const notes = a.notes ? ` • ${escapeHtml(a.notes)}` : "";
-      return `Start: ${start} • Kraj: ${end} • Trajanje: ${dur} • Počelo: ${since}${notes}`;
     }
+    const since = timeAgoSeconds(a.startMs);
+    const b = a.breast==="left" ? "Lijeva" : a.breast==="right" ? "Desna" : a.breast==="both" ? "Obje" : "—";
+    return `Start: ${start} • Kraj: ${end} • Trajanje: ${dur} • Dojka: ${b} • Počelo: ${since}${notes}`;
   }
 
   function itemHTML(a){
@@ -1134,7 +1194,7 @@
     if(type==="feeding" && activeFeeding){
       const ic = iconFor("feeding");
       const elapsed = Date.now() - activeFeeding.startMs;
-      const b = activeFeeding.breast==="left" ? "Lijeva" : activeFeeding.breast==="right" ? "Desna" : "Obje";
+      const b = activeFeeding.breast==="left" ? "Lijeva" : activeFeeding.breast==="right" ? "Desna" : activeFeeding.breast==="both" ? "Obje" : "—";
       return `
         <div class="item">
           <div class="i-ico" style="background:${ic.bg}; color:${ic.color};"><span>${ic.emoji}</span></div>
@@ -1149,20 +1209,18 @@
     return "";
   }
 
-  // ---- Vintage roman numerals (I, II, III ...) ----
+  // ====== Roman numerals for vintage clock ======
   function buildRoman(elId){
     const el = document.getElementById(elId);
     if(!el || el.dataset.built === "1") return;
     el.dataset.built = "1";
     const romans = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
-    // Each at 30deg increments starting at top (0deg)
     el.innerHTML = romans.map((r, i)=>{
       const deg = i * 30;
       return `<span style="--rot:${deg}deg">${r}</span>`;
     }).join("");
   }
 
-  // ---- Analog movement ----
   function setAnalog(elH, elM, elS, elapsedMs){
     const totalSec = Math.floor(Math.max(0, elapsedMs)/1000);
     const sec = totalSec % 60;
@@ -1178,9 +1236,10 @@
     elH.style.transform = `translate(-50%,-100%) rotate(${hDeg}deg)`;
   }
 
+  // ====== Header + Hero ======
   function updateHeaderPills(){
-    const lastSleep = activities.filter(a=>a.type==="sleep").sort((a,b)=>b.endMs-a.endMs)[0];
-    const lastFeed  = activities.filter(a=>a.type==="feeding").sort((a,b)=>b.endMs-a.endMs)[0];
+    const lastSleep = activities.filter(a=>a.type==="sleep" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
+    const lastFeed  = activities.filter(a=>a.type==="feeding" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
     document.getElementById("pillSleepAgo").textContent = lastSleep ? timeAgoSeconds(lastSleep.endMs) : "-";
     document.getElementById("pillFeedAgo").textContent  = lastFeed  ? timeAgoSeconds(lastFeed.endMs)  : "-";
   }
@@ -1195,14 +1254,14 @@
       return;
     }
     if(activeFeeding){
-      const b = activeFeeding.breast==="left" ? "Lijeva" : activeFeeding.breast==="right" ? "Desna" : "Obje";
+      const b = activeFeeding.breast==="left" ? "Lijeva" : activeFeeding.breast==="right" ? "Desna" : activeFeeding.breast==="both" ? "Obje" : "—";
       main.textContent = `Jede (${b}) • ${hmsFromMs(Date.now() - activeFeeding.startMs)}`;
       sub.textContent  = `Počelo: ${formatStamp(activeFeeding.startMs)} • Dojka: ${b}`;
       return;
     }
 
-    const lastSleep = activities.filter(a=>a.type==="sleep").sort((a,b)=>b.endMs-a.endMs)[0];
-    const lastFeed  = activities.filter(a=>a.type==="feeding").sort((a,b)=>b.endMs-a.endMs)[0];
+    const lastSleep = activities.filter(a=>a.type==="sleep" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
+    const lastFeed  = activities.filter(a=>a.type==="feeding" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
 
     const awakeFrom = lastSleep ? timeAgoSeconds(lastSleep.endMs) : "-";
     const feedAgo   = lastFeed  ? timeAgoSeconds(lastFeed.endMs)  : "-";
@@ -1210,6 +1269,7 @@
     sub.textContent  = `Zadnje hranjenje: ${feedAgo}`;
   }
 
+  // ====== Main list (home/history) ======
   let isHistory = false;
 
   function updateMainList(){
@@ -1225,8 +1285,8 @@
       if(activeSleep) blocks.push(activeCardHTML("sleep"));
       if(activeFeeding) blocks.push(activeCardHTML("feeding"));
 
-      const lastSleep = activities.filter(a=>a.type==="sleep").sort((a,b)=>b.endMs-a.endMs)[0];
-      const lastFeed  = activities.filter(a=>a.type==="feeding").sort((a,b)=>b.endMs-a.endMs)[0];
+      const lastSleep = activities.filter(a=>a.type==="sleep" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
+      const lastFeed  = activities.filter(a=>a.type==="feeding" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
 
       if(!activeSleep && lastSleep) blocks.push(itemHTML(lastSleep));
       if(!activeFeeding && lastFeed) blocks.push(itemHTML(lastFeed));
@@ -1238,11 +1298,16 @@
     title.textContent = "Historija (po danima)";
     link.textContent = "Početna";
 
-    const sorted = [...activities].sort((a,b)=>b.startMs-a.startMs);
+    // show only supported types here
+    const sorted = activities
+      .filter(a=>SUPPORTED_TYPES.has(a.type) && a.startMs && a.endMs)
+      .sort((a,b)=>b.startMs-a.startMs);
+
     if(!sorted.length){
-      list.innerHTML = `<div class="empty">Nema zapisa.</div>`;
+      list.innerHTML = `<div class="empty">Nema zapisa (San/Hranjenje).</div>`;
       return;
     }
+
     const groups = {};
     for(const a of sorted){
       const k = dayKey(a.startMs);
@@ -1271,14 +1336,13 @@
     updateMainList();
   }
 
-  // ---- Modals open/close ----
+  // ====== Modals ======
   function openModal(id){
     document.getElementById(id).classList.add("active");
     if(id === "sleepModal") setupSleepModal();
     if(id === "feedModal") setupFeedModal();
     if(id === "editModal") setupEditModal();
 
-    // build roman once
     if(id === "sleepModal") buildRoman("sleepRoman");
     if(id === "feedModal") buildRoman("feedRoman");
 
@@ -1293,28 +1357,12 @@
     x.addEventListener("click", ()=> closeModal(x.dataset.close));
   });
 
-  function ensureIntervals(){
-    if(homeInterval) return;
-    homeInterval = setInterval(()=>{
-      // refresh active state from storage (in case another tab changed)
-      activeSleep = JSON.parse(localStorage.getItem(KEY_ACTIVE_SLEEP) || "null");
-      activeFeeding = JSON.parse(localStorage.getItem(KEY_ACTIVE_FEED) || "null");
-
-      updateHeaderPills();
-      updateHero();
-      if(!isHistory) updateMainList(); // lightweight update
-      tickActiveTimersInModals();
-    }, 1000);
-  }
-
-  // ---- Sleep modal setup / flow ----
+  // ====== Sleep flow (writes activeSleep like old app did) ====== [file:2]
   function setupSleepModal(){
     const now = Date.now();
-    // default values for advanced (if user opens it)
     document.getElementById("sleepStartDate").value = msToDate(now);
     document.getElementById("sleepStartClock").value = msToClock(now);
 
-    // keep advanced hidden by default
     document.getElementById("sleepAdvanced").style.display = "none";
     document.getElementById("sleepAdvancedBtn").textContent = "Uredi vrijeme / bilješke";
 
@@ -1340,7 +1388,6 @@
   document.getElementById("sleepStartBtn").addEventListener("click", ()=>{
     if(activeSleep) return;
 
-    // If advanced is open and user typed a custom time, use it; else use now.
     const advOpen = document.getElementById("sleepAdvanced").style.display === "block";
     let startMs = Date.now();
     if(advOpen){
@@ -1353,7 +1400,12 @@
       startMs = ms;
     }
 
-    activeSleep = { startMs, startIso: msToISO(startMs) };
+    const d = new Date(startMs);
+    activeSleep = {
+      startIso: d.toISOString(),
+      startMs: startMs,
+      startDisplay: d.toLocaleString("bs-BA", { hour:"2-digit", minute:"2-digit" })
+    };
     saveActive();
     updateDisplay();
     setupSleepModal();
@@ -1361,20 +1413,30 @@
 
   document.getElementById("sleepStopBtn").addEventListener("click", ()=>{
     if(!activeSleep) return;
+
     const endMs = Date.now();
     if(endMs <= activeSleep.startMs) return alert("Greška u vremenima.");
 
+    const endDate = new Date(endMs);
+    const durationHours = (endMs - activeSleep.startMs) / 3600000;
+
     const notes = document.getElementById("sleepNotes").value || "";
-    activities.push({
+    const endDisplay = endDate.toLocaleString("bs-BA", { hour:"2-digit", minute:"2-digit" });
+
+    // Save in OLD format fields too (time/endTime/duration/timestamp) so old app can still read it. [file:2]
+    const act = normalizeActivity({
       id: uid(),
       type: "sleep",
-      startMs: activeSleep.startMs,
-      endMs,
-      startIso: activeSleep.startIso,
-      endIso: msToISO(endMs),
+      time: activeSleep.startIso,
+      endTime: endDate.toISOString(),
+      duration: durationHours,
       notes,
-      createdAt: Date.now()
+      startTimeDisplay: activeSleep.startDisplay,
+      endTimeDisplay: endDisplay,
+      timestamp: Date.now()
     });
+
+    activities.push(act);
 
     activeSleep = null;
     saveActs();
@@ -1383,7 +1445,7 @@
     closeModal("sleepModal");
   });
 
-  // ---- Feeding modal setup / flow ----
+  // ====== Feeding flow (writes activeFeeding like old app did) ====== [file:2]
   function clearBreastSelection(containerId){
     document.querySelectorAll(`#${containerId} .toggle`).forEach(b=>b.classList.remove("active"));
   }
@@ -1447,7 +1509,13 @@
       startMs = ms;
     }
 
-    activeFeeding = { startMs, startIso: msToISO(startMs), breast: selectedBreast };
+    const d = new Date(startMs);
+    activeFeeding = {
+      startIso: d.toISOString(),
+      startMs: startMs,
+      startDisplay: d.toLocaleString("bs-BA", { day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit" }),
+      breast: selectedBreast
+    };
     saveActive();
     updateDisplay();
     setupFeedModal();
@@ -1455,21 +1523,30 @@
 
   document.getElementById("feedStopBtn").addEventListener("click", ()=>{
     if(!activeFeeding) return;
+
     const endMs = Date.now();
     if(endMs <= activeFeeding.startMs) return alert("Greška u vremenima.");
 
+    const endDate = new Date(endMs);
+    const durationMin = Math.round((endMs - activeFeeding.startMs) / 60000);
+
     const notes = document.getElementById("feedNotes").value || "";
-    activities.push({
+    const endDisplay = endDate.toLocaleString("bs-BA", { day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit" });
+
+    const act = normalizeActivity({
       id: uid(),
       type: "feeding",
+      time: activeFeeding.startIso,
+      endTime: endDate.toISOString(),
       breast: activeFeeding.breast,
-      startMs: activeFeeding.startMs,
-      endMs,
-      startIso: activeFeeding.startIso,
-      endIso: msToISO(endMs),
+      duration: durationMin,
       notes,
-      createdAt: Date.now()
+      startTimeDisplay: activeFeeding.startDisplay,
+      endTimeDisplay: endDisplay,
+      timestamp: Date.now()
     });
+
+    activities.push(act);
 
     activeFeeding = null;
     saveActs();
@@ -1478,12 +1555,12 @@
     closeModal("feedModal");
   });
 
-  // ---- Edit / Delete ----
-  function findAct(id){ return activities.find(a=>a.id === id); }
+  // ====== Edit/Delete (only for sleep/feeding entries) ======
+  function findAct(id){ return activities.find(a=>a && a.id === id); }
 
   function setupEditModal(){
     const a = findAct(editId);
-    if(!a) return closeModal("editModal");
+    if(!a || !SUPPORTED_TYPES.has(a.type)) return closeModal("editModal");
 
     document.getElementById("editType").value = a.type === "sleep" ? "San" : "Hranjenje";
     document.getElementById("editStartDate").value = msToDate(a.startMs);
@@ -1515,7 +1592,7 @@
 
   document.getElementById("editSaveBtn").addEventListener("click", ()=>{
     const a = findAct(editId);
-    if(!a) return;
+    if(!a || !SUPPORTED_TYPES.has(a.type)) return;
 
     const startMs = dateClockToMs(document.getElementById("editStartDate").value, document.getElementById("editStartClock").value);
     const endMs   = dateClockToMs(document.getElementById("editEndDate").value,   document.getElementById("editEndClock").value);
@@ -1526,6 +1603,11 @@
     a.endMs = endMs;
     a.startIso = msToISO(startMs);
     a.endIso = msToISO(endMs);
+
+    // Keep old-format fields in sync too [file:2]
+    a.time = a.startIso;
+    a.endTime = a.endIso;
+
     a.notes = document.getElementById("editNotes").value || "";
 
     if(a.type === "feeding"){
@@ -1533,14 +1615,32 @@
       a.breast = editBreast;
     }
 
+    // Update old "duration" style fields [file:2]
+    if(a.type === "sleep"){
+      a.duration = (a.endMs - a.startMs) / 3600000;
+      const d1 = new Date(a.startMs), d2 = new Date(a.endMs);
+      a.startTimeDisplay = d1.toLocaleString("bs-BA", {hour:"2-digit", minute:"2-digit"});
+      a.endTimeDisplay = d2.toLocaleString("bs-BA", {hour:"2-digit", minute:"2-digit"});
+    }else{
+      a.duration = Math.round((a.endMs - a.startMs) / 60000);
+      const d1 = new Date(a.startMs), d2 = new Date(a.endMs);
+      a.startTimeDisplay = d1.toLocaleString("bs-BA", {day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit"});
+      a.endTimeDisplay = d2.toLocaleString("bs-BA", {day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit"});
+    }
+
+    a.timestamp = Date.now();
+
     saveActs();
     updateDisplay();
     closeModal("editModal");
   });
 
   document.getElementById("editDeleteBtn").addEventListener("click", ()=>{
+    const a = findAct(editId);
+    if(!a || !SUPPORTED_TYPES.has(a.type)) return closeModal("editModal");
     if(!confirm("Obrisati zapis?")) return;
-    activities = activities.filter(a=>a.id !== editId);
+
+    activities = activities.filter(x=>x && x.id !== editId);
     saveActs();
     updateDisplay();
     closeModal("editModal");
@@ -1550,38 +1650,38 @@
   document.addEventListener("click", (e)=>{
     const edit = e.target.closest("[data-edit]");
     const del  = e.target.closest("[data-del]");
+
     if(edit){
       editId = edit.dataset.edit;
       openModal("editModal");
     }
     if(del){
       const id = del.dataset.del;
+      const a = findAct(id);
+      if(!a || !SUPPORTED_TYPES.has(a.type)) return;
       if(!confirm("Obrisati zapis?")) return;
-      activities = activities.filter(a=>a.id !== id);
+      activities = activities.filter(x=>x && x.id !== id);
       saveActs();
       updateDisplay();
     }
   });
 
-  // ---- Navigation ----
+  // ====== History toggle ======
   function toggleHistory(force){
     isHistory = typeof force === "boolean" ? force : !isHistory;
     updateDisplay();
-    // always reset scroll to top for better mobile UX
     document.getElementById("mainList").scrollTo({top:0, behavior:"instant"});
     window.scrollTo({top:0, behavior:"instant"});
   }
-
   document.getElementById("btnHistory").addEventListener("click", ()=> toggleHistory(true));
   document.getElementById("toggleView").addEventListener("click", ()=> toggleHistory());
 
-  // Hero buttons open modals
+  // Hero buttons
   document.getElementById("heroSleepBtn").addEventListener("click", ()=> openModal("sleepModal"));
   document.getElementById("heroFeedBtn").addEventListener("click", ()=> openModal("feedModal"));
 
-  // ---- Active timers tick in modals (analog + digital) ----
+  // ====== Active timers tick (analog + digital) ======
   function tickActiveTimersInModals(){
-    // Sleep modal
     if(document.getElementById("sleepModal").classList.contains("active") && activeSleep){
       const elapsed = Date.now() - activeSleep.startMs;
       document.getElementById("sleepElapsed").textContent = hmsFromMs(elapsed);
@@ -1593,11 +1693,10 @@
         elapsed
       );
     }
-    // Feeding modal
     if(document.getElementById("feedModal").classList.contains("active") && activeFeeding){
       const elapsed = Date.now() - activeFeeding.startMs;
       document.getElementById("feedElapsed").textContent = hmsFromMs(elapsed);
-      const b = activeFeeding.breast==="left" ? "Lijeva" : activeFeeding.breast==="right" ? "Desna" : "Obje";
+      const b = activeFeeding.breast==="left" ? "Lijeva" : activeFeeding.breast==="right" ? "Desna" : activeFeeding.breast==="both" ? "Obje" : "—";
       document.getElementById("feedMeta").textContent = `Počelo: ${formatStamp(activeFeeding.startMs)} • Dojka: ${b}`;
       setAnalog(
         document.getElementById("feedH"),
@@ -1608,10 +1707,25 @@
     }
   }
 
+  function ensureIntervals(){
+    if(homeInterval) return;
+    homeInterval = setInterval(()=>{
+      // refresh from storage (in case another tab modified)
+      activities = safeParse(localStorage.getItem(KEY_ACTS) || "[]", []);
+      activeSleep = safeParse(localStorage.getItem(KEY_ACTIVE_SLEEP) || "null", null);
+      activeFeeding = safeParse(localStorage.getItem(KEY_ACTIVE_FEED) || "null", null);
+
+      normalizeAll(); // keeps old structure + adds startMs/endMs for our UI
+      updateHero();
+      updateHeaderPills();
+      if(!isHistory) updateMainList();
+      tickActiveTimersInModals();
+    }, 1000);
+  }
+
   // Init
   updateDisplay();
   ensureIntervals();
 </script>
 </body>
 </html>
-
