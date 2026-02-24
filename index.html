@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>👶 Nori Tracker</title>
-
+  <title>Nori — San & Hranjenje</title>
   <style>
     :root{
       --bg: rgba(252,252,249,1);
@@ -12,15 +11,13 @@
       --surface2: rgba(255,255,255,0.92);
       --text: rgba(31,33,33,1);
       --muted: rgba(98,108,113,1);
+      --border: rgba(94,82,64,0.16);
 
       --teal: rgba(33,128,141,1);
       --pink: rgba(219,39,119,1);
       --purple: rgba(168,85,247,1);
-      --blue: rgba(59,130,246,1);
       --orange: rgba(249,115,22,1);
       --green: rgba(34,197,94,1);
-
-      --border: rgba(94,82,64,0.16);
 
       --r12: 14px;
       --r16: 16px;
@@ -29,333 +26,219 @@
 
       --sh1: 0 10px 30px rgba(0,0,0,0.06);
       --sh2: 0 2px 10px rgba(0,0,0,0.06);
-
       --ring: 0 0 0 3px rgba(33,128,141,0.18);
 
-      /* S22 Ultra safe area i realna visina bottom bara */
-      --navH: 78px;
+      /* S22 Ultra safe-area + big bottom gesture zone */
       --safeB: env(safe-area-inset-bottom, 0px);
-
-      /* S22 Ultra: spriječi "rezanje" teksta i dugmadi */
-      --tapMin: 48px; /* minimalna visina touch elemenata */
+      --tapMin: 48px;
     }
-
     @media (prefers-color-scheme: dark){
       :root{
         --bg: rgba(31,33,33,1);
         --surface: rgba(38,40,40,0.78);
         --surface2: rgba(38,40,40,0.92);
         --text: rgba(245,245,245,1);
-        --muted: rgba(167,169,169,0.75);
+        --muted: rgba(167,169,169,0.78);
         --border: rgba(167,169,169,0.20);
+
         --sh1: 0 12px 34px rgba(0,0,0,0.35);
         --sh2: 0 2px 10px rgba(0,0,0,0.30);
         --ring: 0 0 0 3px rgba(74,222,128,0.14);
       }
     }
-
-    *{ margin:0; padding:0; box-sizing:border-box; }
-    html, body{ height:100%; }
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html,body{ height:100%; }
     body{
-      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background:
-        radial-gradient(1200px 800px at 10% -10%, rgba(33,128,141,0.16), transparent 55%),
-        radial-gradient(1000px 700px at 95% 10%, rgba(168,85,247,0.14), transparent 55%),
-        radial-gradient(900px 650px at 45% 110%, rgba(249,115,22,0.12), transparent 55%),
+        radial-gradient(1100px 750px at 8% -10%, rgba(33,128,141,0.18), transparent 55%),
+        radial-gradient(980px 720px at 98% 5%, rgba(168,85,247,0.16), transparent 55%),
+        radial-gradient(900px 650px at 52% 112%, rgba(219,39,119,0.13), transparent 55%),
         var(--bg);
       color: var(--text);
-
-      /* KLJUČNO: dovoljno prostora da se SVI gumbi vide iznad bottom bara (S22 Ultra) */
-      padding-bottom: calc(var(--navH) + var(--safeB) + 22px);
-
+      padding-bottom: calc(var(--safeB) + 20px);
       overflow-x:hidden;
       -webkit-tap-highlight-color: transparent;
     }
-
-    /* NORIAN watermark */
     body::before{
-      content:"NORIAN";
-      position: fixed;
-      inset: 0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      content:"NORI";
+      position:fixed; inset:0;
+      display:flex; align-items:center; justify-content:center;
       font-weight: 900;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.25em;
       font-size: min(18vw, 140px);
       color: rgba(33,128,141,0.08);
       text-shadow: 0 10px 30px rgba(0,0,0,0.06);
       pointer-events:none;
-      z-index: 0;
+      z-index:0;
       transform: translateY(-6px);
       user-select:none;
     }
     @media (prefers-color-scheme: dark){
-      body::before{
-        color: rgba(74,222,128,0.07);
-        text-shadow: 0 10px 26px rgba(0,0,0,0.35);
-      }
+      body::before{ color: rgba(74,222,128,0.07); text-shadow: 0 10px 26px rgba(0,0,0,0.35); }
     }
 
-    .app{ position: relative; z-index: 1; }
-
-    /* Header */
+    .app{ position:relative; z-index:1; max-width: 520px; margin: 0 auto; padding: 0 14px 18px; }
     .header{
-      position: sticky;
-      top:0;
-      z-index: 120;
-      padding: 16px 16px;
+      position: sticky; top:0; z-index:120;
+      padding: 16px 14px;
       background: linear-gradient(180deg, var(--surface2), var(--surface));
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
       box-shadow: var(--sh2);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      margin: 0 -14px;
     }
-    .header-top{
-      display:flex;
-      align-items:flex-start;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .brand{
-      display:flex;
-      flex-direction: column;
-      gap: 6px;
-      min-width: 0;
-    }
+    .header-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+    .brand{ display:flex; flex-direction:column; gap:6px; min-width:0; }
     .brand h1{
-      font-size: 22px;
-      font-weight: 900;
+      font-size: 22px; font-weight: 1000;
       letter-spacing: -0.02em;
       line-height: 1.1;
       color: var(--teal);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space: nowrap; overflow:hidden; text-overflow: ellipsis;
     }
-    .brand .sub{
-      font-size: 12px;
-      color: var(--muted);
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+    .sub{ font-size: 12px; color: var(--muted); display:flex; gap:10px; flex-wrap:wrap; }
     .pill{
-      display:inline-flex;
-      align-items:center;
-      gap: 6px;
+      display:inline-flex; align-items:center; gap:8px;
       padding: 6px 10px;
       border-radius: var(--rfull);
-      border: 1px solid var(--border);
+      border:1px solid var(--border);
       background: rgba(255,255,255,0.22);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      max-width: 100%;
+      max-width:100%;
       white-space: nowrap;
     }
     @media (prefers-color-scheme: dark){
       .pill{ background: rgba(255,255,255,0.06); }
     }
-
-    .header-actions{
-      display:flex;
-      gap: 10px;
-      align-items:center;
-      flex-shrink: 0;
-    }
     .icon-btn{
-      width: var(--tapMin);
-      height: var(--tapMin);
+      width: var(--tapMin); height: var(--tapMin);
       border-radius: var(--r12);
-      border: 1px solid var(--border);
+      border:1px solid var(--border);
       background: rgba(255,255,255,0.22);
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      display:flex; align-items:center; justify-content:center;
       box-shadow: var(--sh2);
       cursor:pointer;
       user-select:none;
-      flex-shrink: 0;
+      flex-shrink:0;
     }
     .icon-btn:active{ transform: scale(0.98); box-shadow:none; }
     .icon-btn span{ font-size: 18px; }
 
-    /* Quick actions */
-    .quick-wrap{ padding: 14px 14px 0; }
-    .quick-actions{
+    .grid2{
+      padding: 14px 0 0;
       display:grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
-    .quick-btn{
+    .card-btn{
       background: linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.70));
-      border: 1px solid var(--border);
+      border:1px solid var(--border);
       border-radius: var(--r20);
-      padding: 14px; /* malo manje da stane na S22 Ultra */
-      display:flex;
-      gap: 12px;
-      align-items: center;
-      cursor:pointer;
+      padding: 14px;
+      display:flex; gap:12px; align-items:center;
       box-shadow: var(--sh1);
+      cursor:pointer;
       user-select:none;
-
-      /* KLJUČNO: da se tekst ne reže */
-      min-height: 84px;
-      overflow: hidden;
+      min-height: 92px;
+      overflow:hidden;
     }
     @media (prefers-color-scheme: dark){
-      .quick-btn{ background: linear-gradient(180deg, rgba(38,40,40,0.92), rgba(38,40,40,0.72)); }
+      .card-btn{ background: linear-gradient(180deg, rgba(38,40,40,0.92), rgba(38,40,40,0.72)); }
     }
-    .quick-btn:active{ transform: scale(0.985); box-shadow:none; }
-
-    .q-left{
-      width: 46px;
-      height: 46px;
+    .card-btn:active{ transform: scale(0.985); box-shadow:none; }
+    .c-ico{
+      width: 48px; height:48px;
       border-radius: 16px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex-shrink: 0;
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
       border: 1px solid rgba(255,255,255,0.18);
       box-shadow: 0 6px 16px rgba(0,0,0,0.06);
     }
-    .q-left span{ font-size: 22px; line-height: 1; }
+    .c-ico span{ font-size: 22px; line-height:1; }
+    .sleep .c-ico{ background: rgba(192,132,252,0.18); color: var(--purple); }
+    .feed .c-ico{ background: rgba(236,72,153,0.16); color: var(--pink); }
 
-    .q-mid{
-      min-width: 0;
-      flex: 1;
-      display:flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .q-title{
-      font-size: 14px;       /* malo veće */
-      font-weight: 1000;
-      letter-spacing: 0.01em;
-      line-height: 1.15;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis; /* FIX */
-    }
-    .q-sub{
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.25;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
-    }
-    .q-right{
-      font-size: 11px;
-      color: var(--muted);
-      white-space: nowrap;
-      margin-left: 6px;
-      flex-shrink: 0;
-    }
+    .c-mid{ min-width:0; flex:1; display:flex; flex-direction:column; gap:4px; }
+    .c-title{ font-size: 14px; font-weight: 1000; letter-spacing:0.01em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .c-sub{ font-size: 12px; color: var(--muted); line-height: 1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .c-right{ font-size: 11px; color: var(--muted); white-space:nowrap; margin-left: 6px; flex-shrink:0; }
 
-    .sleep .q-left{ background: rgba(192,132,252,0.18); color: var(--purple); }
-    .feeding .q-left{ background: rgba(236,72,153,0.16); color: var(--pink); }
-    .diaper .q-left{ background: rgba(96,165,250,0.16); color: var(--blue); }
-    .bath .q-left{ background: rgba(33,128,141,0.14); color: var(--teal); }
-    .medicine .q-left{ background: rgba(251,146,60,0.14); color: var(--orange); }
-    .colic .q-left{ background: rgba(251,146,60,0.14); color: var(--orange); }
-
-    /* Sections */
     .section{
-      margin: 14px;
+      margin-top: 14px;
       padding: 14px;
       border-radius: var(--r20);
+      border:1px solid var(--border);
       background: linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.72));
-      border: 1px solid var(--border);
       box-shadow: var(--sh1);
-
-      /* KLJUČNO: da bottom nav ne prekriva zadnje dugme u sekciji */
-      scroll-margin-bottom: calc(var(--navH) + var(--safeB) + 20px);
     }
     @media (prefers-color-scheme: dark){
       .section{ background: linear-gradient(180deg, rgba(38,40,40,0.92), rgba(38,40,40,0.72)); }
     }
-
-    .section-header{
-      display:flex;
-      justify-content: space-between;
-      align-items:center;
-      margin-bottom: 14px;
-      gap: 12px;
-    }
-    .section-title{
-      font-size: 16px;
-      font-weight: 1000;
-      letter-spacing: -0.01em;
-    }
-    .view-all{
-      font-size: 13px;
-      color: var(--teal);
-      cursor:pointer;
-      text-decoration:none;
+    .section-header{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom: 12px; }
+    .section-title{ font-size: 16px; font-weight: 1000; letter-spacing:-0.01em; }
+    .link{
+      font-size: 13px; color: var(--teal);
+      cursor:pointer; user-select:none;
       font-weight: 900;
-      user-select:none;
-      white-space: nowrap;
+      text-decoration:none;
+      white-space:nowrap;
     }
 
-    /* Activity cards */
-    .activity-list{
-      display:flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .activity-item{
-      display:flex;
-      gap: 12px;
+    .list{ display:flex; flex-direction:column; gap:10px; }
+    .item{
+      display:flex; gap:12px;
       padding: 12px;
       border-radius: 16px;
+      border:1px solid var(--border);
       background: rgba(255,255,255,0.26);
-      border: 1px solid var(--border);
-      align-items: flex-start;
-      overflow: hidden;
+      overflow:hidden;
+      align-items:flex-start;
     }
     @media (prefers-color-scheme: dark){
-      .activity-item{ background: rgba(255,255,255,0.06); }
+      .item{ background: rgba(255,255,255,0.06); }
     }
-    .activity-icon{
-      width: 46px;
-      height: 46px;
+    .i-ico{
+      width: 46px; height:46px;
       border-radius: 16px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      display:flex; align-items:center; justify-content:center;
       flex-shrink:0;
-      border: 1px solid rgba(255,255,255,0.14);
+      border:1px solid rgba(255,255,255,0.14);
     }
-    .activity-icon span{ font-size: 22px; }
-    .activity-content{ flex:1; min-width:0; }
-    .activity-title{
-      font-weight: 1000;
-      font-size: 13px;
-      margin-bottom: 3px;
-      line-height: 1.15;
-    }
-    .activity-details{
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.35;
-      overflow-wrap: anywhere;
-    }
-    .activity-time{
-      font-size: 11px;
-      color: var(--muted);
-      white-space: nowrap;
-      margin-left: 6px;
-      flex-shrink: 0;
-    }
+    .i-ico span{ font-size: 22px; }
+    .i-content{ flex:1; min-width:0; }
+    .i-title{ font-weight: 1000; font-size: 13px; line-height:1.15; margin-bottom: 3px; }
+    .i-details{ font-size: 12px; color: var(--muted); line-height:1.35; overflow-wrap:anywhere; }
+    .i-time{ font-size: 11px; color: var(--muted); white-space: nowrap; margin-left: 6px; flex-shrink:0; }
 
-    /* Grouped history */
+    .actions{
+      display:flex; gap:8px; margin-top: 8px; flex-wrap:wrap;
+    }
+    .small-btn{
+      min-height: 38px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.18);
+      color: var(--text);
+      font-weight: 900;
+      font-size: 12px;
+      cursor:pointer;
+      user-select:none;
+    }
+    @media (prefers-color-scheme: dark){
+      .small-btn{ background: rgba(255,255,255,0.06); }
+    }
+    .small-btn:active{ transform: scale(0.98); }
+    .danger{ border-color: rgba(249,115,22,0.35); background: rgba(249,115,22,0.10); color: var(--orange); }
+
     .day-group{
       margin-top: 10px;
-      border: 1px solid var(--border);
+      border:1px solid var(--border);
       border-radius: 16px;
-      overflow: hidden;
+      overflow:hidden;
       background: rgba(255,255,255,0.18);
     }
     @media (prefers-color-scheme: dark){
@@ -363,10 +246,7 @@
     }
     .day-header{
       padding: 10px 12px;
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 12px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
       background: linear-gradient(180deg, rgba(33,128,141,0.10), rgba(33,128,141,0.03));
       border-bottom: 1px solid var(--border);
       position: sticky;
@@ -376,45 +256,10 @@
       -webkit-backdrop-filter: blur(12px);
     }
     .day-title{ font-weight: 1000; font-size: 13px; }
-    .day-meta{ font-size: 11px; color: var(--muted); white-space: nowrap; }
-    .day-body{ padding: 10px; display:flex; flex-direction: column; gap: 10px; }
+    .day-meta{ font-size: 11px; color: var(--muted); white-space:nowrap; }
+    .day-body{ padding: 10px; display:flex; flex-direction:column; gap:10px; }
 
-    /* Dnevna statistika */
-    .stats-grid{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-    .stat-card{
-      padding: 12px;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.20);
-      overflow: hidden;
-    }
-    @media (prefers-color-scheme: dark){
-      .stat-card{ background: rgba(255,255,255,0.06); }
-    }
-    .stat-value{
-      font-size: 22px;
-      font-weight: 1000;
-      color: var(--teal);
-      margin-bottom: 3px;
-      letter-spacing: -0.02em;
-      white-space: nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-    }
-    .stat-label{
-      font-size: 11px;
-      color: var(--muted);
-      white-space: nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-    }
-
-    /* Empty */
-    .empty-state{
+    .empty{
       text-align:center;
       padding: 18px 10px;
       color: var(--muted);
@@ -424,1452 +269,1001 @@
     /* Modal */
     .modal{
       display:none;
-      position: fixed;
-      inset:0;
+      position: fixed; inset:0;
       background: rgba(0,0,0,0.55);
       z-index: 1000;
+      padding-bottom: calc(var(--safeB));
       animation: fadeIn .18s ease-out;
-      padding-bottom: calc(var(--safeB)); /* S22 safe area */
     }
-    .modal.active{
-      display:flex;
-      align-items:flex-end;
-    }
-    @keyframes fadeIn{ from{opacity:0} to{opacity:1} }
-    @keyframes slideUp{ from{ transform: translateY(100%)} to{ transform: translateY(0)} }
-
-    .modal-content{
+    .modal.active{ display:flex; align-items:flex-end; }
+    @keyframes fadeIn{ from{opacity:0;} to{opacity:1;} }
+    @keyframes slideUp{ from{ transform: translateY(100%);} to{ transform: translateY(0);} }
+    .sheet{
       width: 100%;
-      max-height: 88vh; /* malo više za S22 */
+      max-height: 88vh;
       border-radius: 22px 22px 0 0;
-      padding: 18px 16px calc(18px + var(--safeB)); /* da zadnje dugme ne upadne iza gestura */
-      animation: slideUp .25s ease-out;
-      overflow-y:auto;
+      padding: 18px 16px calc(18px + var(--safeB));
       background: linear-gradient(180deg, var(--surface2), var(--surface));
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       border-top: 1px solid var(--border);
       box-shadow: 0 -20px 50px rgba(0,0,0,0.20);
+      overflow-y: auto;
+      animation: slideUp .25s ease-out;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
+    .m-head{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom: 14px; }
+    .m-title{ font-size: 18px; font-weight: 1000; letter-spacing:-0.01em; }
+    .close{ font-size: 28px; color: var(--muted); cursor:pointer; user-select:none; line-height:1; }
 
-    .modal-header{
-      display:flex;
-      justify-content: space-between;
-      align-items:center;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-    .modal-title{ font-size: 18px; font-weight: 1000; letter-spacing: -0.01em; }
-    .close-btn{ font-size: 28px; cursor:pointer; color: var(--muted); line-height:1; user-select:none; }
-
-    .form-group{ margin-bottom: 14px; }
-    .form-label{
-      display:block;
-      font-size: 13px;
-      font-weight: 900;
-      margin-bottom: 8px;
-      color: var(--text);
-    }
-    .form-input, .form-select, .form-textarea{
-      width: 100%;
-      padding: 12px 12px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      font-size: 15px;
+    .timer-box{
+      padding: 16px 14px;
+      border-radius: 18px;
+      border:1px solid var(--border);
       background: rgba(255,255,255,0.18);
-      color: var(--text);
-      min-height: var(--tapMin);
+      margin-bottom: 14px;
+      overflow:hidden;
     }
     @media (prefers-color-scheme: dark){
-      .form-input, .form-select, .form-textarea{ background: rgba(255,255,255,0.06); }
+      .timer-box{ background: rgba(255,255,255,0.06); }
     }
-    .form-textarea{
-      min-height: 92px;
-      resize: vertical;
-      font-family: inherit;
+    .timer-row{ display:flex; gap: 14px; align-items:center; justify-content:space-between; }
+    .analog{
+      width: 92px; height: 92px;
+      border-radius: 999px;
+      border:1px solid var(--border);
+      background:
+        radial-gradient(circle at 50% 50%, rgba(33,128,141,0.14), transparent 55%),
+        rgba(255,255,255,0.14);
+      position:relative;
+      flex-shrink:0;
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.04);
     }
-    .form-input:focus, .form-select:focus, .form-textarea:focus{
+    @media (prefers-color-scheme: dark){
+      .analog{ background:
+        radial-gradient(circle at 50% 50%, rgba(74,222,128,0.10), transparent 55%),
+        rgba(255,255,255,0.05); }
+    }
+    .hand{
+      position:absolute; left:50%; top:50%;
+      transform-origin: 50% 100%;
+      transform: translate(-50%,-100%) rotate(0deg);
+      border-radius: 999px;
+    }
+    .hand.sec{ width:2px; height:40px; background: var(--orange); }
+    .hand.min{ width:3px; height:34px; background: var(--teal); opacity:0.95; }
+    .hand.hour{ width:4px; height:26px; background: var(--text); opacity:0.85; }
+    .pin{
+      position:absolute; left:50%; top:50%;
+      width:10px; height:10px; border-radius:999px;
+      transform: translate(-50%,-50%);
+      background: var(--text);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.20);
+    }
+
+    .timer-digital{
+      flex:1; min-width:0;
+      display:flex; flex-direction:column; gap:6px;
+      align-items:flex-end;
+    }
+    .t-big{
+      font-size: 38px;
+      font-weight: 1000;
+      font-variant-numeric: tabular-nums;
+      letter-spacing:-0.02em;
+      color: var(--teal);
+      white-space:nowrap;
+    }
+    .t-sub{ font-size: 12px; color: var(--muted); text-align:right; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+    .form-group{ margin-bottom: 12px; }
+    .label{ display:block; font-size: 13px; font-weight: 900; margin-bottom: 8px; }
+    .input, .select, .textarea{
+      width:100%;
+      min-height: var(--tapMin);
+      padding: 12px 12px;
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.18);
+      color: var(--text);
+      font-size: 15px;
       outline:none;
+    }
+    @media (prefers-color-scheme: dark){
+      .input, .select, .textarea{ background: rgba(255,255,255,0.06); }
+    }
+    .input:focus, .select:focus, .textarea:focus{
       box-shadow: var(--ring);
       border-color: rgba(33,128,141,0.45);
     }
+    .textarea{ min-height: 92px; resize: vertical; font-family: inherit; }
 
-    .button-group{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
-    }
-    .toggle-btn{
+    .row2{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .btns{ display:flex; gap:10px; flex-wrap:wrap; margin: 10px 0 12px; }
+    .toggle{
       flex: 1 1 120px;
       min-width: 120px;
-      padding: 12px 12px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: rgba(255,255,255,0.16);
-      cursor:pointer;
-      font-size: 13px;
-      font-weight: 1000;
-      transition: all .16s ease;
-      user-select:none;
-      color: var(--text);
       min-height: var(--tapMin);
-      white-space: nowrap;
-      overflow: hidden;
+      padding: 12px;
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.16);
+      color: var(--text);
+      font-weight: 1000;
+      cursor:pointer;
+      user-select:none;
+      white-space:nowrap;
+      overflow:hidden;
       text-overflow: ellipsis;
+      transition: all .16s ease;
     }
     @media (prefers-color-scheme: dark){
-      .toggle-btn{ background: rgba(255,255,255,0.06); }
+      .toggle{ background: rgba(255,255,255,0.06); }
     }
-    .toggle-btn.active{
+    .toggle.active{
       background: rgba(33,128,141,0.95);
-      color: #fff;
+      color:#fff;
       border-color: rgba(33,128,141,0.95);
       box-shadow: 0 10px 20px rgba(33,128,141,0.18);
     }
 
-    .submit-btn{
-      width: 100%;
-      padding: 14px 14px;
-      background: rgba(33,128,141,1);
-      color: #fff;
-      border:none;
+    .primary{
+      width:100%;
+      min-height: calc(var(--tapMin) + 6px);
+      padding: 14px;
       border-radius: 16px;
+      border:none;
+      cursor:pointer;
+      user-select:none;
       font-size: 15px;
       font-weight: 1000;
-      cursor:pointer;
-      transition: all .18s ease;
-      user-select:none;
+      color:#fff;
+      background: rgba(33,128,141,1);
       box-shadow: 0 14px 30px rgba(33,128,141,0.18);
-      min-height: calc(var(--tapMin) + 6px);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      transition: all .18s ease;
     }
-    .submit-btn:active{ transform: scale(0.985); filter: brightness(0.96); box-shadow:none; }
+    .primary:active{ transform: scale(0.985); filter: brightness(0.96); box-shadow:none; }
+    .primary.purple{ background: var(--purple); box-shadow: 0 14px 30px rgba(168,85,247,0.18); }
+    .primary.pink{ background: var(--pink); box-shadow: 0 14px 30px rgba(219,39,119,0.18); }
+    .primary.green{ background: var(--green); box-shadow: 0 14px 30px rgba(34,197,94,0.18); }
+    .primary.orange{ background: var(--orange); box-shadow: 0 14px 30px rgba(249,115,22,0.18); }
 
-    .timer-display{
-      text-align:center;
-      padding: 18px 14px;
-      border-radius: 18px;
-      margin-bottom: 14px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.18);
-      overflow: hidden;
-    }
-    @media (prefers-color-scheme: dark){
-      .timer-display{ background: rgba(255,255,255,0.06); }
-    }
-    .timer-text{
-      font-size: 44px;
-      font-weight: 1000;
-      color: var(--teal);
-      font-variant-numeric: tabular-nums;
-      letter-spacing: -0.02em;
-      white-space: nowrap;
-    }
-    .timer-label{
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 6px;
-      overflow:hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    /* Reminders */
-    .reminders-list{ display:flex; flex-direction: column; gap: 10px; }
-    .reminder-item{
-      border: 1px solid rgba(33,128,141,0.35);
-      border-radius: 16px;
-      padding: 12px;
-      display:flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      background: rgba(33,128,141, 0.10);
-      overflow: hidden;
-    }
-    .reminder-content{ flex: 1; min-width: 0; }
-    .reminder-title{
-      font-weight: 1000;
-      font-size: 13px;
-      margin-bottom: 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .reminder-time{
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.35;
-      overflow:hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .delete-btn{
-      color: var(--orange);
-      font-size: 20px;
-      cursor:pointer;
-      padding: 10px;
-      user-select:none;
-      border-radius: 12px;
-      border: 1px solid rgba(249,115,22,0.35);
-      background: rgba(249,115,22,0.10);
-      min-width: var(--tapMin);
-      min-height: var(--tapMin);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex-shrink: 0;
-    }
-    .delete-btn:active{ transform: scale(0.98); }
-
-    /* Bottom nav */
-    .bottom-nav{
-      position: fixed;
-      left: 0; right: 0; bottom: 0;
-      height: calc(var(--navH) + var(--safeB));
-      display:flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 10px 10px calc(10px + var(--safeB));
-      background: linear-gradient(180deg, var(--surface), var(--surface2));
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-top: 1px solid var(--border);
-      box-shadow: 0 -12px 36px rgba(0,0,0,0.10);
-      z-index: 220;
-    }
-    .nav-item{
-      width: 25%;
-      display:flex;
-      flex-direction: column;
-      align-items:center;
-      justify-content:center;
-      gap: 4px;
-      cursor:pointer;
-      color: var(--muted);
-      transition: all .16s ease;
-      padding: 10px 6px;
-      border-radius: 18px;
-      user-select:none;
-      position: relative;
-      min-height: var(--tapMin);
-    }
-    .nav-item.active{
-      color: var(--teal);
-      background: rgba(33,128,141,0.10);
-      border: 1px solid rgba(33,128,141,0.25);
-    }
-    .nav-icon{ font-size: 22px; line-height: 1; }
-    .nav-label{
-      font-size: 11px;
-      font-weight: 1000;
-      white-space: nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
-    }
-
-    .notification-badge{
-      position: absolute;
-      top: 6px;
-      right: 18px;
-      background: rgba(249,115,22,1);
-      color: #fff;
-      border-radius: var(--rfull);
-      min-width: 18px;
-      height: 18px;
-      padding: 0 6px;
-      font-size: 10px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight: 1000;
-      line-height: 1;
-      border: 1px solid rgba(255,255,255,0.35);
-      box-shadow: 0 10px 22px rgba(0,0,0,0.14);
-    }
-
-    /* Pages */
-    .page{ display:none; }
-    .page.active{ display:block; }
-
-    /* Ultra male širine: kad je ekran baš uzak */
     @media (max-width: 360px){
-      .quick-actions{ grid-template-columns: 1fr; }
-      .q-title{ font-size: 15px; }
-      .quick-btn{ min-height: 82px; }
-      .nav-label{ font-size: 10px; }
+      .grid2{ grid-template-columns: 1fr; }
+      .t-big{ font-size: 34px; }
     }
   </style>
 </head>
 
 <body>
   <div class="app">
-    <!-- Početna -->
-    <div id="homePage" class="page active">
-      <div class="header">
-        <div class="header-top">
-          <div class="brand">
-            <h1>👶 Nori Tracker</h1>
-            <div class="sub">
-              <span class="pill">🌙 San: <strong id="lastSleepTime">-</strong></span>
-              <span class="pill">🍼 Hranjenje: <strong id="lastFeedingTime">-</strong></span>
-            </div>
-          </div>
-          <div class="header-actions">
-            <div class="icon-btn" onclick="switchPage('history')" title="Historija"><span>📊</span></div>
-            <div class="icon-btn" onclick="switchPage('reminders')" title="Podsjetnici"><span>🔔</span></div>
+    <div class="header">
+      <div class="header-top">
+        <div class="brand">
+          <h1>Nori — San & Hranjenje</h1>
+          <div class="sub">
+            <span class="pill">San: <strong id="pillSleepAgo">-</strong></span>
+            <span class="pill">Hranjenje: <strong id="pillFeedAgo">-</strong></span>
           </div>
         </div>
-      </div>
-
-      <div class="quick-wrap">
-        <div class="quick-actions">
-          <div class="quick-btn sleep" onclick="openModal('sleep')">
-            <div class="q-left"><span>😴</span></div>
-            <div class="q-mid">
-              <div class="q-title">San</div>
-              <div class="q-sub" id="sleepLastTime">-</div>
-            </div>
-            <div class="q-right" id="sleepRight"></div>
-          </div>
-
-          <div class="quick-btn feeding" onclick="openModal('feeding')">
-            <div class="q-left"><span>🍼</span></div>
-            <div class="q-mid">
-              <div class="q-title">Hranjenje</div>
-              <div class="q-sub" id="feedingLastTime">-</div>
-            </div>
-            <div class="q-right" id="feedingRight"></div>
-          </div>
-
-          <div class="quick-btn diaper" onclick="openModal('diaper')">
-            <div class="q-left"><span>👶</span></div>
-            <div class="q-mid">
-              <div class="q-title">Pelena</div>
-              <div class="q-sub" id="diaperLastTime">-</div>
-            </div>
-            <div class="q-right"></div>
-          </div>
-
-          <div class="quick-btn bath" onclick="openModal('bath')">
-            <div class="q-left"><span>🛁</span></div>
-            <div class="q-mid">
-              <div class="q-title">Kupanje</div>
-              <div class="q-sub" id="bathLastTime">-</div>
-            </div>
-            <div class="q-right"></div>
-          </div>
-
-          <div class="quick-btn medicine" onclick="openModal('medicine')">
-            <div class="q-left"><span>💊</span></div>
-            <div class="q-mid">
-              <div class="q-title">Lijekovi</div>
-              <div class="q-sub" id="medicineLastTime">-</div>
-            </div>
-            <div class="q-right"></div>
-          </div>
-
-          <div class="quick-btn colic" onclick="openModal('colic')">
-            <div class="q-left"><span>😣</span></div>
-            <div class="q-mid">
-              <div class="q-title">Grčevi</div>
-              <div class="q-sub" id="colicLastTime">-</div>
-            </div>
-            <div class="q-right"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="section-header">
-          <h2 class="section-title">Trenutno / posljednje</h2>
-          <a class="view-all" onclick="switchPage('history')">Historija</a>
-        </div>
-        <div id="homeNowActivities" class="activity-list"></div>
-      </div>
-
-      <div class="section">
-        <div class="section-header">
-          <h2 class="section-title">Danas (brzi pregled)</h2>
-        </div>
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-value" id="todaySleepCount">0</div>
-            <div class="stat-label">Spavanja</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value" id="todayFeedingCount">0</div>
-            <div class="stat-label">Hranjenja</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value" id="todayDiaperCount">0</div>
-            <div class="stat-label">Pelene</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value" id="todayTotalSleep">0h</div>
-            <div class="stat-label">Ukupno sna</div>
-          </div>
+        <div style="display:flex; gap:10px;">
+          <div class="icon-btn" id="btnHistory" title="Historija"><span>📜</span></div>
+          <div class="icon-btn" id="btnExport" title="Export"><span>⬇️</span></div>
         </div>
       </div>
     </div>
 
-    <!-- Historija -->
-    <div id="historyPage" class="page">
-      <div class="header">
-        <div class="header-top">
-          <div class="brand">
-            <h1>📊 Historija</h1>
-            <div class="sub">
-              <span class="pill">Sortirano po danima • Najnovije prvo</span>
-            </div>
-          </div>
-          <div class="header-actions">
-            <div class="icon-btn" onclick="switchPage('home')" title="Početna"><span>🏠</span></div>
-          </div>
+    <div class="grid2">
+      <div class="card-btn sleep" id="openSleep">
+        <div class="c-ico"><span>😴</span></div>
+        <div class="c-mid">
+          <div class="c-title">San</div>
+          <div class="c-sub" id="sleepStatusSub">-</div>
         </div>
+        <div class="c-right" id="sleepStatusRight"></div>
       </div>
-      <div class="section">
-        <div id="allActivities" class="activity-list"></div>
+
+      <div class="card-btn feed" id="openFeed">
+        <div class="c-ico"><span>🍼</span></div>
+        <div class="c-mid">
+          <div class="c-title">Hranjenje</div>
+          <div class="c-sub" id="feedStatusSub">-</div>
+        </div>
+        <div class="c-right" id="feedStatusRight"></div>
       </div>
     </div>
 
-    <!-- Kontrole -->
-    <div id="checkupPage" class="page">
-      <div class="header">
-        <div class="header-top">
-          <div class="brand">
-            <h1>🏥 Kontrole</h1>
-            <div class="sub"><span class="pill">Pregled i evidencija</span></div>
-          </div>
-          <div class="header-actions">
-            <div class="icon-btn" onclick="switchPage('home')" title="Početna"><span>🏠</span></div>
-          </div>
-        </div>
+    <div class="section" id="homeNow">
+      <div class="section-header">
+        <div class="section-title">Trenutno / posljednje</div>
+        <a class="link" id="viewAll">Historija</a>
       </div>
-      <div class="section">
-        <button class="submit-btn" onclick="openModal('checkup')" style="background: var(--green); box-shadow: 0 14px 30px rgba(34,197,94,0.18);">+ Dodaj kontrolu</button>
-        <div style="height: 12px;"></div>
-        <div id="checkupList" class="activity-list"></div>
-      </div>
+      <div class="list" id="homeList"></div>
     </div>
 
-    <!-- Podsjetnici -->
-    <div id="remindersPage" class="page">
-      <div class="header">
-        <div class="header-top">
-          <div class="brand">
-            <h1>🔔 Podsjetnici</h1>
-            <div class="sub"><span class="pill">Notifikacije + lista</span></div>
-          </div>
-          <div class="header-actions">
-            <div class="icon-btn" onclick="switchPage('home')" title="Početna"><span>🏠</span></div>
-          </div>
-        </div>
+    <div class="section" id="historySection" style="display:none;">
+      <div class="section-header">
+        <div class="section-title">Historija (po danima)</div>
+        <a class="link" id="backHome">Početna</a>
       </div>
-      <div class="section">
-        <button class="submit-btn" onclick="openModal('reminder')" style="background: var(--orange); box-shadow: 0 14px 30px rgba(249,115,22,0.18);">+ Dodaj podsjetnik</button>
-        <div style="height: 12px;"></div>
-        <div id="remindersList" class="reminders-list"></div>
-      </div>
-    </div>
-
-    <!-- MODALI (isti kao prije, samo bez rezanja) -->
-    <div id="sleepModal" class="modal"><div class="modal-content">
-      <div class="modal-header"><h2 class="modal-title">😴 San</h2><span class="close-btn" onclick="closeModal('sleep')">&times;</span></div>
-      <div id="sleepTimer" class="timer-display" style="display:none;">
-        <div class="timer-text" id="sleepTimerText">00:00:00</div>
-        <div class="timer-label" id="sleepTimerLabel">Vrijeme spavanja</div>
-      </div>
-      <div class="form-group" id="sleepStartGroup">
-        <label class="form-label">Početak spavanja</label>
-        <input type="datetime-local" id="sleepStartTime" class="form-input">
-      </div>
-      <div class="form-group" id="sleepEndGroup" style="display:none;">
-        <label class="form-label">Buđenje</label>
-        <input type="datetime-local" id="sleepEndTime" class="form-input">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Bilješke</label>
-        <textarea id="sleepNotes" class="form-textarea" placeholder="Dodatne bilješke..."></textarea>
-      </div>
-      <button class="submit-btn" id="sleepStartBtn" onclick="startSleep()" style="background: var(--purple); box-shadow: 0 14px 30px rgba(168,85,247,0.18);">🛏️ Dijete zaspalo</button>
-      <button class="submit-btn" id="sleepWakeBtn" onclick="wakeSleep()" style="display:none; background: var(--orange); box-shadow: 0 14px 30px rgba(249,115,22,0.18);">☀️ Dijete se probudilo</button>
-    </div></div>
-
-    <div id="feedingModal" class="modal"><div class="modal-content">
-      <div class="modal-header"><h2 class="modal-title">🍼 Hranjenje</h2><span class="close-btn" onclick="closeModal('feeding')">&times;</span></div>
-      <div id="feedingInfo" class="timer-display" style="display:none;">
-        <div class="timer-label" id="feedingInfoLabel">-</div>
-      </div>
-      <div class="form-group" id="feedingStartGroup">
-        <label class="form-label">Početak hranjenja</label>
-        <input type="datetime-local" id="feedingStartTime" class="form-input">
-      </div>
-      <div class="form-group" id="feedingEndGroup" style="display:none;">
-        <label class="form-label">Kraj hranjenja</label>
-        <input type="datetime-local" id="feedingEndTime" class="form-input">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Dojka</label>
-        <div class="button-group" id="breastButtons">
-          <button class="toggle-btn" data-value="left" onclick="selectBreast(this)">Lijeva</button>
-          <button class="toggle-btn" data-value="right" onclick="selectBreast(this)">Desna</button>
-          <button class="toggle-btn" data-value="both" onclick="selectBreast(this)">Obje</button>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Bilješke (opciono)</label>
-        <textarea id="feedingNotes" class="form-textarea" placeholder="Dodatne bilješke..."></textarea>
-      </div>
-      <div class="form-group">
-        <label class="form-label"><input type="checkbox" id="feedingReminderCheck" style="margin-right: 8px;">Postavi podsjetnik za sljedeće hranjenje</label>
-      </div>
-      <div class="form-group" id="feedingReminderGroup" style="display:none;">
-        <label class="form-label">Za koliko sati?</label>
-        <div class="button-group">
-          <button type="button" class="toggle-btn" data-value="1.5" onclick="selectFeedingReminderHours(this)">1.5h</button>
-          <button type="button" class="toggle-btn" data-value="2" onclick="selectFeedingReminderHours(this)">2h</button>
-          <button type="button" class="toggle-btn" data-value="2.5" onclick="selectFeedingReminderHours(this)">2.5h</button>
-          <button type="button" class="toggle-btn" data-value="3" onclick="selectFeedingReminderHours(this)">3h</button>
-        </div>
-      </div>
-      <button class="submit-btn" id="feedingStartBtn" onclick="startFeeding()" style="background: var(--pink); box-shadow: 0 14px 30px rgba(219,39,119,0.18);">🍼 Počinje jesti</button>
-      <button class="submit-btn" id="feedingEndBtn" onclick="endFeeding()" style="display:none; background: var(--green); box-shadow: 0 14px 30px rgba(34,197,94,0.18);">✓ Završio jesti</button>
-    </div></div>
-
-    <div id="diaperModal" class="modal"><div class="modal-content">
-      <div class="modal-header"><h2 class="modal-title">👶 Pelena</h2><span class="close-btn" onclick="closeModal('diaper')">&times;</span></div>
-      <div class="form-group"><label class="form-label">Vrijeme</label><input type="datetime-local" id="diaperTime" class="form-input"></div>
-      <div class="form-group">
-        <label class="form-label">Tip</label>
-        <div class="button-group" id="diaperButtons">
-          <button class="toggle-btn" data-value="wet" onclick="selectDiaperType(this)">💧 Mokra</button>
-          <button class="toggle-btn" data-value="dirty" onclick="selectDiaperType(this)">💩 Prljava</button>
-          <button class="toggle-btn" data-value="both" onclick="selectDiaperType(this)">Oboje</button>
-        </div>
-      </div>
-      <div class="form-group"><label class="form-label">Bilješke</label><textarea id="diaperNotes" class="form-textarea" placeholder="Dodatne bilješke..."></textarea></div>
-      <button class="submit-btn" onclick="saveDiaper()" style="background: var(--blue); box-shadow: 0 14px 30px rgba(59,130,246,0.18);">Spremi</button>
-    </div></div>
-
-    <div id="bathModal" class="modal"><div class="modal-content">
-      <div class="modal-header"><h2 class="modal-title">🛁 Kupanje</h2><span class="close-btn" onclick="closeModal('bath')">&times;</span></div>
-      <div class="form-group"><label class="form-label">Vrijeme</label><input type="datetime-local" id="bathTime" class="form-input"></div>
-      <div class="form-group"><label class="form-label">Temperatura vode</label><input type="text" id="bathTemp" class="form-input" placeholder="npr. 37°C"></div>
-      <div class="form-group"><label class="form-label">Bilješke</label><textarea id="bathNotes" class="form-textarea" placeholder="Dodatne bilješke..."></textarea></div>
-      <button class="submit-btn" onclick="saveBath()" style="background: var(--teal); box-shadow: 0 14px 30px rgba(33,128,141,0.18);">Spremi</button>
-    </div></div>
-
-    <div id="medicineModal" class="modal"><div class="modal-content">
-      <div class="modal-header"><h2 class="modal-title">💊 Lijekovi/Kapi</h2><span class="close-btn" onclick="closeModal('medicine')">&times;</span></div>
-      <div class="form-group"><label class="form-label">Vrijeme</label><input type="datetime-local" id="medicineTime" class="form-input"></div>
-      <div class="form-group"><label class="form-label">Naziv lijeka/kapi</label><input type="text" id="medicineName" class="form-input" placeholder="npr. Espumisan kapi"></div>
-      <div class="form-group"><label class="form-label">Doza</label><input type="text" id="medicineDose" class="form-input" placeholder="npr. 10 kapi"></div>
-      <div class="form-group"><label class="form-label">Bilješke</label><textarea id="medicineNotes" class="form-textarea" placeholder="Dodatne bilješke..."></textarea></div>
-      <button class="submit-btn" onclick="saveMedicine()" style="background: var(--orange); box-shadow: 0 14px 30px rgba(249,115,22,0.18);">Spremi</button>
-    </div></div>
-
-    <div id="colicModal" class="modal"><div class="modal-content">
-      <div class="modal-header"><h2 class="modal-title">😣 Grčevi</h2><span class="close-btn" onclick="closeModal('colic')">&times;</span></div>
-      <div id="colicTimer" class="timer-display" style="display:none;">
-        <div class="timer-text" id="colicTimerText">00:00:00</div>
-        <div class="timer-label">Trajanje grčeva</div>
-      </div>
-      <div class="form-group"><label class="form-label">Početak</label><input type="datetime-local" id="colicStartTime" class="form-input"></div>
-      <div class="form-group"><label class="form-label">Trajanje (minute)</label><input type="number" id="colicDuration" class="form-input" min="1" placeholder="npr. 30"></div>
-      <div class="form-group">
-        <label class="form-label">Intenzitet</label>
-        <div class="button-group" id="intensityButtons">
-          <button class="toggle-btn" data-value="mild" onclick="selectIntensity(this)">Blago</button>
-          <button class="toggle-btn" data-value="moderate" onclick="selectIntensity(this)">Umjereno</button>
-          <button class="toggle-btn" data-value="severe" onclick="selectIntensity(this)">Jako</button>
-        </div>
-      </div>
-      <div class="form-group"><label class="form-label">Bilješke</label><textarea id="colicNotes" class="form-textarea" placeholder="Što je pomoglo..."></textarea></div>
-      <button class="submit-btn" id="colicStartBtn" onclick="startColicTimer()" style="background: var(--orange); box-shadow: 0 14px 30px rgba(249,115,22,0.18);">Pokreni tajmer</button>
-      <button class="submit-btn" id="colicStopBtn" onclick="stopColicTimer()" style="display:none; background: var(--green); box-shadow: 0 14px 30px rgba(34,197,94,0.18);">Zaustavi tajmer</button>
-      <div style="height: 10px;"></div>
-      <button class="submit-btn" onclick="saveColic()" style="background: var(--teal); box-shadow: 0 14px 30px rgba(33,128,141,0.18);">Spremi</button>
-    </div></div>
-
-    <div id="checkupModal" class="modal"><div class="modal-content">
-      <div class="modal-header"><h2 class="modal-title">🏥 Kontrola</h2><span class="close-btn" onclick="closeModal('checkup')">&times;</span></div>
-      <div class="form-group"><label class="form-label">Datum i vrijeme kontrole</label><input type="datetime-local" id="checkupTime" class="form-input"></div>
-      <div class="form-group"><label class="form-label">Doktor/Klinika</label><input type="text" id="checkupDoctor" class="form-input" placeholder="npr. Dr. Horvat"></div>
-      <div class="form-group"><label class="form-label">Težina (kg)</label><input type="number" id="checkupWeight" class="form-input" step="0.1" placeholder="npr. 4.5"></div>
-      <div class="form-group"><label class="form-label">Visina (cm)</label><input type="number" id="checkupHeight" class="form-input" step="0.5" placeholder="npr. 55"></div>
-      <div class="form-group"><label class="form-label">Bilješke</label><textarea id="checkupNotes" class="form-textarea" placeholder="Nalazi, preporuke..."></textarea></div>
-      <button class="submit-btn" onclick="saveCheckup()" style="background: var(--green); box-shadow: 0 14px 30px rgba(34,197,94,0.18);">Spremi</button>
-    </div></div>
-
-    <div id="reminderModal" class="modal"><div class="modal-content">
-      <div class="modal-header"><h2 class="modal-title">🔔 Podsjetnik</h2><span class="close-btn" onclick="closeModal('reminder')">&times;</span></div>
-      <div class="form-group"><label class="form-label">Naslov</label><input type="text" id="reminderTitle" class="form-input" placeholder="npr. Vakcinacija"></div>
-      <div class="form-group"><label class="form-label">Datum i vrijeme</label><input type="datetime-local" id="reminderTime" class="form-input"></div>
-      <div class="form-group"><label class="form-label">Opis</label><textarea id="reminderDesc" class="form-textarea" placeholder="Detalji..."></textarea></div>
-      <button class="submit-btn" onclick="saveReminder()" style="background: var(--orange); box-shadow: 0 14px 30px rgba(249,115,22,0.18);">Spremi</button>
-    </div></div>
-
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-      <div class="nav-item active" data-page="home" onclick="switchPage('home')">
-        <div class="nav-icon">🏠</div>
-        <div class="nav-label">Početna</div>
-      </div>
-      <div class="nav-item" data-page="history" onclick="switchPage('history')">
-        <div class="nav-icon">📊</div>
-        <div class="nav-label">Historija</div>
-      </div>
-      <div class="nav-item" data-page="checkup" onclick="switchPage('checkup')">
-        <div class="nav-icon">🏥</div>
-        <div class="nav-label">Kontrole</div>
-      </div>
-      <div class="nav-item" data-page="reminders" onclick="switchPage('reminders')">
-        <div class="nav-icon" style="position: relative;">🔔
-          <span id="reminderBadge" class="notification-badge" style="display:none;">0</span>
-        </div>
-        <div class="nav-label">Podsjetnici</div>
-      </div>
+      <div id="historyList"></div>
     </div>
   </div>
 
-  <script>
-    const TZ = "Europe/Sarajevo";
+  <!-- Sleep modal -->
+  <div class="modal" id="sleepModal">
+    <div class="sheet">
+      <div class="m-head">
+        <div class="m-title">San</div>
+        <div class="close" data-close="sleepModal">×</div>
+      </div>
 
-    function getTZParts(date = new Date(), timeZone = TZ) {
-      const dtf = new Intl.DateTimeFormat("en-GB", {
-        timeZone, year:"numeric", month:"2-digit", day:"2-digit",
-        hour:"2-digit", minute:"2-digit", second:"2-digit", hour12:false
-      });
-      const parts = dtf.formatToParts(date);
-      const map = {};
-      parts.forEach(p => { if (p.type !== "literal") map[p.type] = p.value; });
-      return map;
-    }
-    function nowISOInTZ() {
-      const p = getTZParts(new Date(), TZ);
-      const localLike = new Date(`${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}`);
-      return localLike.toISOString();
-    }
-    function valueForDatetimeLocalNow() {
-      const p = getTZParts(new Date(), TZ);
-      return `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}`;
-    }
-    function pad2(n){ return String(n).padStart(2,"0"); }
-    function hmsFromMs(ms) {
-      const total = Math.max(0, Math.floor(ms / 1000));
-      const h = Math.floor(total / 3600);
-      const m = Math.floor((total % 3600) / 60);
-      const s = total % 60;
-      return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
-    }
-    function escapeHtml(str) {
-      return String(str || "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-    function formatTime(iso) {
-      const d = new Date(iso);
-      const dd = String(d.getDate()).padStart(2,"0");
-      const mm = String(d.getMonth() + 1).padStart(2,"0");
-      const yy = d.getFullYear();
-      const hh = String(d.getHours()).padStart(2, "0");
-      const mi = String(d.getMinutes()).padStart(2, "0");
-
-      const today = new Date(); today.setHours(0,0,0,0);
-      const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
-      const d0 = new Date(d); d0.setHours(0,0,0,0);
-
-      if (d0.getTime() === today.getTime()) return `Danas ${hh}:${mi}`;
-      if (d0.getTime() === yesterday.getTime()) return `Jučer ${hh}:${mi}`;
-      return `${dd}.${mm}.${yy} ${hh}:${mi}`;
-    }
-    function formatTimeAgo(iso) {
-      const now = Date.now();
-      const then = new Date(iso).getTime();
-      const diff = now - then;
-      const minutes = Math.floor(diff / 60000);
-      const hours = Math.floor(minutes / 60);
-      const days = Math.floor(hours / 24);
-      if (minutes < 1) return "upravo";
-      if (minutes < 60) return `Prije ${minutes} min`;
-      if (hours < 24) return `Prije ${hours}h`;
-      return `Prije ${days} dana`;
-    }
-    function dayKey(iso){
-      const d = new Date(iso);
-      const y = d.getFullYear();
-      const m = String(d.getMonth()+1).padStart(2,"0");
-      const da = String(d.getDate()).padStart(2,"0");
-      return `${y}-${m}-${da}`;
-    }
-    function dayLabelFromKey(key){
-      const [y,m,d] = key.split("-");
-      const dt = new Date(`${y}-${m}-${d}T00:00:00`);
-      const today = new Date(); today.setHours(0,0,0,0);
-      const yesterday = new Date(today); yesterday.setDate(yesterday.getDate()-1);
-      if (dt.getTime() === today.getTime()) return "Danas";
-      if (dt.getTime() === yesterday.getTime()) return "Jučer";
-      return `${d}.${m}.${y}`;
-    }
-
-    let activities = JSON.parse(localStorage.getItem("babyActivities") || "[]");
-    let checkups = JSON.parse(localStorage.getItem("babyCheckups") || "[]");
-    let reminders = JSON.parse(localStorage.getItem("babyReminders") || "[]");
-
-    let activeSleep = JSON.parse(localStorage.getItem("activeSleep") || "null");
-    let activeFeeding = JSON.parse(localStorage.getItem("activeFeeding") || "null");
-
-    let selectedBreast = null;
-    let selectedDiaperType = null;
-    let selectedIntensity = null;
-    let selectedFeedingReminderHours = null;
-
-    let sleepInterval = null;
-    let colicInterval = null;
-    let colicStartMs = null;
-
-    function openModal(type) {
-      const modal = document.getElementById(type + "Modal");
-      if (!modal) return;
-      modal.classList.add("active");
-
-      const map = {
-        sleep: "sleepStartTime",
-        feeding: "feedingStartTime",
-        diaper: "diaperTime",
-        bath: "bathTime",
-        medicine: "medicineTime",
-        colic: "colicStartTime",
-        checkup: "checkupTime",
-        reminder: "reminderTime"
-      };
-      if (map[type]) {
-        const el = document.getElementById(map[type]);
-        if (el && !el.value) el.value = valueForDatetimeLocalNow();
-      }
-
-      if (type === "sleep") {
-        if (activeSleep) showActiveSleepUI();
-        else resetSleepUI(false);
-      }
-      if (type === "feeding") {
-        if (activeFeeding) showActiveFeedingUI();
-        else resetFeedingUI(false);
-      }
-      if (type === "colic") {
-        document.getElementById("colicTimer").style.display = "none";
-        document.getElementById("colicStartBtn").style.display = "block";
-        document.getElementById("colicStopBtn").style.display = "none";
-      }
-    }
-
-    function closeModal(type) {
-      const modal = document.getElementById(type + "Modal");
-      if (!modal) return;
-      modal.classList.remove("active");
-
-      if (type === "sleep") {
-        if (sleepInterval) { clearInterval(sleepInterval); sleepInterval = null; }
-        document.getElementById("sleepNotes").value = "";
-        if (activeSleep) showActiveSleepUI(); else resetSleepUI(true);
-      }
-      if (type === "feeding") {
-        document.getElementById("feedingNotes").value = "";
-        document.getElementById("feedingEndTime").value = "";
-        if (activeFeeding) showActiveFeedingUI(); else resetFeedingUI(true);
-      }
-      if (type === "diaper") {
-        document.getElementById("diaperNotes").value = "";
-        document.querySelectorAll("#diaperButtons .toggle-btn").forEach(b => b.classList.remove("active"));
-        selectedDiaperType = null;
-      }
-      if (type === "bath") {
-        document.getElementById("bathTemp").value = "";
-        document.getElementById("bathNotes").value = "";
-      }
-      if (type === "medicine") {
-        document.getElementById("medicineName").value = "";
-        document.getElementById("medicineDose").value = "";
-        document.getElementById("medicineNotes").value = "";
-      }
-      if (type === "colic") {
-        if (colicInterval) { clearInterval(colicInterval); colicInterval = null; }
-        colicStartMs = null;
-        document.getElementById("colicDuration").value = "";
-        document.getElementById("colicNotes").value = "";
-        document.querySelectorAll("#intensityButtons .toggle-btn").forEach(b => b.classList.remove("active"));
-        selectedIntensity = null;
-        document.getElementById("colicTimer").style.display = "none";
-        document.getElementById("colicStartBtn").style.display = "block";
-        document.getElementById("colicStopBtn").style.display = "none";
-        document.getElementById("colicTimerText").textContent = "00:00:00";
-      }
-      if (type === "checkup") {
-        document.getElementById("checkupDoctor").value = "";
-        document.getElementById("checkupWeight").value = "";
-        document.getElementById("checkupHeight").value = "";
-        document.getElementById("checkupNotes").value = "";
-      }
-      if (type === "reminder") {
-        document.getElementById("reminderTitle").value = "";
-        document.getElementById("reminderDesc").value = "";
-      }
-    }
-
-    document.querySelectorAll(".modal").forEach(modal => {
-      modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-          const type = modal.id.replace("Modal", "");
-          closeModal(type);
-        }
-      });
-    });
-
-    function resetSleepUI(fullReset) {
-      document.getElementById("sleepTimer").style.display = "none";
-      document.getElementById("sleepStartBtn").style.display = "block";
-      document.getElementById("sleepWakeBtn").style.display = "none";
-      document.getElementById("sleepStartGroup").style.display = "block";
-      document.getElementById("sleepEndGroup").style.display = "none";
-      document.getElementById("sleepTimerText").textContent = "00:00:00";
-      document.getElementById("sleepTimerLabel").textContent = "Vrijeme spavanja";
-      if (fullReset) {
-        document.getElementById("sleepStartTime").value = "";
-        document.getElementById("sleepEndTime").value = "";
-      }
-    }
-
-    function showActiveSleepUI() {
-      resetSleepUI(false);
-      document.getElementById("sleepTimer").style.display = "block";
-      document.getElementById("sleepStartBtn").style.display = "none";
-      document.getElementById("sleepWakeBtn").style.display = "block";
-      document.getElementById("sleepStartGroup").style.display = "none";
-      document.getElementById("sleepEndGroup").style.display = "none";
-
-      if (sleepInterval) { clearInterval(sleepInterval); sleepInterval = null; }
-      sleepInterval = setInterval(() => {
-        const elapsed = Date.now() - activeSleep.startMs;
-        document.getElementById("sleepTimerText").textContent = hmsFromMs(elapsed);
-        document.getElementById("sleepTimerLabel").textContent = `Počeo spavati u ${activeSleep.startDisplay}`;
-      }, 500);
-
-      const elapsed = Date.now() - activeSleep.startMs;
-      document.getElementById("sleepTimerText").textContent = hmsFromMs(elapsed);
-      document.getElementById("sleepTimerLabel").textContent = `Počeo spavati u ${activeSleep.startDisplay}`;
-    }
-
-    function startSleep() {
-      if (activeSleep) return;
-      const manual = document.getElementById("sleepStartTime").value;
-      let startDate = manual ? new Date(manual) : new Date(nowISOInTZ());
-      if (startDate.getTime() > Date.now() + 60000) { alert("Početak spavanja ne može biti u budućnosti."); return; }
-      const startIso = startDate.toISOString();
-      const startDisplay = startDate.toLocaleString("bs-BA", { hour: "2-digit", minute: "2-digit" });
-      activeSleep = { startIso, startMs: startDate.getTime(), startDisplay };
-      localStorage.setItem("activeSleep", JSON.stringify(activeSleep));
-      updateSleepQuickButton(true);
-      closeModal("sleep");
-      ensureHomeIntervals();
-      updateDisplay();
-    }
-
-    function wakeSleep() {
-      if (!activeSleep) return;
-      const endDate = new Date(nowISOInTZ());
-      const durationHours = (endDate.getTime() - activeSleep.startMs) / 3600000;
-      if (durationHours <= 0) { alert("Greška u vremenima!"); return; }
-      const notes = document.getElementById("sleepNotes").value || "";
-      const endDisplay = endDate.toLocaleString("bs-BA", { hour: "2-digit", minute: "2-digit" });
-
-      activities.push({
-        type: "sleep",
-        time: activeSleep.startIso,
-        endTime: endDate.toISOString(),
-        duration: durationHours,
-        notes,
-        startTimeDisplay: activeSleep.startDisplay,
-        endTimeDisplay: endDisplay,
-        timestamp: Date.now()
-      });
-
-      activeSleep = null;
-      localStorage.removeItem("activeSleep");
-      if (sleepInterval) { clearInterval(sleepInterval); sleepInterval = null; }
-
-      updateSleepQuickButton(false);
-      saveAndRefresh();
-      closeModal("sleep");
-    }
-
-    function updateSleepQuickButton(isSleeping) {
-      const el = document.getElementById("sleepLastTime");
-      const r = document.getElementById("sleepRight");
-      if (!el) return;
-      if (isSleeping && activeSleep) {
-        const elapsed = Date.now() - activeSleep.startMs;
-        const hours = Math.floor(elapsed / 3600000);
-        const minutes = Math.floor((elapsed % 3600000) / 60000);
-        el.textContent = `Spava ${hours}h ${minutes}min`;
-        if (r) r.textContent = "U toku";
-      } else {
-        if (r) r.textContent = "";
-      }
-    }
-
-    function resetFeedingUI(fullReset) {
-      document.getElementById("feedingInfo").style.display = "none";
-      document.getElementById("feedingStartBtn").style.display = "block";
-      document.getElementById("feedingEndBtn").style.display = "none";
-      document.getElementById("feedingStartGroup").style.display = "block";
-      document.getElementById("feedingEndGroup").style.display = "none";
-
-      document.querySelectorAll("#breastButtons .toggle-btn").forEach(b => b.classList.remove("active"));
-      selectedBreast = null;
-
-      const chk = document.getElementById("feedingReminderCheck");
-      chk.checked = false;
-      document.getElementById("feedingReminderGroup").style.display = "none";
-      selectedFeedingReminderHours = null;
-      document.querySelectorAll("#feedingReminderGroup .toggle-btn").forEach(b => b.classList.remove("active"));
-
-      if (fullReset) {
-        document.getElementById("feedingStartTime").value = "";
-        document.getElementById("feedingEndTime").value = "";
-      }
-    }
-
-    function showActiveFeedingUI() {
-      resetFeedingUI(false);
-
-      selectedBreast = activeFeeding.breast;
-      document.querySelectorAll("#breastButtons .toggle-btn").forEach(btn => {
-        if (btn.dataset.value === activeFeeding.breast) btn.classList.add("active");
-      });
-
-      document.getElementById("feedingStartBtn").style.display = "none";
-      document.getElementById("feedingEndBtn").style.display = "block";
-      document.getElementById("feedingStartGroup").style.display = "none";
-      document.getElementById("feedingEndGroup").style.display = "block";
-      document.getElementById("feedingEndTime").value = valueForDatetimeLocalNow();
-
-      document.getElementById("feedingInfo").style.display = "block";
-      document.getElementById("feedingInfoLabel").textContent = `Počeo jesti u ${activeFeeding.startDisplay}`;
-    }
-
-    function selectBreast(btn) {
-      document.querySelectorAll("#breastButtons .toggle-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      selectedBreast = btn.dataset.value;
-    }
-
-    function selectFeedingReminderHours(btn) {
-      document.querySelectorAll("#feedingReminderGroup .toggle-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      selectedFeedingReminderHours = parseFloat(btn.dataset.value);
-    }
-
-    document.getElementById("feedingReminderCheck").addEventListener("change", (e) => {
-      const group = document.getElementById("feedingReminderGroup");
-      if (e.target.checked) group.style.display = "block";
-      else {
-        group.style.display = "none";
-        selectedFeedingReminderHours = null;
-        document.querySelectorAll("#feedingReminderGroup .toggle-btn").forEach(b => b.classList.remove("active"));
-      }
-    });
-
-    function startFeeding() {
-      if (activeFeeding) return;
-      if (!selectedBreast) { alert("Molimo odaberite dojku!"); return; }
-
-      const manual = document.getElementById("feedingStartTime").value;
-      let startDate = manual ? new Date(manual) : new Date(nowISOInTZ());
-      if (startDate.getTime() > Date.now() + 60000) { alert("Početak hranjenja ne može biti u budućnosti."); return; }
-
-      const startIso = startDate.toISOString();
-      const startDisplay = startDate.toLocaleString("bs-BA", { day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit" });
-
-      activeFeeding = { startIso, startMs: startDate.getTime(), startDisplay, breast: selectedBreast };
-      localStorage.setItem("activeFeeding", JSON.stringify(activeFeeding));
-
-      updateFeedingQuickButton(true);
-      closeModal("feeding");
-      ensureHomeIntervals();
-      updateDisplay();
-    }
-
-    function endFeeding() {
-      if (!activeFeeding) return;
-
-      const endVal = document.getElementById("feedingEndTime").value;
-      let endDate = endVal ? new Date(endVal) : new Date(nowISOInTZ());
-
-      const durationMin = Math.round((endDate.getTime() - activeFeeding.startMs) / 60000);
-      if (durationMin <= 0) { alert("Greška u vremenima!"); return; }
-
-      const notes = document.getElementById("feedingNotes").value || "";
-      const endDisplay = endDate.toLocaleString("bs-BA", { day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit" });
-
-      activities.push({
-        type: "feeding",
-        time: activeFeeding.startIso,
-        endTime: endDate.toISOString(),
-        breast: activeFeeding.breast,
-        duration: durationMin,
-        notes,
-        startTimeDisplay: activeFeeding.startDisplay,
-        endTimeDisplay: endDisplay,
-        timestamp: Date.now()
-      });
-
-      const reminderCheck = document.getElementById("feedingReminderCheck").checked;
-      if (reminderCheck && selectedFeedingReminderHours) {
-        const rt = new Date(endDate.getTime() + selectedFeedingReminderHours * 3600000);
-        reminders.push({
-          title: "Vrijeme za hranjenje",
-          time: rt.toISOString(),
-          description: `Prošlo je ${selectedFeedingReminderHours}h od posljednjeg hranjenja`,
-          timestamp: Date.now(),
-          notified: false
-        });
-        localStorage.setItem("babyReminders", JSON.stringify(reminders));
-      }
-
-      activeFeeding = null;
-      localStorage.removeItem("activeFeeding");
-
-      updateFeedingQuickButton(false);
-      saveAndRefresh();
-      closeModal("feeding");
-      updateReminders();
-    }
-
-    function updateFeedingQuickButton(isFeeding) {
-      const el = document.getElementById("feedingLastTime");
-      const r = document.getElementById("feedingRight");
-      if (!el) return;
-      if (isFeeding && activeFeeding) {
-        const breastText = activeFeeding.breast === "left" ? "lijeva" : activeFeeding.breast === "right" ? "desna" : "obje";
-        el.textContent = `Jede (${breastText}) od ${activeFeeding.startDisplay}`;
-        if (r) r.textContent = "U toku";
-      } else {
-        if (r) r.textContent = "";
-      }
-    }
-
-    function selectDiaperType(btn) {
-      document.querySelectorAll("#diaperButtons .toggle-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      selectedDiaperType = btn.dataset.value;
-    }
-
-    function saveDiaper() {
-      const val = document.getElementById("diaperTime").value;
-      if (!val || !selectedDiaperType) { alert("Molimo unesite vrijeme i odaberite tip!"); return; }
-      const notes = document.getElementById("diaperNotes").value || "";
-      activities.push({ type:"diaper", time:new Date(val).toISOString(), diaperType:selectedDiaperType, notes, timestamp:Date.now() });
-      saveAndRefresh();
-      closeModal("diaper");
-    }
-
-    function saveBath() {
-      const val = document.getElementById("bathTime").value;
-      if (!val) { alert("Molimo unesite vrijeme!"); return; }
-      const temp = document.getElementById("bathTemp").value || "";
-      const notes = document.getElementById("bathNotes").value || "";
-      activities.push({ type:"bath", time:new Date(val).toISOString(), temperature:temp, notes, timestamp:Date.now() });
-      saveAndRefresh();
-      closeModal("bath");
-    }
-
-    function saveMedicine() {
-      const val = document.getElementById("medicineTime").value;
-      const name = document.getElementById("medicineName").value.trim();
-      if (!val || !name) { alert("Molimo unesite vrijeme i naziv!"); return; }
-      const dose = document.getElementById("medicineDose").value || "";
-      const notes = document.getElementById("medicineNotes").value || "";
-      activities.push({ type:"medicine", time:new Date(val).toISOString(), name, dose, notes, timestamp:Date.now() });
-      saveAndRefresh();
-      closeModal("medicine");
-    }
-
-    function selectIntensity(btn) {
-      document.querySelectorAll("#intensityButtons .toggle-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      selectedIntensity = btn.dataset.value;
-    }
-
-    function startColicTimer() {
-      if (!selectedIntensity) { alert("Molimo odaberite intenzitet prije pokretanja tajmera!"); return; }
-      colicStartMs = Date.now();
-      document.getElementById("colicTimer").style.display = "block";
-      document.getElementById("colicStartBtn").style.display = "none";
-      document.getElementById("colicStopBtn").style.display = "block";
-      if (colicInterval) { clearInterval(colicInterval); colicInterval = null; }
-      colicInterval = setInterval(() => {
-        document.getElementById("colicTimerText").textContent = hmsFromMs(Date.now() - colicStartMs);
-      }, 500);
-    }
-
-    function stopColicTimer() {
-      if (!colicStartMs) return;
-      if (colicInterval) { clearInterval(colicInterval); colicInterval = null; }
-      const minutes = Math.max(1, Math.round((Date.now() - colicStartMs) / 60000));
-      document.getElementById("colicDuration").value = minutes;
-      document.getElementById("colicTimer").style.display = "none";
-      document.getElementById("colicStartBtn").style.display = "block";
-      document.getElementById("colicStopBtn").style.display = "none";
-      document.getElementById("colicTimerText").textContent = "00:00:00";
-      colicStartMs = null;
-    }
-
-    function saveColic() {
-      const startVal = document.getElementById("colicStartTime").value;
-      const durVal = document.getElementById("colicDuration").value;
-      if (!startVal || !durVal || !selectedIntensity) { alert("Molimo popunite sva obavezna polja!"); return; }
-      const notes = document.getElementById("colicNotes").value || "";
-      activities.push({ type:"colic", time:new Date(startVal).toISOString(), duration:parseInt(durVal,10), intensity:selectedIntensity, notes, timestamp:Date.now() });
-      saveAndRefresh();
-      closeModal("colic");
-    }
-
-    function saveCheckup() {
-      const val = document.getElementById("checkupTime").value;
-      if (!val) { alert("Molimo unesite datum kontrole!"); return; }
-      const doctor = document.getElementById("checkupDoctor").value || "";
-      const weight = document.getElementById("checkupWeight").value;
-      const height = document.getElementById("checkupHeight").value;
-      const notes = document.getElementById("checkupNotes").value || "";
-      checkups.push({ time:new Date(val).toISOString(), doctor, weight: weight ? Number(weight) : null, height: height ? Number(height) : null, notes, timestamp:Date.now() });
-      localStorage.setItem("babyCheckups", JSON.stringify(checkups));
-      updateCheckups();
-      closeModal("checkup");
-    }
-
-    function saveReminder() {
-      const title = document.getElementById("reminderTitle").value.trim();
-      const val = document.getElementById("reminderTime").value;
-      if (!title || !val) { alert("Molimo unesite naslov i vrijeme!"); return; }
-      const desc = document.getElementById("reminderDesc").value || "";
-      reminders.push({ title, time:new Date(val).toISOString(), description: desc, timestamp: Date.now(), notified:false });
-      localStorage.setItem("babyReminders", JSON.stringify(reminders));
-      updateReminders();
-      closeModal("reminder");
-    }
-
-    function deleteReminder(index) {
-      if (!confirm("Obrisati podsjetnik?")) return;
-      reminders.splice(index, 1);
-      localStorage.setItem("babyReminders", JSON.stringify(reminders));
-      updateReminders();
-    }
-
-    function getActivityIcon(activity) {
-      const icons = {
-        sleep: { emoji:"😴", bg:"rgba(192,132,252,0.18)", color:"rgba(168,85,247,1)" },
-        feeding: { emoji:"🍼", bg:"rgba(236,72,153,0.16)", color:"rgba(219,39,119,1)" },
-        diaper: { emoji:"👶", bg:"rgba(96,165,250,0.16)", color:"rgba(59,130,246,1)" },
-        bath: { emoji:"🛁", bg:"rgba(33,128,141,0.14)", color:"rgba(33,128,141,1)" },
-        medicine: { emoji:"💊", bg:"rgba(251,146,60,0.14)", color:"rgba(249,115,22,1)" },
-        colic: { emoji:"😣", bg:"rgba(251,146,60,0.14)", color:"rgba(249,115,22,1)" }
-      };
-      return icons[activity.type] || icons.sleep;
-    }
-    function getActivityTitle(activity) {
-      const titles = { sleep:"San", feeding:"Hranjenje", diaper:"Pelena", bath:"Kupanje", medicine:"Lijek", colic:"Grčevi" };
-      return titles[activity.type] || "Aktivnost";
-    }
-    function getActivityDetails(activity) {
-      switch (activity.type) {
-        case "sleep":
-          return `${(activity.duration || 0).toFixed(1)}h (${activity.startTimeDisplay || "-"} - ${activity.endTimeDisplay || "-"})` + (activity.notes ? ` • ${escapeHtml(activity.notes)}` : "");
-        case "feeding": {
-          const breastText = activity.breast === "left" ? "lijeva" : activity.breast === "right" ? "desna" : "obje";
-          return `${activity.duration || 0} min (${breastText})` + (activity.notes ? ` • ${escapeHtml(activity.notes)}` : "");
-        }
-        case "diaper": {
-          const typeText = activity.diaperType === "wet" ? "Mokra" : activity.diaperType === "dirty" ? "Prljava" : "Oboje";
-          return `${typeText}` + (activity.notes ? ` • ${escapeHtml(activity.notes)}` : "");
-        }
-        case "bath":
-          return (activity.temperature ? `Temp: ${escapeHtml(activity.temperature)}` : "Kupanje") + (activity.notes ? ` • ${escapeHtml(activity.notes)}` : "");
-        case "medicine":
-          return `${escapeHtml(activity.name || "")}${activity.dose ? ` - ${escapeHtml(activity.dose)}` : ""}` + (activity.notes ? ` • ${escapeHtml(activity.notes)}` : "");
-        case "colic": {
-          const intensityText = activity.intensity === "mild" ? "Blago" : activity.intensity === "moderate" ? "Umjereno" : "Jako";
-          return `${activity.duration || 0} min (${intensityText})` + (activity.notes ? ` • ${escapeHtml(activity.notes)}` : "");
-        }
-        default: return "";
-      }
-    }
-    function cardHTML(a) {
-      const icon = getActivityIcon(a);
-      const title = getActivityTitle(a);
-      const details = getActivityDetails(a);
-      const time = formatTime(a.time);
-      return `
-        <div class="activity-item">
-          <div class="activity-icon" style="background:${icon.bg}; color:${icon.color};"><span>${icon.emoji}</span></div>
-          <div class="activity-content">
-            <div class="activity-title">${title}</div>
-            <div class="activity-details">${details}</div>
+      <div class="timer-box" id="sleepTimerBox" style="display:none;">
+        <div class="timer-row">
+          <div class="analog" id="sleepAnalog">
+            <div class="hand hour" id="sleepH"></div>
+            <div class="hand min" id="sleepM"></div>
+            <div class="hand sec" id="sleepS"></div>
+            <div class="pin"></div>
           </div>
-          <div class="activity-time">${time}</div>
-        </div>`;
+          <div class="timer-digital">
+            <div class="t-big" id="sleepElapsed">00:00:00</div>
+            <div class="t-sub" id="sleepMeta">-</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="form-group">
+          <label class="label">Datum početka</label>
+          <input class="input" type="date" id="sleepStartDate">
+        </div>
+        <div class="form-group">
+          <label class="label">Vrijeme početka (HH:MM:SS)</label>
+          <input class="input" type="text" id="sleepStartClock" placeholder="npr. 14:03:12">
+        </div>
+      </div>
+
+      <div class="form-group" id="sleepEndRow" style="display:none;">
+        <div class="row2">
+          <div>
+            <label class="label">Datum buđenja</label>
+            <input class="input" type="date" id="sleepEndDate">
+          </div>
+          <div>
+            <label class="label">Vrijeme buđenja (HH:MM:SS)</label>
+            <input class="input" type="text" id="sleepEndClock" placeholder="npr. 15:11:07">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="label">Bilješke (opcionalno)</label>
+        <textarea class="textarea" id="sleepNotes" placeholder="npr. zaspao brzo..."></textarea>
+      </div>
+
+      <button class="primary purple" id="sleepStartBtn">Dijete zaspalo</button>
+      <button class="primary orange" id="sleepStopBtn" style="display:none;">Dijete se probudilo</button>
+    </div>
+  </div>
+
+  <!-- Feeding modal -->
+  <div class="modal" id="feedModal">
+    <div class="sheet">
+      <div class="m-head">
+        <div class="m-title">Hranjenje</div>
+        <div class="close" data-close="feedModal">×</div>
+      </div>
+
+      <div class="timer-box" id="feedTimerBox" style="display:none;">
+        <div class="timer-row">
+          <div class="analog" id="feedAnalog">
+            <div class="hand hour" id="feedH"></div>
+            <div class="hand min" id="feedM"></div>
+            <div class="hand sec" id="feedS"></div>
+            <div class="pin"></div>
+          </div>
+          <div class="timer-digital">
+            <div class="t-big" id="feedElapsed">00:00:00</div>
+            <div class="t-sub" id="feedMeta">-</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="label">Dojka</label>
+        <div class="btns" id="breastBtns">
+          <button class="toggle" data-breast="left">Lijeva</button>
+          <button class="toggle" data-breast="right">Desna</button>
+          <button class="toggle" data-breast="both">Obje</button>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="form-group">
+          <label class="label">Datum početka</label>
+          <input class="input" type="date" id="feedStartDate">
+        </div>
+        <div class="form-group">
+          <label class="label">Vrijeme početka (HH:MM:SS)</label>
+          <input class="input" type="text" id="feedStartClock" placeholder="npr. 16:22:01">
+        </div>
+      </div>
+
+      <div class="row2" id="feedEndRow" style="display:none;">
+        <div class="form-group">
+          <label class="label">Datum kraja</label>
+          <input class="input" type="date" id="feedEndDate">
+        </div>
+        <div class="form-group">
+          <label class="label">Vrijeme kraja (HH:MM:SS)</label>
+          <input class="input" type="text" id="feedEndClock" placeholder="npr. 16:31:47">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="label">Bilješke (opcionalno)</label>
+        <textarea class="textarea" id="feedNotes" placeholder="npr. nemiran, pauze..."></textarea>
+      </div>
+
+      <button class="primary pink" id="feedStartBtn">Počinje jesti</button>
+      <button class="primary green" id="feedStopBtn" style="display:none;">Završio jesti</button>
+    </div>
+  </div>
+
+  <!-- Edit modal -->
+  <div class="modal" id="editModal">
+    <div class="sheet">
+      <div class="m-head">
+        <div class="m-title">Uredi zapis</div>
+        <div class="close" data-close="editModal">×</div>
+      </div>
+
+      <div class="form-group">
+        <label class="label">Tip</label>
+        <input class="input" id="editType" disabled />
+      </div>
+
+      <div class="form-group" id="editBreastGroup" style="display:none;">
+        <label class="label">Dojka</label>
+        <div class="btns" id="editBreastBtns">
+          <button class="toggle" data-breast="left">Lijeva</button>
+          <button class="toggle" data-breast="right">Desna</button>
+          <button class="toggle" data-breast="both">Obje</button>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="form-group">
+          <label class="label">Start datum</label>
+          <input class="input" type="date" id="editStartDate">
+        </div>
+        <div class="form-group">
+          <label class="label">Start vrijeme (HH:MM:SS)</label>
+          <input class="input" type="text" id="editStartClock">
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="form-group">
+          <label class="label">Kraj datum</label>
+          <input class="input" type="date" id="editEndDate">
+        </div>
+        <div class="form-group">
+          <label class="label">Kraj vrijeme (HH:MM:SS)</label>
+          <input class="input" type="text" id="editEndClock">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="label">Bilješke</label>
+        <textarea class="textarea" id="editNotes"></textarea>
+      </div>
+
+      <button class="primary" id="editSaveBtn">Spremi izmjene</button>
+      <div style="height:10px;"></div>
+      <button class="primary orange" id="editDeleteBtn">Obriši zapis</button>
+    </div>
+  </div>
+
+<script>
+  // ---- Storage keys (tvoj stil) ----
+  const KEY_ACTS = "babyActivities_v2_sleep_feed";
+  const KEY_ACTIVE_SLEEP = "activeSleep_v2";
+  const KEY_ACTIVE_FEED = "activeFeeding_v2";
+
+  let activities = JSON.parse(localStorage.getItem(KEY_ACTS) || "[]");
+  let activeSleep = JSON.parse(localStorage.getItem(KEY_ACTIVE_SLEEP) || "null");
+  let activeFeeding = JSON.parse(localStorage.getItem(KEY_ACTIVE_FEED) || "null");
+
+  // UI state
+  let homeInterval = null;
+  let selectedBreast = null;
+
+  // Edit state
+  let editId = null;
+  let editBreast = null;
+
+  // ---- Helpers ----
+  function pad2(n){ return String(n).padStart(2,"0"); }
+  function escapeHtml(s){
+    return String(s ?? "")
+      .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+  }
+  function uid(){
+    return "a_" + Math.random().toString(16).slice(2) + "_" + Date.now().toString(16);
+  }
+
+  function parseClockToHMS(clock){
+    const m = /^(\d{1,2}):(\d{2})(?::(\d{2}))?$/.exec((clock||"").trim());
+    if(!m) return null;
+    const hh = Number(m[1]), mm = Number(m[2]), ss = Number(m[3] ?? "00");
+    if(hh<0||hh>23||mm<0||mm>59||ss<0||ss>59) return null;
+    return {hh,mm,ss};
+  }
+  function dateClockToMs(dateStr, clockStr){
+    if(!dateStr) return null;
+    const hms = parseClockToHMS(clockStr);
+    if(!hms) return null;
+    // local time
+    const d = new Date(`${dateStr}T${pad2(hms.hh)}:${pad2(hms.mm)}:${pad2(hms.ss)}`);
+    if(Number.isNaN(d.getTime())) return null;
+    return d.getTime();
+  }
+  function msToISO(ms){ return new Date(ms).toISOString(); }
+  function msToDate(ms){
+    const d = new Date(ms);
+    return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+  }
+  function msToClock(ms){
+    const d = new Date(ms);
+    return `${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
+  }
+
+  function hmsFromMs(ms){
+    const total = Math.max(0, Math.floor(ms/1000));
+    const h = Math.floor(total/3600);
+    const m = Math.floor((total%3600)/60);
+    const s = total%60;
+    return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
+  }
+
+  function formatStamp(ms){
+    const d = new Date(ms);
+    return `${pad2(d.getDate())}.${pad2(d.getMonth()+1)}.${d.getFullYear()} ${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
+  }
+
+  function timeAgoSeconds(ms){
+    const diff = Date.now() - ms;
+    const sec = Math.floor(diff/1000);
+    if(sec < 0) return "u budućnosti";
+    if(sec < 5) return "upravo";
+    if(sec < 60) return `prije ${sec}s`;
+    const min = Math.floor(sec/60);
+    if(min < 60) return `prije ${min}m ${sec%60}s`;
+    const hr = Math.floor(min/60);
+    if(hr < 24) return `prije ${hr}h ${min%60}m ${sec%60}s`;
+    const days = Math.floor(hr/24);
+    return `prije ${days}d ${hr%24}h ${min%60}m`;
+  }
+
+  function dayKey(ms){
+    const d = new Date(ms);
+    return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+  }
+  function dayLabel(key){
+    const [y,m,d] = key.split("-").map(Number);
+    const dt = new Date(`${y}-${pad2(m)}-${pad2(d)}T00:00:00`);
+    const today = new Date(); today.setHours(0,0,0,0);
+    const yest = new Date(today); yest.setDate(yest.getDate()-1);
+    if(dt.getTime() === today.getTime()) return "Danas";
+    if(dt.getTime() === yest.getTime()) return "Jučer";
+    return `${pad2(d)}.${pad2(m)}.${y}`;
+  }
+
+  function saveActs(){
+    localStorage.setItem(KEY_ACTS, JSON.stringify(activities));
+  }
+  function saveActive(){
+    if(activeSleep) localStorage.setItem(KEY_ACTIVE_SLEEP, JSON.stringify(activeSleep));
+    else localStorage.removeItem(KEY_ACTIVE_SLEEP);
+    if(activeFeeding) localStorage.setItem(KEY_ACTIVE_FEED, JSON.stringify(activeFeeding));
+    else localStorage.removeItem(KEY_ACTIVE_FEED);
+  }
+
+  function iconFor(type){
+    if(type==="sleep") return {emoji:"😴", bg:"rgba(192,132,252,0.18)", color:"rgba(168,85,247,1)"};
+    return {emoji:"🍼", bg:"rgba(236,72,153,0.16)", color:"rgba(219,39,119,1)"};
+  }
+  function titleFor(a){
+    if(a.type==="sleep") return "San";
+    const b = a.breast==="left" ? "Lijeva" : a.breast==="right" ? "Desna" : "Obje";
+    return `Hranjenje — ${b}`;
+  }
+
+  function detailsFor(a){
+    const start = formatStamp(a.startMs);
+    const end = formatStamp(a.endMs);
+    const dur = hmsFromMs(a.endMs - a.startMs);
+    if(a.type==="sleep"){
+      // “koliko je bio budan” = vrijeme budan od kraja sna do sada (ili do sljedećeg sna - za sada do sada)
+      const awake = timeAgoSeconds(a.endMs);
+      const notes = a.notes ? ` • ${escapeHtml(a.notes)}` : "";
+      return `Start: ${start} • Kraj: ${end} • Trajanje: ${dur} • Budan: ${awake}${notes}`;
+    }else{
+      const since = timeAgoSeconds(a.startMs);
+      const notes = a.notes ? ` • ${escapeHtml(a.notes)}` : "";
+      return `Start: ${start} • Kraj: ${end} • Trajanje: ${dur} • Počelo: ${since}${notes}`;
     }
-    function activeCardHTML(type) {
-      if (type === "sleep" && activeSleep) {
-        const elapsed = Date.now() - activeSleep.startMs;
-        const details = `U toku • Počeo u ${activeSleep.startDisplay} • ${hmsFromMs(elapsed)}`;
-        return `
-          <div class="activity-item">
-            <div class="activity-icon" style="background: rgba(192,132,252,0.18); color: rgba(168,85,247,1);"><span>😴</span></div>
-            <div class="activity-content">
-              <div class="activity-title">San (aktivno)</div>
-              <div class="activity-details">${escapeHtml(details)}</div>
-            </div>
-            <div class="activity-time">Sada</div>
-          </div>`;
-      }
-      if (type === "feeding" && activeFeeding) {
-        const breastText = activeFeeding.breast === "left" ? "lijeva" : activeFeeding.breast === "right" ? "desna" : "obje";
-        const elapsed = Date.now() - activeFeeding.startMs;
-        const details = `U toku • ${breastText} • Počeo ${activeFeeding.startDisplay} • ${hmsFromMs(elapsed)}`;
-        return `
-          <div class="activity-item">
-            <div class="activity-icon" style="background: rgba(236,72,153,0.16); color: rgba(219,39,119,1);"><span>🍼</span></div>
-            <div class="activity-content">
-              <div class="activity-title">Hranjenje (aktivno)</div>
-              <div class="activity-details">${escapeHtml(details)}</div>
-            </div>
-            <div class="activity-time">Sada</div>
-          </div>`;
-      }
-      return "";
+  }
+
+  function itemHTML(a){
+    const ic = iconFor(a.type);
+    const t = titleFor(a);
+    const d = detailsFor(a);
+    return `
+      <div class="item">
+        <div class="i-ico" style="background:${ic.bg}; color:${ic.color};"><span>${ic.emoji}</span></div>
+        <div class="i-content">
+          <div class="i-title">${escapeHtml(t)}</div>
+          <div class="i-details">${d}</div>
+          <div class="actions">
+            <button class="small-btn" data-edit="${a.id}">Uredi</button>
+            <button class="small-btn danger" data-del="${a.id}">Obriši</button>
+          </div>
+        </div>
+        <div class="i-time">${timeAgoSeconds(a.startMs)}</div>
+      </div>
+    `;
+  }
+
+  function activeHTML(type){
+    if(type==="sleep" && activeSleep){
+      const ic = iconFor("sleep");
+      const elapsed = Date.now() - activeSleep.startMs;
+      const start = formatStamp(activeSleep.startMs);
+      return `
+        <div class="item">
+          <div class="i-ico" style="background:${ic.bg}; color:${ic.color};"><span>${ic.emoji}</span></div>
+          <div class="i-content">
+            <div class="i-title">San aktivan</div>
+            <div class="i-details">Počeo: ${start} • Traje: ${hmsFromMs(elapsed)}</div>
+          </div>
+          <div class="i-time">sada</div>
+        </div>
+      `;
+    }
+    if(type==="feeding" && activeFeeding){
+      const ic = iconFor("feeding");
+      const elapsed = Date.now() - activeFeeding.startMs;
+      const b = activeFeeding.breast==="left" ? "Lijeva" : activeFeeding.breast==="right" ? "Desna" : "Obje";
+      const start = formatStamp(activeFeeding.startMs);
+      return `
+        <div class="item">
+          <div class="i-ico" style="background:${ic.bg}; color:${ic.color};"><span>${ic.emoji}</span></div>
+          <div class="i-content">
+            <div class="i-title">Hranjenje aktivno — ${b}</div>
+            <div class="i-details">Počelo: ${start} • Traje: ${hmsFromMs(elapsed)}</div>
+          </div>
+          <div class="i-time">sada</div>
+        </div>
+      `;
+    }
+    return "";
+  }
+
+  function updateHeaderPills(){
+    const lastSleep = activities.filter(a=>a.type==="sleep").sort((a,b)=>b.endMs-a.endMs)[0];
+    const lastFeed = activities.filter(a=>a.type==="feeding").sort((a,b)=>b.endMs-a.endMs)[0];
+    document.getElementById("pillSleepAgo").textContent = lastSleep ? timeAgoSeconds(lastSleep.endMs) : "-";
+    document.getElementById("pillFeedAgo").textContent = lastFeed ? timeAgoSeconds(lastFeed.endMs) : "-";
+  }
+
+  function updateQuickCards(){
+    const sleepSub = document.getElementById("sleepStatusSub");
+    const sleepRight = document.getElementById("sleepStatusRight");
+    if(activeSleep){
+      sleepSub.textContent = `Spava • ${hmsFromMs(Date.now() - activeSleep.startMs)}`;
+      sleepRight.textContent = "U toku";
+    }else{
+      const last = activities.filter(a=>a.type==="sleep").sort((a,b)=>b.endMs-a.endMs)[0];
+      sleepSub.textContent = last ? `Zadnje buđenje: ${formatStamp(last.endMs)}` : "Nema zapisa";
+      sleepRight.textContent = last ? timeAgoSeconds(last.endMs) : "";
     }
 
-    function updateHomeNow() {
-      const container = document.getElementById("homeNowActivities");
-      const lastByType = {};
-      const sorted = [...activities].sort((a,b)=> (b.timestamp||0) - (a.timestamp||0));
-      for (const a of sorted) if (!lastByType[a.type]) lastByType[a.type] = a;
-
-      const blocks = [];
-      if (activeSleep) blocks.push(activeCardHTML("sleep"));
-      if (activeFeeding) blocks.push(activeCardHTML("feeding"));
-
-      const order = ["sleep","feeding","diaper","bath","medicine","colic"];
-      order.forEach(t => {
-        if ((t === "sleep" && activeSleep) || (t === "feeding" && activeFeeding)) return;
-        if (lastByType[t]) blocks.push(cardHTML(lastByType[t]));
-      });
-
-      container.innerHTML = blocks.length ? blocks.join("") : '<div class="empty-state">Nema aktivnosti</div>';
+    const feedSub = document.getElementById("feedStatusSub");
+    const feedRight = document.getElementById("feedStatusRight");
+    if(activeFeeding){
+      const b = activeFeeding.breast==="left" ? "Lijeva" : activeFeeding.breast==="right" ? "Desna" : "Obje";
+      feedSub.textContent = `Jede (${b}) • ${hmsFromMs(Date.now() - activeFeeding.startMs)}`;
+      feedRight.textContent = "U toku";
+    }else{
+      const last = activities.filter(a=>a.type==="feeding").sort((a,b)=>b.endMs-a.endMs)[0];
+      feedSub.textContent = last ? `Završilo: ${formatStamp(last.endMs)}` : "Nema zapisa";
+      feedRight.textContent = last ? timeAgoSeconds(last.endMs) : "";
     }
+  }
 
-    function updateAllActivities() {
-      const container = document.getElementById("allActivities");
-      const sorted = [...activities].sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
-      if (!sorted.length) { container.innerHTML = '<div class="empty-state">Nema aktivnosti</div>'; return; }
-      const groups = {};
-      sorted.forEach(a => {
-        const k = dayKey(a.time);
-        if (!groups[k]) groups[k] = [];
-        groups[k].push(a);
-      });
-      const keys = Object.keys(groups).sort((a,b)=> (a<b?1:-1));
-      container.innerHTML = keys.map(k => `
+  function updateHomeList(){
+    const list = document.getElementById("homeList");
+    const blocks = [];
+    if(activeSleep) blocks.push(activeHTML("sleep"));
+    if(activeFeeding) blocks.push(activeHTML("feeding"));
+
+    // last per type (excluding active)
+    const lastSleep = activities.filter(a=>a.type==="sleep").sort((a,b)=>b.endMs-a.endMs)[0];
+    const lastFeed = activities.filter(a=>a.type==="feeding").sort((a,b)=>b.endMs-a.endMs)[0];
+    if(!activeSleep && lastSleep) blocks.push(itemHTML(lastSleep));
+    if(!activeFeeding && lastFeed) blocks.push(itemHTML(lastFeed));
+
+    list.innerHTML = blocks.length ? blocks.join("") : `<div class="empty">Nema aktivnosti.</div>`;
+  }
+
+  function updateHistory(){
+    const container = document.getElementById("historyList");
+    const sorted = [...activities].sort((a,b)=>b.startMs-a.startMs);
+    if(!sorted.length){
+      container.innerHTML = `<div class="empty">Nema zapisa.</div>`;
+      return;
+    }
+    const groups = {};
+    for(const a of sorted){
+      const k = dayKey(a.startMs);
+      if(!groups[k]) groups[k]=[];
+      groups[k].push(a);
+    }
+    const keys = Object.keys(groups).sort((a,b)=>a<b?1:-1);
+    container.innerHTML = keys.map(k=>{
+      const items = groups[k].map(a=>itemHTML(a)).join("");
+      return `
         <div class="day-group">
           <div class="day-header">
-            <div class="day-title">${dayLabelFromKey(k)}</div>
+            <div class="day-title">${dayLabel(k)}</div>
             <div class="day-meta">${groups[k].length} zapisa</div>
           </div>
-          <div class="day-body">${groups[k].map(a => cardHTML(a)).join("")}</div>
+          <div class="day-body">${items}</div>
         </div>
-      `).join("");
+      `;
+    }).join("");
+  }
+
+  function updateDisplay(){
+    updateHeaderPills();
+    updateQuickCards();
+    updateHomeList();
+    updateHistory();
+  }
+
+  function ensureIntervals(){
+    if(homeInterval) return;
+    homeInterval = setInterval(()=>{
+      // refresh active from storage in case another tab updated
+      activeSleep = JSON.parse(localStorage.getItem(KEY_ACTIVE_SLEEP) || "null");
+      activeFeeding = JSON.parse(localStorage.getItem(KEY_ACTIVE_FEED) || "null");
+      updateHeaderPills();
+      updateQuickCards();
+      updateHomeList();
+      tickActiveTimersInModals();
+    }, 1000);
+  }
+
+  // ---- Analog clock for active timers (mechanical feel) ----
+  function setAnalog(elH, elM, elS, elapsedMs){
+    const totalSec = Math.floor(Math.max(0, elapsedMs)/1000);
+    const sec = totalSec % 60;
+    const min = Math.floor(totalSec/60) % 60;
+    const hr = Math.floor(totalSec/3600) % 12;
+
+    const sDeg = sec * 6;                 // 360/60
+    const mDeg = min * 6 + sec * 0.1;     // smooth
+    const hDeg = hr * 30 + min * 0.5;     // smooth
+
+    elS.style.transform = `translate(-50%,-100%) rotate(${sDeg}deg)`;
+    elM.style.transform = `translate(-50%,-100%) rotate(${mDeg}deg)`;
+    elH.style.transform = `translate(-50%,-100%) rotate(${hDeg}deg)`;
+  }
+
+  function tickActiveTimersInModals(){
+    // Sleep modal
+    if(document.getElementById("sleepModal").classList.contains("active") && activeSleep){
+      const elapsed = Date.now() - activeSleep.startMs;
+      document.getElementById("sleepElapsed").textContent = hmsFromMs(elapsed);
+      document.getElementById("sleepMeta").textContent = `Počeo: ${formatStamp(activeSleep.startMs)} • ${timeAgoSeconds(activeSleep.startMs)}`;
+      setAnalog(
+        document.getElementById("sleepH"),
+        document.getElementById("sleepM"),
+        document.getElementById("sleepS"),
+        elapsed
+      );
+    }
+    // Feed modal
+    if(document.getElementById("feedModal").classList.contains("active") && activeFeeding){
+      const elapsed = Date.now() - activeFeeding.startMs;
+      document.getElementById("feedElapsed").textContent = hmsFromMs(elapsed);
+      const b = activeFeeding.breast==="left" ? "Lijeva" : activeFeeding.breast==="right" ? "Desna" : "Obje";
+      document.getElementById("feedMeta").textContent = `Počeo: ${formatStamp(activeFeeding.startMs)} • Dojka: ${b}`;
+      setAnalog(
+        document.getElementById("feedH"),
+        document.getElementById("feedM"),
+        document.getElementById("feedS"),
+        elapsed
+      );
+    }
+  }
+
+  // ---- Modals open/close ----
+  function openModal(id){
+    document.getElementById(id).classList.add("active");
+    if(id==="sleepModal") setupSleepModal();
+    if(id==="feedModal") setupFeedModal();
+    if(id==="editModal") setupEditModal();
+    tickActiveTimersInModals();
+  }
+  function closeModal(id){
+    document.getElementById(id).classList.remove("active");
+  }
+  document.querySelectorAll(".modal").forEach(m=>{
+    m.addEventListener("click", (e)=>{
+      if(e.target === m) closeModal(m.id);
+    });
+  });
+  document.querySelectorAll("[data-close]").forEach(x=>{
+    x.addEventListener("click", ()=> closeModal(x.dataset.close));
+  });
+
+  // ---- Sleep flow ----
+  function setupSleepModal(){
+    const now = Date.now();
+    document.getElementById("sleepStartDate").value = msToDate(now);
+    document.getElementById("sleepStartClock").value = msToClock(now);
+
+    if(activeSleep){
+      document.getElementById("sleepTimerBox").style.display = "block";
+      document.getElementById("sleepStartBtn").style.display = "none";
+      document.getElementById("sleepStopBtn").style.display = "block";
+      document.getElementById("sleepEndRow").style.display = "none";
+    }else{
+      document.getElementById("sleepTimerBox").style.display = "none";
+      document.getElementById("sleepStartBtn").style.display = "block";
+      document.getElementById("sleepStopBtn").style.display = "none";
+      document.getElementById("sleepEndRow").style.display = "none";
+      document.getElementById("sleepNotes").value = "";
+    }
+  }
+
+  document.getElementById("sleepStartBtn").addEventListener("click", ()=>{
+    if(activeSleep) return;
+    const ms = dateClockToMs(
+      document.getElementById("sleepStartDate").value,
+      document.getElementById("sleepStartClock").value
+    );
+    if(ms===null) return alert("Unesi ispravno vrijeme (HH:MM:SS) i datum.");
+    if(ms > Date.now() + 1000) return alert("Početak ne može biti u budućnosti.");
+
+    activeSleep = { startMs: ms, startIso: msToISO(ms) };
+    saveActive();
+    updateDisplay();
+    setupSleepModal();
+  });
+
+  document.getElementById("sleepStopBtn").addEventListener("click", ()=>{
+    if(!activeSleep) return;
+    const endMs = Date.now();
+    if(endMs <= activeSleep.startMs) return alert("Greška u vremenima.");
+    const a = {
+      id: uid(),
+      type: "sleep",
+      startMs: activeSleep.startMs,
+      endMs,
+      startIso: activeSleep.startIso,
+      endIso: msToISO(endMs),
+      notes: document.getElementById("sleepNotes").value || "",
+      createdAt: Date.now()
+    };
+    activities.push(a);
+    activeSleep = null;
+    saveActs();
+    saveActive();
+    updateDisplay();
+    closeModal("sleepModal");
+  });
+
+  // ---- Feeding flow ----
+  function clearBreastSelection(containerId){
+    document.querySelectorAll(`#${containerId} .toggle`).forEach(b=>b.classList.remove("active"));
+  }
+  function setupFeedModal(){
+    const now = Date.now();
+    document.getElementById("feedStartDate").value = msToDate(now);
+    document.getElementById("feedStartClock").value = msToClock(now);
+    if(!activeFeeding){
+      selectedBreast = null;
+      clearBreastSelection("breastBtns");
+      document.getElementById("feedNotes").value = "";
+    }else{
+      selectedBreast = activeFeeding.breast;
+      clearBreastSelection("breastBtns");
+      document.querySelectorAll(`#breastBtns .toggle`).forEach(btn=>{
+        if(btn.dataset.breast === selectedBreast) btn.classList.add("active");
+      });
     }
 
-    function updateStats() {
-      const startOfToday = new Date(); startOfToday.setHours(0,0,0,0);
-      const todayActs = activities.filter(a => new Date(a.time) >= startOfToday);
-
-      document.getElementById("todaySleepCount").textContent = todayActs.filter(a => a.type === "sleep").length;
-      document.getElementById("todayFeedingCount").textContent = todayActs.filter(a => a.type === "feeding").length;
-      document.getElementById("todayDiaperCount").textContent = todayActs.filter(a => a.type === "diaper").length;
-
-      const totalSleep = todayActs.filter(a => a.type === "sleep").reduce((sum,a) => sum + (Number(a.duration)||0), 0);
-      document.getElementById("todayTotalSleep").textContent = `${totalSleep.toFixed(1)}h`;
+    if(activeFeeding){
+      document.getElementById("feedTimerBox").style.display = "block";
+      document.getElementById("feedStartBtn").style.display = "none";
+      document.getElementById("feedStopBtn").style.display = "block";
+      document.getElementById("feedEndRow").style.display = "none";
+    }else{
+      document.getElementById("feedTimerBox").style.display = "none";
+      document.getElementById("feedStartBtn").style.display = "block";
+      document.getElementById("feedStopBtn").style.display = "none";
+      document.getElementById("feedEndRow").style.display = "none";
     }
+  }
 
-    function updateLastTimes() {
-      const lastSleep = activities.filter(a => a.type === "sleep").sort((a,b)=> (b.timestamp||0)-(a.timestamp||0))[0];
-      const lastFeeding = activities.filter(a => a.type === "feeding").sort((a,b)=> (b.timestamp||0)-(a.timestamp||0))[0];
+  document.querySelectorAll("#breastBtns .toggle").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      clearBreastSelection("breastBtns");
+      btn.classList.add("active");
+      selectedBreast = btn.dataset.breast;
+    });
+  });
 
-      document.getElementById("lastSleepTime").textContent = lastSleep ? formatTimeAgo(lastSleep.time) : "-";
-      document.getElementById("lastFeedingTime").textContent = lastFeeding ? formatTimeAgo(lastFeeding.time) : "-";
+  document.getElementById("feedStartBtn").addEventListener("click", ()=>{
+    if(activeFeeding) return;
+    if(!selectedBreast) return alert("Odaberi dojku (Lijeva/Desna/Obje).");
+    const ms = dateClockToMs(
+      document.getElementById("feedStartDate").value,
+      document.getElementById("feedStartClock").value
+    );
+    if(ms===null) return alert("Unesi ispravno vrijeme (HH:MM:SS) i datum.");
+    if(ms > Date.now() + 1000) return alert("Početak ne može biti u budućnosti.");
 
-      if (!activeSleep) document.getElementById("sleepLastTime").textContent = lastSleep ? formatTimeAgo(lastSleep.time) : "-";
-      if (!activeFeeding) document.getElementById("feedingLastTime").textContent = lastFeeding ? formatTimeAgo(lastFeeding.time) : "-";
+    activeFeeding = { startMs: ms, startIso: msToISO(ms), breast: selectedBreast };
+    saveActive();
+    updateDisplay();
+    setupFeedModal();
+  });
 
-      const lastDiaper = activities.filter(a => a.type === "diaper").sort((a,b)=> (b.timestamp||0)-(a.timestamp||0))[0];
-      document.getElementById("diaperLastTime").textContent = lastDiaper ? formatTimeAgo(lastDiaper.time) : "-";
+  document.getElementById("feedStopBtn").addEventListener("click", ()=>{
+    if(!activeFeeding) return;
+    const endMs = Date.now();
+    if(endMs <= activeFeeding.startMs) return alert("Greška u vremenima.");
+    const a = {
+      id: uid(),
+      type: "feeding",
+      breast: activeFeeding.breast,
+      startMs: activeFeeding.startMs,
+      endMs,
+      startIso: activeFeeding.startIso,
+      endIso: msToISO(endMs),
+      notes: document.getElementById("feedNotes").value || "",
+      createdAt: Date.now()
+    };
+    activities.push(a);
+    activeFeeding = null;
+    saveActs();
+    saveActive();
+    updateDisplay();
+    closeModal("feedModal");
+  });
 
-      const lastBath = activities.filter(a => a.type === "bath").sort((a,b)=> (b.timestamp||0)-(a.timestamp||0))[0];
-      document.getElementById("bathLastTime").textContent = lastBath ? formatTimeAgo(lastBath.time) : "-";
+  // ---- Edit / Delete ----
+  function findAct(id){ return activities.find(a=>a.id===id); }
+  function setupEditModal(){
+    const a = findAct(editId);
+    if(!a) return closeModal("editModal");
+    document.getElementById("editType").value = a.type === "sleep" ? "San" : "Hranjenje";
+    document.getElementById("editStartDate").value = msToDate(a.startMs);
+    document.getElementById("editStartClock").value = msToClock(a.startMs);
+    document.getElementById("editEndDate").value = msToDate(a.endMs);
+    document.getElementById("editEndClock").value = msToClock(a.endMs);
+    document.getElementById("editNotes").value = a.notes || "";
 
-      const lastMedicine = activities.filter(a => a.type === "medicine").sort((a,b)=> (b.timestamp||0)-(a.timestamp||0))[0];
-      document.getElementById("medicineLastTime").textContent = lastMedicine ? formatTimeAgo(lastMedicine.time) : "-";
-
-      const lastColic = activities.filter(a => a.type === "colic").sort((a,b)=> (b.timestamp||0)-(a.timestamp||0))[0];
-      document.getElementById("colicLastTime").textContent = lastColic ? formatTimeAgo(lastColic.time) : "-";
-
-      if (activeSleep) updateSleepQuickButton(true);
-      if (activeFeeding) updateFeedingQuickButton(true);
+    if(a.type==="feeding"){
+      document.getElementById("editBreastGroup").style.display = "block";
+      editBreast = a.breast;
+      clearBreastSelection("editBreastBtns");
+      document.querySelectorAll("#editBreastBtns .toggle").forEach(btn=>{
+        if(btn.dataset.breast === editBreast) btn.classList.add("active");
+      });
+    }else{
+      document.getElementById("editBreastGroup").style.display = "none";
+      editBreast = null;
     }
+  }
 
-    function updateCheckups() {
-      const container = document.getElementById("checkupList");
-      const sorted = [...checkups].sort((a,b) => new Date(b.time) - new Date(a.time));
-      if (!sorted.length) { container.innerHTML = '<div class="empty-state">Nema unesenih kontrola</div>'; return; }
-      container.innerHTML = sorted.map(ch => {
-        const time = formatTime(ch.time);
-        const details = [];
-        if (ch.weight) details.push(`${ch.weight} kg`);
-        if (ch.height) details.push(`${ch.height} cm`);
-        const notes = ch.notes ? `<div class="activity-details" style="margin-top:4px;">${escapeHtml(ch.notes)}</div>` : "";
-        return `
-          <div class="activity-item">
-            <div class="activity-icon" style="background: rgba(34,197,94,0.16); color: rgba(34,197,94,1);"><span>🏥</span></div>
-            <div class="activity-content">
-              <div class="activity-title">${escapeHtml(ch.doctor || "Kontrola")}</div>
-              <div class="activity-details">${details.join(" • ") || "—"}</div>
-              ${notes}
-            </div>
-            <div class="activity-time">${time}</div>
-          </div>`;
-      }).join("");
+  document.querySelectorAll("#editBreastBtns .toggle").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      clearBreastSelection("editBreastBtns");
+      btn.classList.add("active");
+      editBreast = btn.dataset.breast;
+    });
+  });
+
+  document.getElementById("editSaveBtn").addEventListener("click", ()=>{
+    const a = findAct(editId);
+    if(!a) return;
+    const startMs = dateClockToMs(document.getElementById("editStartDate").value, document.getElementById("editStartClock").value);
+    const endMs = dateClockToMs(document.getElementById("editEndDate").value, document.getElementById("editEndClock").value);
+    if(startMs===null || endMs===null) return alert("Unesi ispravne datume i vremena (HH:MM:SS).");
+    if(endMs <= startMs) return alert("Kraj mora biti poslije početka.");
+
+    a.startMs = startMs;
+    a.endMs = endMs;
+    a.startIso = msToISO(startMs);
+    a.endIso = msToISO(endMs);
+    a.notes = document.getElementById("editNotes").value || "";
+    if(a.type==="feeding"){
+      if(!editBreast) return alert("Odaberi dojku.");
+      a.breast = editBreast;
     }
+    saveActs();
+    updateDisplay();
+    closeModal("editModal");
+  });
 
-    function updateReminders() {
-      const container = document.getElementById("remindersList");
-      const now = new Date();
-      const sorted = [...reminders].sort((a,b) => new Date(a.time) - new Date(b.time));
+  document.getElementById("editDeleteBtn").addEventListener("click", ()=>{
+    if(!confirm("Obrisati zapis?")) return;
+    activities = activities.filter(a=>a.id!==editId);
+    saveActs();
+    updateDisplay();
+    closeModal("editModal");
+  });
 
-      const badge = document.getElementById("reminderBadge");
-      const activeCount = sorted.filter(r => new Date(r.time) > now).length;
-      if (activeCount > 0) { badge.textContent = activeCount; badge.style.display = "flex"; }
-      else badge.style.display = "none";
-
-      if (!sorted.length) { container.innerHTML = '<div class="empty-state">Nema podsjetnika</div>'; return; }
-      container.innerHTML = sorted.map((r, idx) => {
-        const t = formatTime(r.time);
-        const isPast = new Date(r.time) < now;
-        return `
-          <div class="reminder-item" style="${isPast ? "opacity:0.65;" : ""}">
-            <div class="reminder-content">
-              <div class="reminder-title">${escapeHtml(r.title)}</div>
-              <div class="reminder-time">${t}</div>
-              ${r.description ? `<div class="reminder-time" style="margin-top:4px;">${escapeHtml(r.description)}</div>` : ""}
-            </div>
-            <div class="delete-btn" onclick="deleteReminder(${idx})">🗑️</div>
-          </div>`;
-      }).join("");
+  // Click handlers for edit/delete in lists
+  document.addEventListener("click", (e)=>{
+    const edit = e.target.closest("[data-edit]");
+    const del = e.target.closest("[data-del]");
+    if(edit){
+      editId = edit.dataset.edit;
+      openModal("editModal");
     }
-
-    function updateDisplay() {
-      updateHomeNow();
-      updateAllActivities();
-      updateStats();
-      updateLastTimes();
-      updateCheckups();
-      updateReminders();
-    }
-
-    function saveAndRefresh() {
-      localStorage.setItem("babyActivities", JSON.stringify(activities));
+    if(del){
+      const id = del.dataset.del;
+      if(!confirm("Obrisati zapis?")) return;
+      activities = activities.filter(a=>a.id!==id);
+      saveActs();
       updateDisplay();
     }
+  });
 
-    function switchPage(page) {
-      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-      document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+  // ---- Navigation ----
+  function showHistory(show){
+    document.getElementById("historySection").style.display = show ? "block" : "none";
+    document.getElementById("homeNow").style.display = show ? "none" : "block";
+    document.querySelector(".grid2").style.display = show ? "none" : "grid";
+    window.scrollTo({top:0, behavior:"instant"});
+  }
+  document.getElementById("btnHistory").addEventListener("click", ()=> showHistory(true));
+  document.getElementById("viewAll").addEventListener("click", ()=> showHistory(true));
+  document.getElementById("backHome").addEventListener("click", ()=> showHistory(false));
 
-      const pageEl = document.getElementById(page + "Page");
-      if (pageEl) pageEl.classList.add("active");
+  // ---- Export JSON ----
+  document.getElementById("btnExport").addEventListener("click", ()=>{
+    const payload = {
+      exportedAt: new Date().toISOString(),
+      activeSleep, activeFeeding,
+      activities
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `nori_export_${Date.now()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  });
 
-      const nav = document.querySelector(`.nav-item[data-page="${page}"]`);
-      if (nav) nav.classList.add("active");
+  // ---- Open modals ----
+  document.getElementById("openSleep").addEventListener("click", ()=> openModal("sleepModal"));
+  document.getElementById("openFeed").addEventListener("click", ()=> openModal("feedModal"));
 
-      if (page === "history") updateAllActivities();
-
-      // UX: na Samsungu često ostane scroll "između" stranica
-      window.scrollTo({ top: 0, behavior: "instant" });
-    }
-
-    function requestNotificationPermission() {
-      if ("Notification" in window && Notification.permission === "default") {
-        Notification.requestPermission();
-      }
-    }
-
-    function showReminderNotification(reminder) {
-      const msg = `${reminder.title}\n${reminder.description || ""}`.trim();
-      if (!("Notification" in window)) { alert("Podsjetnik:\n\n" + msg); return; }
-      if (Notification.permission === "granted") {
-        const n = new Notification("Nori Tracker", { body: msg });
-        n.onclick = () => { window.focus(); switchPage("reminders"); n.close(); };
-        return;
-      }
-      alert("Podsjetnik:\n\n" + msg);
-    }
-
-    function checkDueReminders() {
-      const now = new Date();
-      let changed = false;
-      reminders.forEach(r => {
-        const rt = new Date(r.time);
-        const diff = rt.getTime() - now.getTime();
-        if (diff <= 0) return;
-        if (diff < 60000 && !r.notified) {
-          showReminderNotification(r);
-          r.notified = true;
-          changed = true;
-        }
-      });
-      if (changed) {
-        localStorage.setItem("babyReminders", JSON.stringify(reminders));
-        updateReminders();
-      }
-    }
-
-    let homeInterval = null;
-    function ensureHomeIntervals() {
-      if (homeInterval) return;
-      homeInterval = setInterval(() => {
-        if (activeSleep) updateSleepQuickButton(true);
-        if (activeFeeding) updateFeedingQuickButton(true);
-        updateLastTimes();
-        updateHomeNow();
-        checkDueReminders();
-      }, 1000);
-    }
-
-    if (activeSleep) updateSleepQuickButton(true);
-    if (activeFeeding) updateFeedingQuickButton(true);
-
-    updateDisplay();
-    requestNotificationPermission();
-    ensureHomeIntervals();
-    setInterval(updateReminders, 30000);
-  </script>
+  // Init
+  updateDisplay();
+  ensureIntervals();
+</script>
 </body>
 </html>
