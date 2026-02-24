@@ -3,361 +3,407 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Nori — San & Hranjenje (Vintage)</title>
+  <title>Nori — Premium</title>
 
   <style>
     :root{
-      --bg: rgba(252,252,249,1);
-      --surface: rgba(255,255,255,0.78);
-      --surface2: rgba(255,255,255,0.92);
-      --text: rgba(20,22,22,1);
-      --muted: rgba(92,102,107,1);
-      --border: rgba(94,82,64,0.16);
+      --bg0: #070A12;
+      --bg1: #0B1020;
+      --glass: rgba(255,255,255,.08);
+      --glass2: rgba(255,255,255,.12);
+      --text: rgba(245,248,255,1);
+      --muted: rgba(182,190,214,.82);
+      --border: rgba(255,255,255,.14);
 
-      --teal: rgba(33,128,141,1);
-      --pink: rgba(219,39,119,1);
-      --purple: rgba(168,85,247,1);
-      --orange: rgba(249,115,22,1);
-      --green: rgba(34,197,94,1);
-
-      --brass1: #d2a55b;
-      --brass2: #8a5c1c;
-      --wood1: rgba(126,86,42,0.26);
-      --wood2: rgba(72,48,22,0.22);
+      --a: #22D3EE; /* cyan */
+      --b: #A78BFA; /* violet */
+      --c: #FB7185; /* rose */
+      --g: #34D399; /* green */
+      --o: #FB923C; /* orange */
 
       --r12: 14px;
-      --r20: 20px;
+      --r16: 18px;
+      --r20: 22px;
+      --r24: 26px;
       --rfull: 9999px;
 
-      --sh1: 0 12px 32px rgba(0,0,0,0.07);
-      --sh2: 0 2px 10px rgba(0,0,0,0.06);
-      --ring: 0 0 0 3px rgba(33,128,141,0.18);
+      --shadow: 0 18px 55px rgba(0,0,0,.45);
+      --shadow2: 0 10px 30px rgba(0,0,0,.34);
 
       --safeT: env(safe-area-inset-top, 0px);
       --safeB: env(safe-area-inset-bottom, 0px);
-      --tapMin: 48px;
 
-      --maxW: 560px;
-    }
+      --tap: 48px;
+      --navH: 78px;
 
-    @media (prefers-color-scheme: dark){
-      :root{
-        --bg: rgba(20,22,22,1);
-        --surface: rgba(34,36,36,0.78);
-        --surface2: rgba(34,36,36,0.92);
-        --text: rgba(245,245,245,1);
-        --muted: rgba(170,173,173,0.80);
-        --border: rgba(170,173,173,0.20);
-
-        --sh1: 0 14px 38px rgba(0,0,0,0.38);
-        --sh2: 0 2px 10px rgba(0,0,0,0.32);
-        --ring: 0 0 0 3px rgba(74,222,128,0.14);
-
-        --wood1: rgba(126,86,42,0.18);
-        --wood2: rgba(72,48,22,0.18);
-      }
+      --maxW: 760px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; }
+
     body{
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(1200px 820px at 10% -10%, rgba(33,128,141,0.20), transparent 55%),
-        radial-gradient(980px 720px at 98% 5%, rgba(168,85,247,0.18), transparent 55%),
-        radial-gradient(900px 650px at 52% 112%, rgba(219,39,119,0.14), transparent 55%),
-        var(--bg);
+        radial-gradient(900px 650px at 12% -10%, rgba(34,211,238,.22), transparent 60%),
+        radial-gradient(900px 650px at 94% 5%, rgba(167,139,250,.20), transparent 60%),
+        radial-gradient(900px 650px at 55% 110%, rgba(251,113,133,.18), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
       overflow-x:hidden;
       -webkit-tap-highlight-color: transparent;
     }
-    body::before{
-      content:"NORI";
-      position:fixed; inset:0;
-      display:flex; align-items:center; justify-content:center;
-      font-weight: 1000;
-      letter-spacing: 0.28em;
-      font-size: min(17vw, 132px);
-      color: rgba(33,128,141,0.045);
-      text-shadow: 0 10px 26px rgba(0,0,0,0.05);
-      pointer-events:none;
-      z-index:0;
-      transform: translateY(-6px);
-      user-select:none;
-    }
-    @media (prefers-color-scheme: dark){
-      body::before{ color: rgba(74,222,128,0.04); text-shadow: 0 10px 24px rgba(0,0,0,0.35); }
-    }
 
-    .app{
-      position:relative;
-      z-index:1;
+    .wrap{
       max-width: var(--maxW);
       margin: 0 auto;
-      padding: 0 14px;
-      min-height: 100vh;
+      padding: 0 14px calc(var(--navH) + var(--safeB) + 16px);
+      position: relative;
+    }
+
+    /* Top bar */
+    .top{
+      position: sticky;
+      top: 0;
+      z-index: 120;
+      padding: calc(12px + var(--safeT)) 0 12px;
+      margin: 0 -14px;
+      padding-left: 14px;
+      padding-right: 14px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: linear-gradient(180deg, rgba(7,10,18,.78), rgba(7,10,18,.45));
+      border-bottom: 1px solid rgba(255,255,255,.10);
+    }
+
+    .topRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+    }
+
+    .brand{
       display:flex;
       flex-direction:column;
-      padding-bottom: calc(var(--safeB) + 18px);
-    }
-
-    .header{
-      position: sticky; top:0; z-index:120;
-      padding: calc(12px + var(--safeT)) 14px 12px;
-      margin: 0 -14px;
-      background: linear-gradient(180deg, var(--surface2), var(--surface));
-      border-bottom: 1px solid var(--border);
-      box-shadow: var(--sh2);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .header-top{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-    }
-    .brand{
-      display:flex; flex-direction:column; gap:6px;
+      gap: 6px;
       min-width:0;
     }
+
     .brand h1{
-      font-size: 22px;
-      font-weight: 1000;
-      letter-spacing:-0.02em;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -.02em;
       line-height:1.1;
-      color: var(--teal);
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      background: linear-gradient(90deg, var(--a), var(--b), var(--c));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
-    .sub{
-      font-size: 12px;
-      color: var(--muted);
+
+    .chips{
       display:flex;
-      gap:10px;
-      flex-wrap:wrap;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 12px;
     }
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 6px 10px;
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 7px 10px;
       border-radius: var(--rfull);
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.22);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      max-width: 100%;
+      white-space: nowrap;
+    }
+
+    .iconBtn{
+      width: var(--tap);
+      height: var(--tap);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      max-width:100%;
-      white-space:nowrap;
-    }
-    @media (prefers-color-scheme: dark){
-      .pill{ background: rgba(255,255,255,0.06); }
-    }
-
-    .icon-btn{
-      width: var(--tapMin);
-      height: var(--tapMin);
-      border-radius: var(--r12);
-      border:1px solid var(--border);
-      background: rgba(255,255,255,0.20);
-      display:flex; align-items:center; justify-content:center;
-      box-shadow: var(--sh2);
+      box-shadow: var(--shadow2);
       cursor:pointer;
       user-select:none;
-      flex-shrink:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition: transform .12s ease, background .12s ease;
     }
-    @media (prefers-color-scheme: dark){
-      .icon-btn{ background: rgba(255,255,255,0.06); }
-    }
-    .icon-btn:active{ transform: scale(0.98); box-shadow:none; }
-    .icon-btn span{ font-size: 18px; }
+    .iconBtn:active{ transform: scale(.98); background: rgba(255,255,255,.09); }
+    .iconBtn span{ font-size: 18px; }
 
+    /* Hero */
     .hero{
       margin-top: 12px;
-      border-radius: 22px;
-      border: 1px solid var(--border);
-      box-shadow: var(--sh1);
-      overflow:hidden;
+      border-radius: var(--r24);
+      border: 1px solid rgba(255,255,255,.14);
       background:
-        radial-gradient(950px 460px at 10% 0%, rgba(168,85,247,0.14), transparent 62%),
-        radial-gradient(950px 460px at 90% 0%, rgba(219,39,119,0.12), transparent 62%),
-        linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.72));
+        radial-gradient(900px 360px at 15% 0%, rgba(34,211,238,.18), transparent 60%),
+        radial-gradient(900px 360px at 92% 0%, rgba(167,139,250,.16), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
     }
-    @media (prefers-color-scheme: dark){
-      .hero{
-        background:
-          radial-gradient(950px 460px at 10% 0%, rgba(168,85,247,0.14), transparent 62%),
-          radial-gradient(950px 460px at 90% 0%, rgba(219,39,119,0.12), transparent 62%),
-          linear-gradient(180deg, rgba(34,36,36,0.94), rgba(34,36,36,0.72));
-      }
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(1000px 220px at 50% -30%, rgba(255,255,255,.12), transparent 62%);
+      pointer-events:none;
     }
-    .hero-inner{ padding: 16px; }
-    .hero-top{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom: 10px; }
-    .hero-title{ font-size: 13px; font-weight: 1000; color: var(--muted); }
-    .hero-chip{
-      font-size: 12px; font-weight: 1000;
-      padding: 6px 10px;
+    .heroIn{
+      padding: 16px;
+      position:relative;
+      z-index: 1;
+    }
+    .heroTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom: 10px;
+    }
+    .tag{
+      font-size: 12px;
+      color: rgba(245,248,255,.85);
+      font-weight: 900;
+      letter-spacing: .02em;
+      opacity: .9;
+    }
+    .pulse{
+      width: 10px; height: 10px;
       border-radius: 999px;
-      border:1px solid var(--border);
-      background: rgba(33,128,141,0.10);
-      color: var(--teal);
-      white-space:nowrap;
+      background: rgba(52,211,153,1);
+      box-shadow: 0 0 0 0 rgba(52,211,153,.55);
+      animation: ping 1.6s infinite;
     }
-    .hero-main{
-      font-size: 30px;
-      font-weight: 1000;
-      letter-spacing:-0.03em;
-      line-height:1.08;
-      margin-bottom: 8px;
+    @keyframes ping{
+      0%{ box-shadow: 0 0 0 0 rgba(52,211,153,.55); }
+      70%{ box-shadow: 0 0 0 12px rgba(52,211,153,0); }
+      100%{ box-shadow: 0 0 0 0 rgba(52,211,153,0); }
+    }
+
+    .heroMain{
+      font-size: 32px;
+      font-weight: 950;
+      letter-spacing: -.03em;
+      line-height: 1.04;
       font-variant-numeric: tabular-nums;
+      margin-bottom: 8px;
     }
-    .hero-sub{
-      font-size: 13px;
+    .heroSub{
       color: var(--muted);
+      font-size: 13px;
       line-height: 1.35;
     }
-    .hero-actions{
+
+    .ctaRow{
       margin-top: 14px;
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
-    .hero-btn{
-      min-height: 56px;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.18);
+    .cta{
+      min-height: 62px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      box-shadow: 0 18px 42px rgba(0,0,0,.35);
       cursor:pointer;
       user-select:none;
-      font-weight: 1000;
-      font-size: 15px;
-      display:flex; align-items:center; justify-content:center;
-      gap:10px;
-    }
-    @media (prefers-color-scheme: dark){
-      .hero-btn{ background: rgba(255,255,255,0.06); }
-    }
-    .hero-btn:active{ transform: scale(0.985); }
-
-    .content{
-      margin-top: 12px;
-      flex: 1;
+      padding: 12px 12px;
       display:flex;
-      flex-direction:column;
-      min-height: 0;
-    }
-    .section{
-      border-radius: 22px;
-      border: 1px solid var(--border);
-      box-shadow: var(--sh1);
-      background: linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.72));
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
       overflow:hidden;
-      flex:1;
-      min-height: 0;
-      display:flex;
-      flex-direction:column;
+      transition: transform .12s ease, filter .12s ease;
+      position: relative;
     }
-    @media (prefers-color-scheme: dark){
-      .section{ background: linear-gradient(180deg, rgba(34,36,36,0.92), rgba(34,36,36,0.72)); }
+    .cta:active{ transform: scale(.985); filter: brightness(.98); }
+    .ctaL{
+      display:flex; align-items:center; gap: 12px; min-width:0;
     }
-    .section-head{
+    .badge{
+      width: 46px; height: 46px;
+      border-radius: 16px;
+      display:flex; align-items:center; justify-content:center;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      flex-shrink:0;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.12);
+    }
+    .badge span{ font-size: 22px; }
+    .ctaT{
+      display:flex; flex-direction:column; gap: 4px;
+      min-width:0;
+    }
+    .ctaT .t{
+      font-weight: 950;
+      font-size: 15px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .ctaT .s{
+      font-size: 12px;
+      color: var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .ctaR{
+      font-size: 12px;
+      color: rgba(245,248,255,.78);
+      font-weight: 900;
+      white-space:nowrap;
+    }
+
+    .sleepGlow::before, .feedGlow::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(700px 180px at 12% 0%, rgba(167,139,250,.30), transparent 60%);
+      pointer-events:none;
+      opacity:.9;
+    }
+    .feedGlow::before{
+      background: radial-gradient(700px 180px at 12% 0%, rgba(251,113,133,.28), transparent 60%);
+    }
+
+    /* Section */
+    .section{
+      margin-top: 12px;
+      border-radius: var(--r24);
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .secHead{
       padding: 14px 14px 10px;
       display:flex;
       justify-content:space-between;
       align-items:center;
-      gap:12px;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
     }
-    .section-title{ font-size: 16px; font-weight: 1000; }
-    .link{
+    .secTitle{
+      font-size: 15px;
+      font-weight: 950;
+      letter-spacing: -.01em;
+    }
+    .secLink{
       font-size: 13px;
-      color: var(--teal);
-      font-weight: 1000;
+      font-weight: 950;
+      color: rgba(34,211,238,.95);
       cursor:pointer;
       user-select:none;
-      text-decoration:none;
-      white-space:nowrap;
     }
 
     .list{
-      padding: 10px 14px 14px;
+      padding: 12px 14px 14px;
       display:flex;
       flex-direction:column;
       gap: 10px;
-      overflow:auto;
-      -webkit-overflow-scrolling: touch;
-      min-height: 0;
     }
 
-    .item{
+    .card{
       display:flex;
       gap: 12px;
       padding: 12px;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.22);
-      align-items:flex-start;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      box-shadow: 0 16px 40px rgba(0,0,0,.24);
       overflow:hidden;
+      position:relative;
     }
-    @media (prefers-color-scheme: dark){
-      .item{ background: rgba(255,255,255,0.06); }
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(560px 140px at 18% 0%, rgba(255,255,255,.10), transparent 60%);
+      pointer-events:none;
+      opacity:.7;
     }
 
-    .i-ico{
-      width: 46px;
-      height: 46px;
+    .ico{
+      width: 46px; height: 46px;
       border-radius: 16px;
       display:flex;
       align-items:center;
       justify-content:center;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
       flex-shrink:0;
-      border: 1px solid rgba(255,255,255,0.14);
+      position:relative;
+      z-index: 1;
     }
-    .i-ico span{ font-size: 22px; }
-
-    .i-content{ flex:1; min-width:0; }
-    .i-title{
-      font-weight: 1000;
+    .ico span{ font-size: 22px; }
+    .cc{
+      flex:1; min-width:0;
+      position:relative;
+      z-index: 1;
+    }
+    .ct{
       font-size: 13px;
-      line-height: 1.15;
-      margin-bottom: 3px;
+      font-weight: 950;
+      margin-bottom: 4px;
+      line-height:1.15;
     }
-    .i-details{
+    .cd{
       font-size: 12px;
       color: var(--muted);
       line-height: 1.35;
       overflow-wrap:anywhere;
     }
-    .i-time{
+    .time{
       font-size: 11px;
-      color: var(--muted);
+      color: rgba(245,248,255,.72);
       white-space:nowrap;
-      flex-shrink:0;
       margin-left: 6px;
+      position:relative;
+      z-index: 1;
     }
 
-    .actions{
+    .rowBtns{
+      margin-top: 8px;
       display:flex;
       gap: 8px;
       flex-wrap:wrap;
-      margin-top: 8px;
     }
-    .small-btn{
+    .mini{
       min-height: 38px;
       padding: 8px 10px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.16);
-      color: var(--text);
-      font-weight: 1000;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(245,248,255,.92);
+      font-weight: 950;
       font-size: 12px;
       cursor:pointer;
       user-select:none;
+      transition: transform .12s ease;
     }
-    @media (prefers-color-scheme: dark){
-      .small-btn{ background: rgba(255,255,255,0.06); }
-    }
-    .small-btn:active{ transform: scale(0.98); }
+    .mini:active{ transform: scale(.98); }
     .danger{
-      border-color: rgba(249,115,22,0.35);
-      background: rgba(249,115,22,0.10);
-      color: var(--orange);
+      border-color: rgba(251,146,60,.35);
+      color: rgba(251,146,60,1);
+      background: rgba(251,146,60,.10);
     }
 
     .empty{
@@ -367,392 +413,276 @@
       font-size: 13px;
     }
 
-    .day-group{
-      border:1px solid var(--border);
-      border-radius: 18px;
-      overflow:hidden;
-      background: rgba(255,255,255,0.16);
+    /* Bottom nav */
+    .nav{
+      position: fixed;
+      left:0; right:0; bottom:0;
+      height: calc(var(--navH) + var(--safeB));
+      padding: 10px 10px calc(10px + var(--safeB));
+      background: linear-gradient(180deg, rgba(7,10,18,.30), rgba(7,10,18,.92));
+      border-top: 1px solid rgba(255,255,255,.10);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      z-index: 220;
     }
-    @media (prefers-color-scheme: dark){
-      .day-group{ background: rgba(255,255,255,0.05); }
-    }
-    .day-head{
-      padding: 10px 12px;
+    .navIn{
+      max-width: var(--maxW);
+      margin: 0 auto;
+      height: 100%;
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      background: linear-gradient(180deg, rgba(33,128,141,0.10), rgba(33,128,141,0.03));
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: calc(68px + var(--safeT));
-      z-index: 10;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      justify-content:space-around;
+      gap: 10px;
     }
-    .day-title{ font-weight: 1000; font-size: 13px; }
-    .day-meta{ font-size: 11px; color: var(--muted); white-space:nowrap; }
-    .day-body{ padding: 10px; display:flex; flex-direction:column; gap:10px; }
+    .navItem{
+      flex:1;
+      min-height: var(--tap);
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap: 4px;
+      cursor:pointer;
+      user-select:none;
+      color: rgba(245,248,255,.74);
+      transition: transform .12s ease, background .12s ease;
+      position: relative;
+    }
+    .navItem:active{ transform: scale(.985); background: rgba(255,255,255,.07); }
+    .navItem.active{
+      color: rgba(34,211,238,1);
+      background: rgba(34,211,238,.10);
+      border-color: rgba(34,211,238,.22);
+    }
+    .navIco{ font-size: 20px; line-height:1; }
+    .navLbl{ font-size: 11px; font-weight: 950; }
 
+    /* Modal */
     .modal{
       display:none;
       position: fixed;
       inset:0;
-      background: rgba(0,0,0,0.58);
+      background: rgba(0,0,0,.62);
       z-index: 1000;
       padding-bottom: var(--safeB);
-      animation: fadeIn .18s ease-out;
+      animation: fade .18s ease-out;
     }
     .modal.active{ display:flex; align-items:flex-end; }
-    @keyframes fadeIn{ from{opacity:0;} to{opacity:1;} }
-    @keyframes slideUp{ from{ transform: translateY(100%);} to{ transform: translateY(0);} }
+    @keyframes fade{ from{opacity:0;} to{opacity:1;} }
+    @keyframes up{ from{ transform: translateY(100%);} to{ transform: translateY(0);} }
 
     .sheet{
       width: 100%;
       max-height: 90vh;
-      border-radius: 24px 24px 0 0;
+      border-radius: 28px 28px 0 0;
       padding: 18px 16px calc(18px + var(--safeB));
-      background: linear-gradient(180deg, var(--surface2), var(--surface));
-      border-top: 1px solid var(--border);
-      box-shadow: 0 -24px 56px rgba(0,0,0,0.25);
-      overflow-y:auto;
-      animation: slideUp .25s ease-out;
+      background:
+        radial-gradient(980px 220px at 12% 0%, rgba(34,211,238,.12), transparent 60%),
+        radial-gradient(980px 220px at 92% 0%, rgba(167,139,250,.12), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      border-top: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 -24px 70px rgba(0,0,0,.55);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
+      overflow-y:auto;
+      animation: up .22s ease-out;
     }
-    .m-head{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom: 12px; }
-    .m-title{ font-size: 18px; font-weight: 1000; }
-    .close{ font-size: 28px; color: var(--muted); cursor:pointer; user-select:none; line-height:1; }
+    .mHead{ display:flex; justify-content:space-between; align-items:center; gap: 12px; margin-bottom: 12px; }
+    .mTitle{ font-size: 18px; font-weight: 950; }
+    .x{ font-size: 28px; color: rgba(245,248,255,.70); cursor:pointer; user-select:none; line-height:1; }
 
-    .timer-box{
-      padding: 16px 14px;
-      border-radius: 20px;
-      border:1px solid var(--border);
-      background:
-        radial-gradient(540px 220px at 30% 0%, rgba(210,165,91,0.12), transparent 60%),
-        radial-gradient(560px 240px at 70% 0%, rgba(138,92,28,0.10), transparent 60%),
-        rgba(255,255,255,0.16);
-      margin-bottom: 14px;
+    .timer{
+      padding: 14px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      margin-bottom: 12px;
       overflow:hidden;
     }
-    @media (prefers-color-scheme: dark){
-      .timer-box{
-        background:
-          radial-gradient(540px 220px at 30% 0%, rgba(210,165,91,0.10), transparent 60%),
-          radial-gradient(560px 240px at 70% 0%, rgba(138,92,28,0.09), transparent 60%),
-          rgba(255,255,255,0.06);
-      }
-    }
-    .timer-row{
+    .timerRow{
       display:flex;
-      gap: 14px;
       align-items:center;
       justify-content:space-between;
+      gap: 12px;
     }
-
-    .analog{
-      width: 104px;
-      height: 104px;
-      border-radius: 999px;
-      position:relative;
-      flex-shrink:0;
-      background:
-        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.30), rgba(255,255,255,0.00) 55%),
-        radial-gradient(circle at 30% 20%, rgba(210,165,91,0.30), transparent 52%),
-        linear-gradient(180deg, var(--wood1), var(--wood2));
-      border: 1px solid rgba(138,92,28,0.35);
-      box-shadow:
-        inset 0 0 0 2px rgba(255,255,255,0.06),
-        inset 0 0 0 7px rgba(210,165,91,0.14),
-        0 18px 36px rgba(0,0,0,0.12);
-    }
-    @media (prefers-color-scheme: dark){
-      .analog{
-        border: 1px solid rgba(210,165,91,0.22);
-        box-shadow:
-          inset 0 0 0 2px rgba(255,255,255,0.04),
-          inset 0 0 0 7px rgba(210,165,91,0.10),
-          0 18px 38px rgba(0,0,0,0.45);
-      }
-    }
-    .dial{
-      position:absolute;
-      inset: 10px;
-      border-radius: 999px;
-      background:
-        radial-gradient(circle at 50% 42%, rgba(255,255,255,0.92), rgba(255,255,255,0.78) 55%, rgba(255,255,255,0.62) 100%),
-        radial-gradient(circle at 40% 20%, rgba(210,165,91,0.12), transparent 55%);
-      border: 1px solid rgba(94,82,64,0.18);
-      overflow:hidden;
-    }
-    @media (prefers-color-scheme: dark){
-      .dial{
-        background:
-          radial-gradient(circle at 50% 42%, rgba(255,255,255,0.12), rgba(255,255,255,0.06) 55%, rgba(255,255,255,0.04) 100%),
-          radial-gradient(circle at 40% 20%, rgba(210,165,91,0.10), transparent 55%);
-        border: 1px solid rgba(170,173,173,0.18);
-      }
-    }
-    .glass{
-      position:absolute;
-      inset: 0;
-      border-radius: 999px;
-      background:
-        radial-gradient(140px 90px at 28% 20%, rgba(255,255,255,0.55), transparent 60%),
-        linear-gradient(135deg, rgba(255,255,255,0.18), transparent 35%, rgba(255,255,255,0.06));
-      mix-blend-mode: screen;
-      pointer-events:none;
-    }
-    @media (prefers-color-scheme: dark){
-      .glass{
-        background:
-          radial-gradient(140px 90px at 28% 20%, rgba(255,255,255,0.18), transparent 60%),
-          linear-gradient(135deg, rgba(255,255,255,0.08), transparent 35%, rgba(255,255,255,0.03));
-      }
-    }
-    .roman{
-      position:absolute;
-      inset: 14px;
-      border-radius: 999px;
-      pointer-events:none;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color: rgba(20,22,22,0.72);
-      font-weight: 1000;
-      font-size: 10px;
-      letter-spacing: 0.04em;
-      text-shadow: 0 1px 0 rgba(255,255,255,0.35);
-    }
-    @media (prefers-color-scheme: dark){
-      .roman{ color: rgba(245,245,245,0.62); text-shadow: none; }
-    }
-    .roman span{
-      position:absolute;
-      transform-origin: 50% 38px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%,-50%) rotate(var(--rot)) translateY(-38px) rotate(calc(var(--rot) * -1));
-    }
-    .ticks{
-      position:absolute;
-      inset: 16px;
-      border-radius: 999px;
-      pointer-events:none;
-      background:
-        conic-gradient(from -90deg,
-          rgba(0,0,0,0.28) 0deg 1deg, transparent 1deg 6deg,
-          rgba(0,0,0,0.22) 6deg 7deg, transparent 7deg 12deg,
-          rgba(0,0,0,0.22) 12deg 13deg, transparent 13deg 18deg,
-          rgba(0,0,0,0.22) 18deg 19deg, transparent 19deg 24deg,
-          rgba(0,0,0,0.28) 24deg 25deg, transparent 25deg 30deg
-        );
-      opacity: 0.35;
-      mask: radial-gradient(circle at 50% 50%, transparent 0 64%, #000 66% 100%);
-      -webkit-mask: radial-gradient(circle at 50% 50%, transparent 0 64%, #000 66% 100%);
-    }
-    @media (prefers-color-scheme: dark){
-      .ticks{ opacity: 0.26; }
-    }
-    .hand{
-      position:absolute;
-      left:50%; top:50%;
-      transform-origin: 50% 100%;
-      transform: translate(-50%,-100%) rotate(0deg);
-      border-radius: 999px;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.20));
-    }
-    .hand.sec{ width: 2px; height: 42px; background: linear-gradient(180deg, rgba(249,115,22,1), rgba(138,92,28,0.85)); }
-    .hand.min{ width: 3px; height: 34px; background: linear-gradient(180deg, rgba(33,128,141,1), rgba(20,22,22,0.75)); opacity: 0.95; }
-    .hand.hour{ width: 4px; height: 26px; background: linear-gradient(180deg, rgba(20,22,22,0.95), rgba(20,22,22,0.55)); opacity: 0.90; }
-    @media (prefers-color-scheme: dark){
-      .hand.hour{ background: linear-gradient(180deg, rgba(245,245,245,0.85), rgba(245,245,245,0.45)); }
-      .hand.min{ background: linear-gradient(180deg, rgba(74,222,128,0.85), rgba(245,245,245,0.25)); }
-    }
-    .pin{
-      position:absolute;
-      left:50%; top:50%;
-      width: 10px; height: 10px;
-      transform: translate(-50%,-50%);
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.7), rgba(255,255,255,0.0) 55%), var(--brass1);
-      border: 1px solid rgba(138,92,28,0.38);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.22);
-    }
-
-    .timer-digital{
-      flex: 1;
-      min-width:0;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      align-items:flex-end;
-    }
-    .t-big{
-      font-size: 38px;
-      font-weight: 1000;
-      letter-spacing:-0.02em;
+    .big{
+      font-size: 42px;
+      font-weight: 950;
+      letter-spacing: -.02em;
       font-variant-numeric: tabular-nums;
-      color: var(--teal);
+      background: linear-gradient(90deg, var(--a), var(--b));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
       white-space:nowrap;
     }
-    .t-sub{
+    .small{
       font-size: 12px;
       color: var(--muted);
       text-align:right;
+      white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      white-space:nowrap;
+      max-width: 56vw;
     }
 
-    .primary{
-      width:100%;
-      min-height: calc(var(--tapMin) + 8px);
-      padding: 14px;
-      border-radius: 18px;
+    .btn{
+      width: 100%;
+      min-height: calc(var(--tap) + 10px);
       border:none;
+      border-radius: 20px;
       cursor:pointer;
       user-select:none;
       font-size: 15px;
-      font-weight: 1000;
-      color:#fff;
-      background: rgba(33,128,141,1);
-      box-shadow: 0 14px 30px rgba(33,128,141,0.18);
-      transition: all .18s ease;
+      font-weight: 950;
+      color: #061018;
+      background: linear-gradient(90deg, var(--a), var(--b));
+      box-shadow: 0 18px 45px rgba(34,211,238,.10);
+      transition: transform .12s ease, filter .12s ease;
     }
-    .primary:active{ transform: scale(0.985); filter: brightness(0.96); box-shadow:none; }
-    .primary.purple{ background: var(--purple); box-shadow: 0 14px 30px rgba(168,85,247,0.18); }
-    .primary.pink{ background: var(--pink); box-shadow: 0 14px 30px rgba(219,39,119,0.18); }
-    .primary.green{ background: var(--green); box-shadow: 0 14px 30px rgba(34,197,94,0.18); }
-    .primary.orange{ background: var(--orange); box-shadow: 0 14px 30px rgba(249,115,22,0.18); }
+    .btn:active{ transform: scale(.985); filter: brightness(.98); }
+    .btn.sleep{ background: linear-gradient(90deg, var(--b), rgba(167,139,250,.85)); color:#0b0f1e; }
+    .btn.feed{ background: linear-gradient(90deg, var(--c), rgba(251,113,133,.86)); color:#18040a; }
+    .btn.stop{ background: linear-gradient(90deg, var(--o), rgba(251,146,60,.88)); color:#140a02; }
+    .btn.ok{ background: linear-gradient(90deg, var(--g), rgba(52,211,153,.86)); color:#04110c; }
 
-    .advanced{
-      margin-top: 12px;
-      border:1px solid var(--border);
-      border-radius: 18px;
-      padding: 12px;
-      background: rgba(255,255,255,0.14);
-    }
-    @media (prefers-color-scheme: dark){
-      .advanced{ background: rgba(255,255,255,0.05); }
-    }
-
-    .row2{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .form-group{ margin-bottom: 10px; }
-    .label{ display:block; font-size: 13px; font-weight: 1000; margin-bottom: 7px; }
+    .group{ margin-top: 12px; }
+    .label{ display:block; font-size: 13px; font-weight: 950; margin-bottom: 8px; color: rgba(245,248,255,.86); }
     .input, .textarea{
       width:100%;
-      min-height: var(--tapMin);
+      min-height: var(--tap);
       padding: 12px 12px;
-      border-radius: 14px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,0.16);
-      color: var(--text);
-      font-size: 15px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(245,248,255,.95);
       outline:none;
-    }
-    @media (prefers-color-scheme: dark){
-      .input, .textarea{ background: rgba(255,255,255,0.06); }
+      font-size: 15px;
     }
     .input:focus, .textarea:focus{
-      box-shadow: var(--ring);
-      border-color: rgba(33,128,141,0.45);
+      border-color: rgba(34,211,238,.30);
+      box-shadow: 0 0 0 3px rgba(34,211,238,.12);
     }
-    .textarea{ min-height: 86px; resize: vertical; font-family: inherit; }
+    .textarea{ min-height: 90px; resize: vertical; font-family: inherit; }
 
-    .btns{ display:flex; gap:10px; flex-wrap:wrap; margin: 10px 0 12px; }
-    .toggle{
+    .togRow{
+      display:flex; gap: 10px; flex-wrap:wrap;
+      margin-top: 10px;
+    }
+    .tog{
       flex: 1 1 120px;
       min-width: 120px;
-      min-height: var(--tapMin);
+      min-height: var(--tap);
       padding: 12px;
-      border-radius: 14px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,0.14);
-      color: var(--text);
-      font-weight: 1000;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(245,248,255,.92);
+      font-weight: 950;
       cursor:pointer;
       user-select:none;
+      transition: transform .12s ease, background .12s ease;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      transition: all .16s ease;
     }
-    @media (prefers-color-scheme: dark){
-      .toggle{ background: rgba(255,255,255,0.06); }
+    .tog:active{ transform: scale(.985); }
+    .tog.active{
+      background: rgba(34,211,238,.18);
+      border-color: rgba(34,211,238,.28);
+      color: rgba(34,211,238,1);
     }
-    .toggle.active{
-      background: rgba(33,128,141,0.95);
-      color:#fff;
-      border-color: rgba(33,128,141,0.95);
-      box-shadow: 0 10px 20px rgba(33,128,141,0.18);
-    }
-
-    .ghost{
-      width:100%;
-      min-height: var(--tapMin);
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.10);
-      color: var(--text);
-      font-weight: 1000;
-      cursor:pointer;
-      user-select:none;
-    }
-    @media (prefers-color-scheme: dark){
-      .ghost{ background: rgba(255,255,255,0.05); }
-    }
-    .ghost:active{ transform: scale(0.985); }
 
     @media (max-width: 360px){
-      .hero-main{ font-size: 28px; }
-      .t-big{ font-size: 34px; }
-      .hero-actions{ grid-template-columns: 1fr; }
-      .row2{ grid-template-columns: 1fr; }
+      .ctaRow{ grid-template-columns: 1fr; }
+      .big{ font-size: 38px; }
+      .heroMain{ font-size: 28px; }
     }
   </style>
 </head>
 
 <body>
-  <div class="app">
-    <div class="header">
-      <div class="header-top">
+  <div class="wrap">
+    <div class="top">
+      <div class="topRow">
         <div class="brand">
-          <h1>Nori — San & Hranjenje</h1>
-          <div class="sub">
-            <span class="pill">San: <strong id="pillSleepAgo">-</strong></span>
-            <span class="pill">Hranjenje: <strong id="pillFeedAgo">-</strong></span>
+          <h1>Nori Premium</h1>
+          <div class="chips">
+            <span class="chip">San: <strong id="pillSleep">-</strong></span>
+            <span class="chip">Hranjenje: <strong id="pillFeed">-</strong></span>
           </div>
         </div>
         <div style="display:flex; gap:10px;">
-          <div class="icon-btn" id="btnHistory" title="Historija"><span>📜</span></div>
+          <div class="iconBtn" id="btnExport" title="Export"><span>⬇️</span></div>
+          <div class="iconBtn" id="btnSettings" title="Opcije"><span>⚙️</span></div>
         </div>
       </div>
     </div>
 
     <div class="hero">
-      <div class="hero-inner">
-        <div class="hero-top">
-          <div class="hero-title">Status (real-time)</div>
-          <div class="hero-chip" id="heroChip">Povlači stare podatke</div>
+      <div class="heroIn">
+        <div class="heroTop">
+          <div class="tag" id="heroTag">STATUS</div>
+          <div class="pulse" id="pulseDot"></div>
         </div>
-        <div class="hero-main" id="heroMain">-</div>
-        <div class="hero-sub" id="heroSub">-</div>
+        <div class="heroMain" id="heroMain">-</div>
+        <div class="heroSub" id="heroSub">-</div>
 
-        <div class="hero-actions">
-          <button class="hero-btn" id="heroSleepBtn"><span>😴</span> San</button>
-          <button class="hero-btn" id="heroFeedBtn"><span>🍼</span> Hranjenje</button>
+        <div class="ctaRow">
+          <div class="cta sleepGlow" id="openSleep">
+            <div class="ctaL">
+              <div class="badge"><span>😴</span></div>
+              <div class="ctaT">
+                <div class="t">San</div>
+                <div class="s" id="ctaSleepSub">Dodaj / u toku</div>
+              </div>
+            </div>
+            <div class="ctaR" id="ctaSleepR">⟶</div>
+          </div>
+
+          <div class="cta feedGlow" id="openFeed">
+            <div class="ctaL">
+              <div class="badge"><span>🍼</span></div>
+              <div class="ctaT">
+                <div class="t">Hranjenje</div>
+                <div class="s" id="ctaFeedSub">Dodaj / u toku</div>
+              </div>
+            </div>
+            <div class="ctaR" id="ctaFeedR">⟶</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="content">
-      <div class="section">
-        <div class="section-head">
-          <div class="section-title" id="sectionTitle">Trenutno / posljednje</div>
-          <a class="link" id="toggleView">Historija</a>
-        </div>
-        <div class="list" id="mainList"></div>
+    <div class="section">
+      <div class="secHead">
+        <div class="secTitle" id="secTitle">Trenutno / posljednje</div>
+        <div class="secLink" id="toggleHistory">Historija</div>
+      </div>
+      <div class="list" id="list"></div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="navIn">
+      <div class="navItem active" id="navHome">
+        <div class="navIco">🏠</div>
+        <div class="navLbl">Početna</div>
+      </div>
+      <div class="navItem" id="navHistory">
+        <div class="navIco">📜</div>
+        <div class="navLbl">Historija</div>
+      </div>
+      <div class="navItem" id="navSleep">
+        <div class="navIco">😴</div>
+        <div class="navLbl">San</div>
+      </div>
+      <div class="navItem" id="navFeed">
+        <div class="navIco">🍼</div>
+        <div class="navLbl">Hranjenje</div>
       </div>
     </div>
   </div>
@@ -760,52 +690,27 @@
   <!-- Sleep modal -->
   <div class="modal" id="sleepModal">
     <div class="sheet">
-      <div class="m-head">
-        <div class="m-title">San</div>
-        <div class="close" data-close="sleepModal">×</div>
+      <div class="mHead">
+        <div class="mTitle">San</div>
+        <div class="x" data-close="sleepModal">×</div>
       </div>
 
-      <div class="timer-box" id="sleepTimerBox" style="display:none;">
-        <div class="timer-row">
-          <div class="analog">
-            <div class="dial"></div>
-            <div class="ticks"></div>
-            <div class="roman" id="sleepRoman"></div>
-            <div class="hand hour" id="sleepH"></div>
-            <div class="hand min" id="sleepM"></div>
-            <div class="hand sec" id="sleepS"></div>
-            <div class="pin"></div>
-            <div class="glass"></div>
-          </div>
-          <div class="timer-digital">
-            <div class="t-big" id="sleepElapsed">00:00:00</div>
-            <div class="t-sub" id="sleepMeta">-</div>
+      <div class="timer" id="sleepTimer" style="display:none;">
+        <div class="timerRow">
+          <div>
+            <div class="big" id="sleepElapsed">00:00:00</div>
+            <div class="small" id="sleepMeta">-</div>
           </div>
         </div>
       </div>
 
-      <button class="primary purple" id="sleepStartBtn">Dijete zaspalo</button>
-      <button class="primary orange" id="sleepStopBtn" style="display:none;">Dijete se probudilo</button>
-
+      <button class="btn sleep" id="sleepStart">Dijete zaspalo</button>
       <div style="height:10px;"></div>
-      <button class="ghost" id="sleepAdvancedBtn">Uredi vrijeme / bilješke</button>
+      <button class="btn stop" id="sleepStop" style="display:none;">Dijete se probudilo</button>
 
-      <div class="advanced" id="sleepAdvanced" style="display:none;">
-        <div class="row2">
-          <div class="form-group">
-            <label class="label">Datum početka</label>
-            <input class="input" type="date" id="sleepStartDate">
-          </div>
-          <div class="form-group">
-            <label class="label">Vrijeme početka (HH:MM:SS)</label>
-            <input class="input" type="text" id="sleepStartClock" placeholder="npr. 14:03:12">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="label">Bilješke (opcionalno)</label>
-          <textarea class="textarea" id="sleepNotes" placeholder="npr. zaspao brzo..."></textarea>
-        </div>
+      <div class="group">
+        <label class="label">Bilješke (opcionalno)</label>
+        <textarea class="textarea" id="sleepNotes" placeholder="npr. zaspao brzo, mirno..."></textarea>
       </div>
     </div>
   </div>
@@ -813,158 +718,63 @@
   <!-- Feeding modal -->
   <div class="modal" id="feedModal">
     <div class="sheet">
-      <div class="m-head">
-        <div class="m-title">Hranjenje</div>
-        <div class="close" data-close="feedModal">×</div>
+      <div class="mHead">
+        <div class="mTitle">Hranjenje</div>
+        <div class="x" data-close="feedModal">×</div>
       </div>
 
-      <div class="timer-box" id="feedTimerBox" style="display:none;">
-        <div class="timer-row">
-          <div class="analog">
-            <div class="dial"></div>
-            <div class="ticks"></div>
-            <div class="roman" id="feedRoman"></div>
-            <div class="hand hour" id="feedH"></div>
-            <div class="hand min" id="feedM"></div>
-            <div class="hand sec" id="feedS"></div>
-            <div class="pin"></div>
-            <div class="glass"></div>
-          </div>
-          <div class="timer-digital">
-            <div class="t-big" id="feedElapsed">00:00:00</div>
-            <div class="t-sub" id="feedMeta">-</div>
+      <div class="timer" id="feedTimer" style="display:none;">
+        <div class="timerRow">
+          <div>
+            <div class="big" id="feedElapsed">00:00:00</div>
+            <div class="small" id="feedMeta">-</div>
           </div>
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="group">
         <label class="label">Dojka</label>
-        <div class="btns" id="breastBtns">
-          <button class="toggle" data-breast="left">Lijeva</button>
-          <button class="toggle" data-breast="right">Desna</button>
-          <button class="toggle" data-breast="both">Obje</button>
+        <div class="togRow" id="breastRow">
+          <button class="tog" data-b="left">Lijeva</button>
+          <button class="tog" data-b="right">Desna</button>
+          <button class="tog" data-b="both">Obje</button>
         </div>
       </div>
 
-      <button class="primary pink" id="feedStartBtn">Počinje jesti</button>
-      <button class="primary green" id="feedStopBtn" style="display:none;">Završio jesti</button>
-
+      <button class="btn feed" id="feedStart">Počinje jesti</button>
       <div style="height:10px;"></div>
-      <button class="ghost" id="feedAdvancedBtn">Uredi vrijeme / bilješke</button>
+      <button class="btn ok" id="feedStop" style="display:none;">Završio jesti</button>
 
-      <div class="advanced" id="feedAdvanced" style="display:none;">
-        <div class="row2">
-          <div class="form-group">
-            <label class="label">Datum početka</label>
-            <input class="input" type="date" id="feedStartDate">
-          </div>
-          <div class="form-group">
-            <label class="label">Vrijeme početka (HH:MM:SS)</label>
-            <input class="input" type="text" id="feedStartClock" placeholder="npr. 16:22:01">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="label">Bilješke (opcionalno)</label>
-          <textarea class="textarea" id="feedNotes" placeholder="npr. pauze, nemiran..."></textarea>
-        </div>
+      <div class="group">
+        <label class="label">Bilješke (opcionalno)</label>
+        <textarea class="textarea" id="feedNotes" placeholder="npr. pauze, dohrana..."></textarea>
       </div>
-    </div>
-  </div>
-
-  <!-- Edit modal -->
-  <div class="modal" id="editModal">
-    <div class="sheet">
-      <div class="m-head">
-        <div class="m-title">Uredi zapis</div>
-        <div class="close" data-close="editModal">×</div>
-      </div>
-
-      <div class="form-group">
-        <label class="label">Tip</label>
-        <input class="input" id="editType" disabled />
-      </div>
-
-      <div class="form-group" id="editBreastGroup" style="display:none;">
-        <label class="label">Dojka</label>
-        <div class="btns" id="editBreastBtns">
-          <button class="toggle" data-breast="left">Lijeva</button>
-          <button class="toggle" data-breast="right">Desna</button>
-          <button class="toggle" data-breast="both">Obje</button>
-        </div>
-      </div>
-
-      <div class="row2">
-        <div class="form-group">
-          <label class="label">Start datum</label>
-          <input class="input" type="date" id="editStartDate">
-        </div>
-        <div class="form-group">
-          <label class="label">Start vrijeme (HH:MM:SS)</label>
-          <input class="input" type="text" id="editStartClock">
-        </div>
-      </div>
-
-      <div class="row2">
-        <div class="form-group">
-          <label class="label">Kraj datum</label>
-          <input class="input" type="date" id="editEndDate">
-        </div>
-        <div class="form-group">
-          <label class="label">Kraj vrijeme (HH:MM:SS)</label>
-          <input class="input" type="text" id="editEndClock">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="label">Bilješke</label>
-        <textarea class="textarea" id="editNotes"></textarea>
-      </div>
-
-      <button class="primary" id="editSaveBtn">Spremi izmjene</button>
-      <div style="height:10px;"></div>
-      <button class="primary orange" id="editDeleteBtn">Obriši zapis</button>
     </div>
   </div>
 
 <script>
-  // ====== STORAGE (USE OLD KEYS to keep ALL existing data) ======
-  // Old app keys: babyActivities, activeSleep, activeFeeding [file:2]
+  // Keep ORIGINAL storage keys from your old app, so it pulls all old data. [file:2]
   const KEY_ACTS = "babyActivities";
   const KEY_ACTIVE_SLEEP = "activeSleep";
   const KEY_ACTIVE_FEED = "activeFeeding";
 
-  // We only show these two types, but we never delete other types. [file:2]
-  const SUPPORTED_TYPES = new Set(["sleep", "feeding"]);
-
-  // ====== In-memory ======
+  const SUPPORTED = new Set(["sleep","feeding"]);
   let activities = safeParse(localStorage.getItem(KEY_ACTS) || "[]", []);
   let activeSleep = safeParse(localStorage.getItem(KEY_ACTIVE_SLEEP) || "null", null);
   let activeFeeding = safeParse(localStorage.getItem(KEY_ACTIVE_FEED) || "null", null);
 
-  // Some old entries use "time/endTime" ISO and duration; active objects include startMs/startIso/startDisplay. [file:2]
-  // We'll normalize on load so UI code is simple.
-  normalizeAll();
-
-  let homeInterval = null;
+  let isHistory = false;
   let selectedBreast = null;
 
-  // edit state
-  let editId = null;
-  let editBreast = null;
+  normalizeAll();
 
-  // ====== Helpers ======
-  function safeParse(json, fallback){
-    try { return JSON.parse(json); } catch { return fallback; }
-  }
+  function safeParse(j, f){ try{return JSON.parse(j);}catch{return f;} }
+  function uid(){ return "a_" + Math.random().toString(16).slice(2) + "_" + Date.now().toString(16); }
   function pad2(n){ return String(n).padStart(2,"0"); }
   function escapeHtml(s){
     return String(s ?? "")
       .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
       .replaceAll('"',"&quot;").replaceAll("'","&#039;");
-  }
-  function uid(){
-    return "a_" + Math.random().toString(16).slice(2) + "_" + Date.now().toString(16);
   }
   function isoToMs(iso){
     const d = new Date(iso);
@@ -973,29 +783,6 @@
   }
   function msToISO(ms){ return new Date(ms).toISOString(); }
 
-  function parseClockToHMS(clock){
-    const m = /^(\d{1,2}):(\d{2})(?::(\d{2}))?$/.exec((clock||"").trim());
-    if(!m) return null;
-    const hh = Number(m[1]), mm = Number(m[2]), ss = Number(m[3] ?? "00");
-    if(hh<0||hh>23||mm<0||mm>59||ss<0||ss>59) return null;
-    return {hh,mm,ss};
-  }
-  function dateClockToMs(dateStr, clockStr){
-    if(!dateStr) return null;
-    const hms = parseClockToHMS(clockStr);
-    if(!hms) return null;
-    const d = new Date(`${dateStr}T${pad2(hms.hh)}:${pad2(hms.mm)}:${pad2(hms.ss)}`);
-    if(Number.isNaN(d.getTime())) return null;
-    return d.getTime();
-  }
-  function msToDate(ms){
-    const d = new Date(ms);
-    return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
-  }
-  function msToClock(ms){
-    const d = new Date(ms);
-    return `${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
-  }
   function hmsFromMs(ms){
     const total = Math.max(0, Math.floor(ms/1000));
     const h = Math.floor(total/3600);
@@ -1007,34 +794,25 @@
     const d = new Date(ms);
     return `${pad2(d.getDate())}.${pad2(d.getMonth()+1)}.${d.getFullYear()} ${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
   }
-  function timeAgoSeconds(ms){
+  function timeAgo(ms){
     const diff = Date.now() - ms;
     const sec = Math.floor(diff/1000);
     if(sec < 0) return "u budućnosti";
     if(sec < 5) return "upravo";
     if(sec < 60) return `prije ${sec}s`;
     const min = Math.floor(sec/60);
-    if(min < 60) return `prije ${min}m ${sec%60}s`;
+    if(min < 60) return `prije ${min}m`;
     const hr = Math.floor(min/60);
-    if(hr < 24) return `prije ${hr}h ${min%60}m ${sec%60}s`;
-    const days = Math.floor(hr/24);
-    return `prije ${days}d ${hr%24}h ${min%60}m`;
+    if(hr < 24) return `prije ${hr}h`;
+    const d = Math.floor(hr/24);
+    return `prije ${d}d`;
   }
   function dayKey(ms){
     const d = new Date(ms);
     return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
   }
-  function dayLabel(key){
-    const [y,m,d] = key.split("-").map(Number);
-    const dt = new Date(`${y}-${pad2(m)}-${pad2(d)}T00:00:00`);
-    const today = new Date(); today.setHours(0,0,0,0);
-    const yest = new Date(today); yest.setDate(yest.getDate()-1);
-    if(dt.getTime() === today.getTime()) return "Danas";
-    if(dt.getTime() === yest.getTime()) return "Jučer";
-    return `${pad2(d)}.${pad2(m)}.${y}`;
-  }
 
-  function saveActs(){ localStorage.setItem(KEY_ACTS, JSON.stringify(activities)); } // same as old app [file:2]
+  function saveActs(){ localStorage.setItem(KEY_ACTS, JSON.stringify(activities)); } // old key [file:2]
   function saveActive(){
     if(activeSleep) localStorage.setItem(KEY_ACTIVE_SLEEP, JSON.stringify(activeSleep));
     else localStorage.removeItem(KEY_ACTIVE_SLEEP);
@@ -1042,59 +820,38 @@
     else localStorage.removeItem(KEY_ACTIVE_FEED);
   }
 
-  // ====== Normalization of old data ======
   function normalizeActivity(a){
-    // Old activities: {type, time, endTime, duration, notes, timestamp, breast...} [file:2]
-    // We keep original fields, but ensure startMs/endMs/id exist.
     if(!a || !a.type) return null;
-
-    // keep id if exists else generate stable-ish one
     if(!a.id) a.id = uid();
 
-    // only normalize times for supported types, others keep untouched
-    if(!SUPPORTED_TYPES.has(a.type)) return a;
+    if(!SUPPORTED.has(a.type)) return a;
 
-    // start
     if(typeof a.startMs !== "number"){
       const s = isoToMs(a.time || a.startIso || a.startTime);
       if(s) a.startMs = s;
     }
-    // end
     if(typeof a.endMs !== "number"){
       const e = isoToMs(a.endTime || a.endIso || a.end);
       if(e) a.endMs = e;
     }
-
-    // If no endTime but has duration (old sleep stored duration hours, feeding duration minutes) [file:2]
     if((!a.endMs || a.endMs <= a.startMs) && a.startMs && a.duration != null){
       if(a.type === "sleep"){
         const hours = Number(a.duration);
         if(Number.isFinite(hours) && hours > 0) a.endMs = a.startMs + Math.round(hours * 3600 * 1000);
-      }else if(a.type === "feeding"){
+      }else{
         const mins = Number(a.duration);
         if(Number.isFinite(mins) && mins > 0) a.endMs = a.startMs + Math.round(mins * 60 * 1000);
       }
     }
-
-    // Keep ISO mirrors
     if(a.startMs && !a.startIso) a.startIso = msToISO(a.startMs);
     if(a.endMs && !a.endIso) a.endIso = msToISO(a.endMs);
-
-    // notes
     if(a.notes == null) a.notes = "";
-
-    // feeding breast may be missing
     if(a.type === "feeding" && !a.breast) a.breast = null;
-
-    // timestamp used heavily in old app [file:2]
     if(!a.timestamp) a.timestamp = Date.now();
-
     return a;
   }
-
   function normalizeActiveSleep(x){
     if(!x) return null;
-    // Old activeSleep: {startIso, startMs, startDisplay} [file:2]
     if(typeof x.startMs !== "number"){
       const s = isoToMs(x.startIso);
       if(s) x.startMs = s;
@@ -1106,10 +863,8 @@
     }
     return x.startMs ? x : null;
   }
-
   function normalizeActiveFeeding(x){
     if(!x) return null;
-    // Old activeFeeding: {startIso, startMs, startDisplay, breast} [file:2]
     if(typeof x.startMs !== "number"){
       const s = isoToMs(x.startIso);
       if(s) x.startMs = s;
@@ -1122,416 +877,292 @@
     if(!x.breast) x.breast = null;
     return x.startMs ? x : null;
   }
-
   function normalizeAll(){
     activities = Array.isArray(activities) ? activities.map(normalizeActivity).filter(Boolean) : [];
     activeSleep = normalizeActiveSleep(activeSleep);
     activeFeeding = normalizeActiveFeeding(activeFeeding);
-
-    // Save back normalized versions so future loads are clean (still same old keys). [file:2]
     saveActs();
     saveActive();
   }
 
-  // ====== Icons / UI text ======
-  function iconFor(type){
-    if(type==="sleep") return {emoji:"😴", bg:"rgba(192,132,252,0.18)", color:"rgba(168,85,247,1)"};
-    return {emoji:"🍼", bg:"rgba(236,72,153,0.16)", color:"rgba(219,39,119,1)"};
-  }
   function titleFor(a){
-    if(a.type==="sleep") return "San";
+    if(a.type === "sleep") return "San";
     const b = a.breast==="left" ? "Lijeva" : a.breast==="right" ? "Desna" : a.breast==="both" ? "Obje" : "—";
     return `Hranjenje — ${b}`;
   }
-
   function detailsFor(a){
     const start = formatStamp(a.startMs);
     const end = formatStamp(a.endMs);
     const dur = hmsFromMs(a.endMs - a.startMs);
     const notes = a.notes ? ` • ${escapeHtml(a.notes)}` : "";
     if(a.type==="sleep"){
-      const awake = timeAgoSeconds(a.endMs);
-      return `Start: ${start} • Kraj: ${end} • Trajanje: ${dur} • Budan: ${awake}${notes}`;
+      return `Start: ${start} • Kraj: ${end} • Trajanje: ${dur} • Budan: ${timeAgo(a.endMs)}${notes}`;
     }
-    const since = timeAgoSeconds(a.startMs);
     const b = a.breast==="left" ? "Lijeva" : a.breast==="right" ? "Desna" : a.breast==="both" ? "Obje" : "—";
-    return `Start: ${start} • Kraj: ${end} • Trajanje: ${dur} • Dojka: ${b} • Počelo: ${since}${notes}`;
+    return `Start: ${start} • Kraj: ${end} • Trajanje: ${dur} • Dojka: ${b}${notes}`;
   }
 
-  function itemHTML(a){
-    const ic = iconFor(a.type);
+  function cardHTML(a){
+    const emoji = a.type==="sleep" ? "😴" : "🍼";
     return `
-      <div class="item">
-        <div class="i-ico" style="background:${ic.bg}; color:${ic.color};"><span>${ic.emoji}</span></div>
-        <div class="i-content">
-          <div class="i-title">${escapeHtml(titleFor(a))}</div>
-          <div class="i-details">${detailsFor(a)}</div>
-          <div class="actions">
-            <button class="small-btn" data-edit="${a.id}">Uredi</button>
-            <button class="small-btn danger" data-del="${a.id}">Obriši</button>
+      <div class="card">
+        <div class="ico"><span>${emoji}</span></div>
+        <div class="cc">
+          <div class="ct">${escapeHtml(titleFor(a))}</div>
+          <div class="cd">${detailsFor(a)}</div>
+          <div class="rowBtns">
+            <button class="mini danger" data-del="${a.id}">Obriši</button>
           </div>
         </div>
-        <div class="i-time">${timeAgoSeconds(a.startMs)}</div>
+        <div class="time">${timeAgo(a.startMs)}</div>
       </div>
     `;
   }
 
-  function activeCardHTML(type){
+  function activeCard(type){
     if(type==="sleep" && activeSleep){
-      const ic = iconFor("sleep");
-      const elapsed = Date.now() - activeSleep.startMs;
+      const el = Date.now() - activeSleep.startMs;
       return `
-        <div class="item">
-          <div class="i-ico" style="background:${ic.bg}; color:${ic.color};"><span>${ic.emoji}</span></div>
-          <div class="i-content">
-            <div class="i-title">San aktivan</div>
-            <div class="i-details">Počeo: ${formatStamp(activeSleep.startMs)} • Traje: ${hmsFromMs(elapsed)}</div>
+        <div class="card">
+          <div class="ico"><span>😴</span></div>
+          <div class="cc">
+            <div class="ct">San u toku</div>
+            <div class="cd">Počeo: ${formatStamp(activeSleep.startMs)} • Traje: ${hmsFromMs(el)}</div>
           </div>
-          <div class="i-time">sada</div>
-        </div>
-      `;
+          <div class="time">sada</div>
+        </div>`;
     }
     if(type==="feeding" && activeFeeding){
-      const ic = iconFor("feeding");
-      const elapsed = Date.now() - activeFeeding.startMs;
+      const el = Date.now() - activeFeeding.startMs;
       const b = activeFeeding.breast==="left" ? "Lijeva" : activeFeeding.breast==="right" ? "Desna" : activeFeeding.breast==="both" ? "Obje" : "—";
       return `
-        <div class="item">
-          <div class="i-ico" style="background:${ic.bg}; color:${ic.color};"><span>${ic.emoji}</span></div>
-          <div class="i-content">
-            <div class="i-title">Hranjenje aktivno — ${b}</div>
-            <div class="i-details">Počelo: ${formatStamp(activeFeeding.startMs)} • Traje: ${hmsFromMs(elapsed)}</div>
+        <div class="card">
+          <div class="ico"><span>🍼</span></div>
+          <div class="cc">
+            <div class="ct">Hranjenje u toku — ${b}</div>
+            <div class="cd">Počelo: ${formatStamp(activeFeeding.startMs)} • Traje: ${hmsFromMs(el)}</div>
           </div>
-          <div class="i-time">sada</div>
-        </div>
-      `;
+          <div class="time">sada</div>
+        </div>`;
     }
     return "";
   }
 
-  // ====== Roman numerals for vintage clock ======
-  function buildRoman(elId){
-    const el = document.getElementById(elId);
-    if(!el || el.dataset.built === "1") return;
-    el.dataset.built = "1";
-    const romans = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
-    el.innerHTML = romans.map((r, i)=>{
-      const deg = i * 30;
-      return `<span style="--rot:${deg}deg">${r}</span>`;
-    }).join("");
-  }
-
-  function setAnalog(elH, elM, elS, elapsedMs){
-    const totalSec = Math.floor(Math.max(0, elapsedMs)/1000);
-    const sec = totalSec % 60;
-    const min = Math.floor(totalSec/60) % 60;
-    const hr = Math.floor(totalSec/3600) % 12;
-
-    const sDeg = sec * 6;
-    const mDeg = min * 6 + sec * 0.1;
-    const hDeg = hr * 30 + min * 0.5;
-
-    elS.style.transform = `translate(-50%,-100%) rotate(${sDeg}deg)`;
-    elM.style.transform = `translate(-50%,-100%) rotate(${mDeg}deg)`;
-    elH.style.transform = `translate(-50%,-100%) rotate(${hDeg}deg)`;
-  }
-
-  // ====== Header + Hero ======
-  function updateHeaderPills(){
+  function updatePills(){
     const lastSleep = activities.filter(a=>a.type==="sleep" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
     const lastFeed  = activities.filter(a=>a.type==="feeding" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
-    document.getElementById("pillSleepAgo").textContent = lastSleep ? timeAgoSeconds(lastSleep.endMs) : "-";
-    document.getElementById("pillFeedAgo").textContent  = lastFeed  ? timeAgoSeconds(lastFeed.endMs)  : "-";
+    document.getElementById("pillSleep").textContent = lastSleep ? timeAgo(lastSleep.endMs) : "-";
+    document.getElementById("pillFeed").textContent  = lastFeed  ? timeAgo(lastFeed.endMs)  : "-";
   }
 
   function updateHero(){
     const main = document.getElementById("heroMain");
     const sub  = document.getElementById("heroSub");
+    const tag  = document.getElementById("heroTag");
 
     if(activeSleep){
+      tag.textContent = "SAN U TOKU";
       main.textContent = `Spava • ${hmsFromMs(Date.now() - activeSleep.startMs)}`;
-      sub.textContent  = `Počeo: ${formatStamp(activeSleep.startMs)} (${timeAgoSeconds(activeSleep.startMs)})`;
+      sub.textContent  = `Počeo: ${formatStamp(activeSleep.startMs)} (${timeAgo(activeSleep.startMs)})`;
+      document.getElementById("ctaSleepSub").textContent = "Zaustavi san";
+      document.getElementById("ctaSleepR").textContent = "STOP";
       return;
     }
     if(activeFeeding){
       const b = activeFeeding.breast==="left" ? "Lijeva" : activeFeeding.breast==="right" ? "Desna" : activeFeeding.breast==="both" ? "Obje" : "—";
+      tag.textContent = "HRANJENJE U TOKU";
       main.textContent = `Jede (${b}) • ${hmsFromMs(Date.now() - activeFeeding.startMs)}`;
       sub.textContent  = `Počelo: ${formatStamp(activeFeeding.startMs)} • Dojka: ${b}`;
+      document.getElementById("ctaFeedSub").textContent = "Završi hranjenje";
+      document.getElementById("ctaFeedR").textContent = "STOP";
       return;
     }
 
+    tag.textContent = "STATUS";
     const lastSleep = activities.filter(a=>a.type==="sleep" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
-    const lastFeed  = activities.filter(a=>a.type==="feeding" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
-
-    const awakeFrom = lastSleep ? timeAgoSeconds(lastSleep.endMs) : "-";
-    const feedAgo   = lastFeed  ? timeAgoSeconds(lastFeed.endMs)  : "-";
-    main.textContent = `Budan • ${awakeFrom}`;
-    sub.textContent  = `Zadnje hranjenje: ${feedAgo}`;
+    const awake = lastSleep ? timeAgo(lastSleep.endMs) : "-";
+    main.textContent = `Budan • ${awake}`;
+    sub.textContent  = `Spreman za novi unos.`;
+    document.getElementById("ctaSleepSub").textContent = "Dodaj novi san";
+    document.getElementById("ctaSleepR").textContent = "⟶";
+    document.getElementById("ctaFeedSub").textContent = "Dodaj hranjenje";
+    document.getElementById("ctaFeedR").textContent = "⟶";
   }
 
-  // ====== Main list (home/history) ======
-  let isHistory = false;
-
-  function updateMainList(){
-    const list = document.getElementById("mainList");
-    const title = document.getElementById("sectionTitle");
-    const link  = document.getElementById("toggleView");
+  function updateList(){
+    const el = document.getElementById("list");
+    const title = document.getElementById("secTitle");
+    const tgl = document.getElementById("toggleHistory");
 
     if(!isHistory){
       title.textContent = "Trenutno / posljednje";
-      link.textContent = "Historija";
+      tgl.textContent = "Historija";
 
       const blocks = [];
-      if(activeSleep) blocks.push(activeCardHTML("sleep"));
-      if(activeFeeding) blocks.push(activeCardHTML("feeding"));
+      if(activeSleep) blocks.push(activeCard("sleep"));
+      if(activeFeeding) blocks.push(activeCard("feeding"));
 
       const lastSleep = activities.filter(a=>a.type==="sleep" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
       const lastFeed  = activities.filter(a=>a.type==="feeding" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
+      if(!activeSleep && lastSleep) blocks.push(cardHTML(lastSleep));
+      if(!activeFeeding && lastFeed) blocks.push(cardHTML(lastFeed));
 
-      if(!activeSleep && lastSleep) blocks.push(itemHTML(lastSleep));
-      if(!activeFeeding && lastFeed) blocks.push(itemHTML(lastFeed));
-
-      list.innerHTML = blocks.length ? blocks.join("") : `<div class="empty">Nema aktivnosti.</div>`;
+      el.innerHTML = blocks.length ? blocks.join("") : `<div class="empty">Nema aktivnosti.</div>`;
       return;
     }
 
-    title.textContent = "Historija (po danima)";
-    link.textContent = "Početna";
+    title.textContent = "Historija (San/Hranjenje)";
+    tgl.textContent = "Početna";
 
-    // show only supported types here
-    const sorted = activities
-      .filter(a=>SUPPORTED_TYPES.has(a.type) && a.startMs && a.endMs)
-      .sort((a,b)=>b.startMs-a.startMs);
-
-    if(!sorted.length){
-      list.innerHTML = `<div class="empty">Nema zapisa (San/Hranjenje).</div>`;
-      return;
-    }
+    const sorted = activities.filter(a=>SUPPORTED.has(a.type) && a.startMs && a.endMs).sort((a,b)=>b.startMs-a.startMs);
+    if(!sorted.length){ el.innerHTML = `<div class="empty">Nema zapisa.</div>`; return; }
 
     const groups = {};
     for(const a of sorted){
       const k = dayKey(a.startMs);
-      if(!groups[k]) groups[k] = [];
-      groups[k].push(a);
+      (groups[k] ||= []).push(a);
     }
     const keys = Object.keys(groups).sort((a,b)=>a<b?1:-1);
 
-    list.innerHTML = keys.map(k=>{
-      const items = groups[k].map(a=>itemHTML(a)).join("");
+    el.innerHTML = keys.map(k=>{
+      const count = groups[k].length;
+      const items = groups[k].map(cardHTML).join("");
       return `
-        <div class="day-group">
-          <div class="day-head">
-            <div class="day-title">${dayLabel(k)}</div>
-            <div class="day-meta">${groups[k].length} zapisa</div>
+        <div class="card" style="flex-direction:column; gap:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div class="ct">${k}</div>
+            <div class="time">${count} zapisa</div>
           </div>
-          <div class="day-body">${items}</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">${items}</div>
         </div>
       `;
     }).join("");
   }
 
-  function updateDisplay(){
-    updateHeaderPills();
+  function updateAll(){
+    updatePills();
     updateHero();
-    updateMainList();
+    updateList();
   }
 
-  // ====== Modals ======
+  // ===== Modals =====
   function openModal(id){
     document.getElementById(id).classList.add("active");
-    if(id === "sleepModal") setupSleepModal();
-    if(id === "feedModal") setupFeedModal();
-    if(id === "editModal") setupEditModal();
-
-    if(id === "sleepModal") buildRoman("sleepRoman");
-    if(id === "feedModal") buildRoman("feedRoman");
-
-    tickActiveTimersInModals();
+    if(id==="sleepModal") paintSleepModal();
+    if(id==="feedModal") paintFeedModal();
   }
   function closeModal(id){ document.getElementById(id).classList.remove("active"); }
 
   document.querySelectorAll(".modal").forEach(m=>{
-    m.addEventListener("click", (e)=>{ if(e.target === m) closeModal(m.id); });
+    m.addEventListener("click", (e)=>{ if(e.target===m) closeModal(m.id); });
   });
   document.querySelectorAll("[data-close]").forEach(x=>{
     x.addEventListener("click", ()=> closeModal(x.dataset.close));
   });
 
-  // ====== Sleep flow (writes activeSleep like old app did) ====== [file:2]
-  function setupSleepModal(){
-    const now = Date.now();
-    document.getElementById("sleepStartDate").value = msToDate(now);
-    document.getElementById("sleepStartClock").value = msToClock(now);
-
-    document.getElementById("sleepAdvanced").style.display = "none";
-    document.getElementById("sleepAdvancedBtn").textContent = "Uredi vrijeme / bilješke";
-
+  // ===== Sleep =====  [file:2]
+  function paintSleepModal(){
     if(activeSleep){
-      document.getElementById("sleepTimerBox").style.display = "block";
-      document.getElementById("sleepStartBtn").style.display = "none";
-      document.getElementById("sleepStopBtn").style.display = "block";
+      document.getElementById("sleepTimer").style.display = "block";
+      document.getElementById("sleepStart").style.display = "none";
+      document.getElementById("sleepStop").style.display = "block";
     }else{
-      document.getElementById("sleepTimerBox").style.display = "none";
-      document.getElementById("sleepStartBtn").style.display = "block";
-      document.getElementById("sleepStopBtn").style.display = "none";
+      document.getElementById("sleepTimer").style.display = "none";
+      document.getElementById("sleepStart").style.display = "block";
+      document.getElementById("sleepStop").style.display = "none";
       document.getElementById("sleepNotes").value = "";
     }
   }
 
-  document.getElementById("sleepAdvancedBtn").addEventListener("click", ()=>{
-    const box = document.getElementById("sleepAdvanced");
-    const isOpen = box.style.display === "block";
-    box.style.display = isOpen ? "none" : "block";
-    document.getElementById("sleepAdvancedBtn").textContent = isOpen ? "Uredi vrijeme / bilješke" : "Sakrij napredno";
-  });
-
-  document.getElementById("sleepStartBtn").addEventListener("click", ()=>{
+  document.getElementById("sleepStart").addEventListener("click", ()=>{
     if(activeSleep) return;
-
-    const advOpen = document.getElementById("sleepAdvanced").style.display === "block";
-    let startMs = Date.now();
-    if(advOpen){
-      const ms = dateClockToMs(
-        document.getElementById("sleepStartDate").value,
-        document.getElementById("sleepStartClock").value
-      );
-      if(ms === null) return alert("Unesi ispravno vrijeme (HH:MM:SS) i datum.");
-      if(ms > Date.now() + 1000) return alert("Početak ne može biti u budućnosti.");
-      startMs = ms;
-    }
-
-    const d = new Date(startMs);
+    const ms = Date.now();
+    const d = new Date(ms);
     activeSleep = {
       startIso: d.toISOString(),
-      startMs: startMs,
-      startDisplay: d.toLocaleString("bs-BA", { hour:"2-digit", minute:"2-digit" })
+      startMs: ms,
+      startDisplay: d.toLocaleString("bs-BA", {hour:"2-digit", minute:"2-digit"})
     };
     saveActive();
-    updateDisplay();
-    setupSleepModal();
+    paintSleepModal();
+    updateAll();
   });
 
-  document.getElementById("sleepStopBtn").addEventListener("click", ()=>{
+  document.getElementById("sleepStop").addEventListener("click", ()=>{
     if(!activeSleep) return;
 
     const endMs = Date.now();
-    if(endMs <= activeSleep.startMs) return alert("Greška u vremenima.");
-
     const endDate = new Date(endMs);
-    const durationHours = (endMs - activeSleep.startMs) / 3600000;
+    const durationHours = (endMs - activeSleep.startMs)/3600000;
 
-    const notes = document.getElementById("sleepNotes").value || "";
-    const endDisplay = endDate.toLocaleString("bs-BA", { hour:"2-digit", minute:"2-digit" });
-
-    // Save in OLD format fields too (time/endTime/duration/timestamp) so old app can still read it. [file:2]
     const act = normalizeActivity({
       id: uid(),
       type: "sleep",
       time: activeSleep.startIso,
       endTime: endDate.toISOString(),
       duration: durationHours,
-      notes,
+      notes: document.getElementById("sleepNotes").value || "",
       startTimeDisplay: activeSleep.startDisplay,
-      endTimeDisplay: endDisplay,
+      endTimeDisplay: endDate.toLocaleString("bs-BA", {hour:"2-digit", minute:"2-digit"}),
       timestamp: Date.now()
     });
 
     activities.push(act);
-
     activeSleep = null;
     saveActs();
     saveActive();
-    updateDisplay();
     closeModal("sleepModal");
+    updateAll();
   });
 
-  // ====== Feeding flow (writes activeFeeding like old app did) ====== [file:2]
-  function clearBreastSelection(containerId){
-    document.querySelectorAll(`#${containerId} .toggle`).forEach(b=>b.classList.remove("active"));
+  // ===== Feeding =====  [file:2]
+  function setBreast(b){
+    selectedBreast = b;
+    document.querySelectorAll("#breastRow .tog").forEach(btn=>{
+      btn.classList.toggle("active", btn.dataset.b === b);
+    });
   }
+  document.querySelectorAll("#breastRow .tog").forEach(btn=>{
+    btn.addEventListener("click", ()=> setBreast(btn.dataset.b));
+  });
 
-  function setupFeedModal(){
-    const now = Date.now();
-    document.getElementById("feedStartDate").value = msToDate(now);
-    document.getElementById("feedStartClock").value = msToClock(now);
-
-    document.getElementById("feedAdvanced").style.display = "none";
-    document.getElementById("feedAdvancedBtn").textContent = "Uredi vrijeme / bilješke";
-
+  function paintFeedModal(){
     if(activeFeeding){
-      document.getElementById("feedTimerBox").style.display = "block";
-      document.getElementById("feedStartBtn").style.display = "none";
-      document.getElementById("feedStopBtn").style.display = "block";
-
-      selectedBreast = activeFeeding.breast;
-      clearBreastSelection("breastBtns");
-      document.querySelectorAll("#breastBtns .toggle").forEach(btn=>{
-        if(btn.dataset.breast === selectedBreast) btn.classList.add("active");
-      });
+      document.getElementById("feedTimer").style.display = "block";
+      document.getElementById("feedStart").style.display = "none";
+      document.getElementById("feedStop").style.display = "block";
+      setBreast(activeFeeding.breast);
     }else{
-      document.getElementById("feedTimerBox").style.display = "none";
-      document.getElementById("feedStartBtn").style.display = "block";
-      document.getElementById("feedStopBtn").style.display = "none";
-      selectedBreast = null;
-      clearBreastSelection("breastBtns");
+      document.getElementById("feedTimer").style.display = "none";
+      document.getElementById("feedStart").style.display = "block";
+      document.getElementById("feedStop").style.display = "none";
+      setBreast(null);
       document.getElementById("feedNotes").value = "";
     }
   }
 
-  document.getElementById("feedAdvancedBtn").addEventListener("click", ()=>{
-    const box = document.getElementById("feedAdvanced");
-    const isOpen = box.style.display === "block";
-    box.style.display = isOpen ? "none" : "block";
-    document.getElementById("feedAdvancedBtn").textContent = isOpen ? "Uredi vrijeme / bilješke" : "Sakrij napredno";
-  });
-
-  document.querySelectorAll("#breastBtns .toggle").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      clearBreastSelection("breastBtns");
-      btn.classList.add("active");
-      selectedBreast = btn.dataset.breast;
-    });
-  });
-
-  document.getElementById("feedStartBtn").addEventListener("click", ()=>{
+  document.getElementById("feedStart").addEventListener("click", ()=>{
     if(activeFeeding) return;
-    if(!selectedBreast) return alert("Odaberi dojku (Lijeva/Desna/Obje).");
-
-    const advOpen = document.getElementById("feedAdvanced").style.display === "block";
-    let startMs = Date.now();
-    if(advOpen){
-      const ms = dateClockToMs(
-        document.getElementById("feedStartDate").value,
-        document.getElementById("feedStartClock").value
-      );
-      if(ms === null) return alert("Unesi ispravno vrijeme (HH:MM:SS) i datum.");
-      if(ms > Date.now() + 1000) return alert("Početak ne može biti u budućnosti.");
-      startMs = ms;
-    }
-
-    const d = new Date(startMs);
+    if(!selectedBreast) return alert("Odaberi dojku.");
+    const ms = Date.now();
+    const d = new Date(ms);
     activeFeeding = {
       startIso: d.toISOString(),
-      startMs: startMs,
-      startDisplay: d.toLocaleString("bs-BA", { day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit" }),
+      startMs: ms,
+      startDisplay: d.toLocaleString("bs-BA", {day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit"}),
       breast: selectedBreast
     };
     saveActive();
-    updateDisplay();
-    setupFeedModal();
+    paintFeedModal();
+    updateAll();
   });
 
-  document.getElementById("feedStopBtn").addEventListener("click", ()=>{
+  document.getElementById("feedStop").addEventListener("click", ()=>{
     if(!activeFeeding) return;
 
     const endMs = Date.now();
-    if(endMs <= activeFeeding.startMs) return alert("Greška u vremenima.");
-
     const endDate = new Date(endMs);
-    const durationMin = Math.round((endMs - activeFeeding.startMs) / 60000);
-
-    const notes = document.getElementById("feedNotes").value || "";
-    const endDisplay = endDate.toLocaleString("bs-BA", { day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit" });
+    const durationMin = Math.round((endMs - activeFeeding.startMs)/60000);
 
     const act = normalizeActivity({
       id: uid(),
@@ -1540,192 +1171,99 @@
       endTime: endDate.toISOString(),
       breast: activeFeeding.breast,
       duration: durationMin,
-      notes,
+      notes: document.getElementById("feedNotes").value || "",
       startTimeDisplay: activeFeeding.startDisplay,
-      endTimeDisplay: endDisplay,
+      endTimeDisplay: endDate.toLocaleString("bs-BA", {day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit"}),
       timestamp: Date.now()
     });
 
     activities.push(act);
-
     activeFeeding = null;
     saveActs();
     saveActive();
-    updateDisplay();
     closeModal("feedModal");
+    updateAll();
   });
 
-  // ====== Edit/Delete (only for sleep/feeding entries) ======
-  function findAct(id){ return activities.find(a=>a && a.id === id); }
-
-  function setupEditModal(){
-    const a = findAct(editId);
-    if(!a || !SUPPORTED_TYPES.has(a.type)) return closeModal("editModal");
-
-    document.getElementById("editType").value = a.type === "sleep" ? "San" : "Hranjenje";
-    document.getElementById("editStartDate").value = msToDate(a.startMs);
-    document.getElementById("editStartClock").value = msToClock(a.startMs);
-    document.getElementById("editEndDate").value = msToDate(a.endMs);
-    document.getElementById("editEndClock").value = msToClock(a.endMs);
-    document.getElementById("editNotes").value = a.notes || "";
-
-    if(a.type === "feeding"){
-      document.getElementById("editBreastGroup").style.display = "block";
-      editBreast = a.breast;
-      clearBreastSelection("editBreastBtns");
-      document.querySelectorAll("#editBreastBtns .toggle").forEach(btn=>{
-        if(btn.dataset.breast === editBreast) btn.classList.add("active");
-      });
-    }else{
-      document.getElementById("editBreastGroup").style.display = "none";
-      editBreast = null;
-    }
-  }
-
-  document.querySelectorAll("#editBreastBtns .toggle").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      clearBreastSelection("editBreastBtns");
-      btn.classList.add("active");
-      editBreast = btn.dataset.breast;
-    });
-  });
-
-  document.getElementById("editSaveBtn").addEventListener("click", ()=>{
-    const a = findAct(editId);
-    if(!a || !SUPPORTED_TYPES.has(a.type)) return;
-
-    const startMs = dateClockToMs(document.getElementById("editStartDate").value, document.getElementById("editStartClock").value);
-    const endMs   = dateClockToMs(document.getElementById("editEndDate").value,   document.getElementById("editEndClock").value);
-    if(startMs === null || endMs === null) return alert("Unesi ispravne datume i vremena (HH:MM:SS).");
-    if(endMs <= startMs) return alert("Kraj mora biti poslije početka.");
-
-    a.startMs = startMs;
-    a.endMs = endMs;
-    a.startIso = msToISO(startMs);
-    a.endIso = msToISO(endMs);
-
-    // Keep old-format fields in sync too [file:2]
-    a.time = a.startIso;
-    a.endTime = a.endIso;
-
-    a.notes = document.getElementById("editNotes").value || "";
-
-    if(a.type === "feeding"){
-      if(!editBreast) return alert("Odaberi dojku.");
-      a.breast = editBreast;
-    }
-
-    // Update old "duration" style fields [file:2]
-    if(a.type === "sleep"){
-      a.duration = (a.endMs - a.startMs) / 3600000;
-      const d1 = new Date(a.startMs), d2 = new Date(a.endMs);
-      a.startTimeDisplay = d1.toLocaleString("bs-BA", {hour:"2-digit", minute:"2-digit"});
-      a.endTimeDisplay = d2.toLocaleString("bs-BA", {hour:"2-digit", minute:"2-digit"});
-    }else{
-      a.duration = Math.round((a.endMs - a.startMs) / 60000);
-      const d1 = new Date(a.startMs), d2 = new Date(a.endMs);
-      a.startTimeDisplay = d1.toLocaleString("bs-BA", {day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit"});
-      a.endTimeDisplay = d2.toLocaleString("bs-BA", {day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit"});
-    }
-
-    a.timestamp = Date.now();
-
-    saveActs();
-    updateDisplay();
-    closeModal("editModal");
-  });
-
-  document.getElementById("editDeleteBtn").addEventListener("click", ()=>{
-    const a = findAct(editId);
-    if(!a || !SUPPORTED_TYPES.has(a.type)) return closeModal("editModal");
-    if(!confirm("Obrisati zapis?")) return;
-
-    activities = activities.filter(x=>x && x.id !== editId);
-    saveActs();
-    updateDisplay();
-    closeModal("editModal");
-  });
-
-  // click handlers for edit/delete in lists
+  // ===== List delete =====
   document.addEventListener("click", (e)=>{
-    const edit = e.target.closest("[data-edit]");
-    const del  = e.target.closest("[data-del]");
-
-    if(edit){
-      editId = edit.dataset.edit;
-      openModal("editModal");
-    }
-    if(del){
-      const id = del.dataset.del;
-      const a = findAct(id);
-      if(!a || !SUPPORTED_TYPES.has(a.type)) return;
-      if(!confirm("Obrisati zapis?")) return;
-      activities = activities.filter(x=>x && x.id !== id);
-      saveActs();
-      updateDisplay();
-    }
+    const del = e.target.closest("[data-del]");
+    if(!del) return;
+    const id = del.dataset.del;
+    if(!confirm("Obrisati zapis?")) return;
+    activities = activities.filter(a=>a && a.id !== id);
+    saveActs();
+    updateAll();
   });
 
-  // ====== History toggle ======
-  function toggleHistory(force){
-    isHistory = typeof force === "boolean" ? force : !isHistory;
-    updateDisplay();
-    document.getElementById("mainList").scrollTo({top:0, behavior:"instant"});
-    window.scrollTo({top:0, behavior:"instant"});
+  // ===== Navigation =====
+  function setActiveNav(which){
+    document.querySelectorAll(".navItem").forEach(x=>x.classList.remove("active"));
+    document.getElementById(which).classList.add("active");
   }
-  document.getElementById("btnHistory").addEventListener("click", ()=> toggleHistory(true));
-  document.getElementById("toggleView").addEventListener("click", ()=> toggleHistory());
+  document.getElementById("navHome").addEventListener("click", ()=>{
+    isHistory = false; setActiveNav("navHome"); updateAll(); window.scrollTo({top:0, behavior:"instant"});
+  });
+  document.getElementById("navHistory").addEventListener("click", ()=>{
+    isHistory = true; setActiveNav("navHistory"); updateAll(); window.scrollTo({top:0, behavior:"instant"});
+  });
+  document.getElementById("navSleep").addEventListener("click", ()=> openModal("sleepModal"));
+  document.getElementById("navFeed").addEventListener("click", ()=> openModal("feedModal"));
+  document.getElementById("toggleHistory").addEventListener("click", ()=>{
+    isHistory = !isHistory;
+    setActiveNav(isHistory ? "navHistory" : "navHome");
+    updateAll();
+    window.scrollTo({top:0, behavior:"instant"});
+  });
 
-  // Hero buttons
-  document.getElementById("heroSleepBtn").addEventListener("click", ()=> openModal("sleepModal"));
-  document.getElementById("heroFeedBtn").addEventListener("click", ()=> openModal("feedModal"));
+  document.getElementById("openSleep").addEventListener("click", ()=> openModal("sleepModal"));
+  document.getElementById("openFeed").addEventListener("click", ()=> openModal("feedModal"));
 
-  // ====== Active timers tick (analog + digital) ======
-  function tickActiveTimersInModals(){
+  // Buttons (placeholder)
+  document.getElementById("btnSettings").addEventListener("click", ()=>{
+    alert("Opcije: mogu dodati teme, backup/import, i prikaz svih tipova aktivnosti.");
+  });
+  document.getElementById("btnExport").addEventListener("click", ()=>{
+    const blob = new Blob([JSON.stringify({babyActivities: activities, activeSleep, activeFeeding}, null, 2)], {type:"application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "nori_backup.json";
+    a.click();
+    setTimeout(()=> URL.revokeObjectURL(a.href), 4000);
+  });
+
+  // Live tick
+  function tick(){
+    // refresh from storage (multi-tab safe)
+    activities = safeParse(localStorage.getItem(KEY_ACTS) || "[]", []);
+    activeSleep = safeParse(localStorage.getItem(KEY_ACTIVE_SLEEP) || "null", null);
+    activeFeeding = safeParse(localStorage.getItem(KEY_ACTIVE_FEED) || "null", null);
+    normalizeAll();
+
+    updatePills();
+    updateHero();
+
+    // tick modal timers
     if(document.getElementById("sleepModal").classList.contains("active") && activeSleep){
-      const elapsed = Date.now() - activeSleep.startMs;
-      document.getElementById("sleepElapsed").textContent = hmsFromMs(elapsed);
-      document.getElementById("sleepMeta").textContent = `Počeo: ${formatStamp(activeSleep.startMs)} • ${timeAgoSeconds(activeSleep.startMs)}`;
-      setAnalog(
-        document.getElementById("sleepH"),
-        document.getElementById("sleepM"),
-        document.getElementById("sleepS"),
-        elapsed
-      );
+      const el = Date.now() - activeSleep.startMs;
+      document.getElementById("sleepElapsed").textContent = hmsFromMs(el);
+      document.getElementById("sleepMeta").textContent = `Počeo: ${formatStamp(activeSleep.startMs)} • ${timeAgo(activeSleep.startMs)}`;
+      document.getElementById("sleepTimer").style.display = "block";
     }
     if(document.getElementById("feedModal").classList.contains("active") && activeFeeding){
-      const elapsed = Date.now() - activeFeeding.startMs;
-      document.getElementById("feedElapsed").textContent = hmsFromMs(elapsed);
+      const el = Date.now() - activeFeeding.startMs;
       const b = activeFeeding.breast==="left" ? "Lijeva" : activeFeeding.breast==="right" ? "Desna" : activeFeeding.breast==="both" ? "Obje" : "—";
+      document.getElementById("feedElapsed").textContent = hmsFromMs(el);
       document.getElementById("feedMeta").textContent = `Počelo: ${formatStamp(activeFeeding.startMs)} • Dojka: ${b}`;
-      setAnalog(
-        document.getElementById("feedH"),
-        document.getElementById("feedM"),
-        document.getElementById("feedS"),
-        elapsed
-      );
+      document.getElementById("feedTimer").style.display = "block";
     }
+
+    // pulse only when active tracking
+    document.getElementById("pulseDot").style.display = (activeSleep || activeFeeding) ? "block" : "none";
   }
 
-  function ensureIntervals(){
-    if(homeInterval) return;
-    homeInterval = setInterval(()=>{
-      // refresh from storage (in case another tab modified)
-      activities = safeParse(localStorage.getItem(KEY_ACTS) || "[]", []);
-      activeSleep = safeParse(localStorage.getItem(KEY_ACTIVE_SLEEP) || "null", null);
-      activeFeeding = safeParse(localStorage.getItem(KEY_ACTIVE_FEED) || "null", null);
-
-      normalizeAll(); // keeps old structure + adds startMs/endMs for our UI
-      updateHero();
-      updateHeaderPills();
-      if(!isHistory) updateMainList();
-      tickActiveTimersInModals();
-    }, 1000);
-  }
-
-  // Init
-  updateDisplay();
-  ensureIntervals();
+  updateAll();
+  setInterval(tick, 1000);
 </script>
 </body>
 </html>
