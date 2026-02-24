@@ -961,7 +961,7 @@
     const lastFeed  = activities.filter(a=>a.type==="feeding" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
     const lastAwake = activities.filter(a=>a.type==="awake" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
 
-    main.textContent = lastAwake ? `Zadnji kraj budnosti • ${agoPrecise(lastAwake.endMs)}` : "Spreman";
+    main.textContent = lastAwake ? `Zadnji kraj budnosti • ${agoPrecise(lastAwake.endMs)}` : "";
     sub.textContent  = lastFeed ? `Zadnje hranjenje: ${agoPrecise(lastFeed.endMs)}` : "Unesi budan ili hranjenje.";
     document.getElementById("ctaAwakeSub").textContent = "Dodaj";
     document.getElementById("ctaAwakeR").textContent = "⟶";
@@ -1365,3 +1365,4 @@
 </script>
 </body>
 </html>
+
