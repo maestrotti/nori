@@ -1,1369 +1,1237 @@
 <!DOCTYPE html>
 <html lang="bs">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Norian</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Norian</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08090F;
+  --surface:#0F1118;
+  --surface2:#151822;
+  --border:rgba(255,255,255,.09);
+  --border2:rgba(255,255,255,.15);
+  --text:#F0F2FA;
+  --muted:rgba(200,208,232,.60);
+  --muted2:rgba(200,208,232,.40);
 
-  <style>
-    :root{
-      --bg:#070A12; --bg2:#0B1020;
-      --text:rgba(245,248,255,1); --muted:rgba(182,190,214,.82);
-      --border:rgba(255,255,255,.14);
+  --moon:#7C9CFF;
+  --moon2:#A8BDFF;
+  --feed:#FF8FAB;
+  --feed2:#FFB3C6;
+  --gold:#C9A96E;
+  --gold2:#E8C98A;
+  --green:#4ECBA0;
+  --orange:#FF9A5C;
 
-      --teal:#22D3EE; --vio:#A78BFA; --rose:#FB7185;
-      --green:#34D399; --orange:#FB923C;
+  --navH:72px;
+  --safeT:env(safe-area-inset-top,0px);
+  --safeB:env(safe-area-inset-bottom,0px);
+  --maxW:680px;
+}
 
-      --wood1: rgba(126,86,42,0.26);
-      --wood2: rgba(72,48,22,0.22);
-      --brass1:#D8B26A;
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
 
-      --r24: 26px; --rfull: 9999px;
+body{
+  font-family:'DM Sans',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
 
-      --sh1: 0 18px 55px rgba(0,0,0,.45);
+.wrap{
+  max-width:var(--maxW);
+  margin:0 auto;
+  padding:0 16px calc(var(--navH) + var(--safeB) + 24px);
+  position:relative;
+  z-index:1;
+}
 
-      --navH: 78px;
-      --safeT: env(safe-area-inset-top, 0px);
-      --safeB: env(safe-area-inset-bottom, 0px);
-      --tapMin: 48px;
+/* ── top bar ── */
+.top{
+  position:sticky;top:0;z-index:120;
+  margin:0 -16px;
+  padding:calc(14px + var(--safeT)) 20px 14px;
+  background:rgba(8,9,15,.82);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.topRow{display:flex;justify-content:space-between;align-items:center;gap:12px;}
 
-      --maxW: 760px;
-    }
+.wordmark{
+  font-family:'DM Serif Display',serif;
+  font-size:22px;
+  letter-spacing:.01em;
+  background:linear-gradient(110deg,var(--moon2),var(--feed),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
 
-    *{ box-sizing:border-box; margin:0; padding:0; }
-    html, body{ height:100%; }
+.pills{display:flex;gap:8px;flex-wrap:wrap;}
+.pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 11px;border-radius:99px;
+  font-size:12px;font-weight:500;
+  border:1px solid var(--border2);
+  background:rgba(255,255,255,.05);
+  color:var(--muted);
+  white-space:nowrap;
+}
+.pill .dot{width:7px;height:7px;border-radius:99px;flex-shrink:0;}
+.pill.sleep .dot{background:var(--moon);}
+.pill.feed .dot{background:var(--feed);}
 
-    body{
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(900px 650px at 12% -10%, rgba(34,211,238,.22), transparent 60%),
-        radial-gradient(900px 650px at 94% 5%, rgba(167,139,250,.20), transparent 60%),
-        radial-gradient(900px 650px at 55% 110%, rgba(251,113,133,.18), transparent 60%),
-        linear-gradient(180deg, var(--bg), var(--bg2));
-      overflow-x:hidden;
-      -webkit-tap-highlight-color: transparent;
-    }
+/* ── hero ── */
+.hero{
+  margin-top:14px;
+  border-radius:28px;
+  border:1px solid var(--border2);
+  background:linear-gradient(145deg,rgba(124,156,255,.12) 0%,rgba(255,143,171,.08) 60%,rgba(201,169,110,.06) 100%);
+  overflow:hidden;
+  position:relative;
+  padding:20px;
+}
+.hero::before{
+  content:"";
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 10% -10%,rgba(124,156,255,.18),transparent 55%),
+    radial-gradient(ellipse 60% 40% at 90% 100%,rgba(255,143,171,.14),transparent 55%);
+  pointer-events:none;
+}
+.heroContent{position:relative;z-index:1;}
+.heroStatus{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:8px;
+}
+.statusBadge{
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 10px;border-radius:99px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.07);
+  color:var(--muted);
+}
+.statusBadge.sleep{border-color:rgba(124,156,255,.30);background:rgba(124,156,255,.12);color:var(--moon2);}
+.statusBadge.feed{border-color:rgba(255,143,171,.30);background:rgba(255,143,171,.12);color:var(--feed2);}
 
-    body::before{
-      content:"NORIAN";
-      position: fixed;
-      inset: 0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight: 1000;
-      letter-spacing: .22em;
-      font-size: min(18vw, 140px);
-      color: rgba(34,211,238,0.05);
-      text-shadow: 0 14px 40px rgba(0,0,0,0.35);
-      pointer-events:none;
-      user-select:none;
-      z-index: 0;
-      transform: translateY(-6px);
-    }
+.liveDot{
+  width:8px;height:8px;border-radius:99px;
+  background:var(--green);
+  box-shadow:0 0 0 0 rgba(78,203,160,.5);
+  animation:livePing 1.8s infinite;
+  flex-shrink:0;
+}
+@keyframes livePing{
+  0%{box-shadow:0 0 0 0 rgba(78,203,160,.5);}
+  70%{box-shadow:0 0 0 10px rgba(78,203,160,0);}
+  100%{box-shadow:0 0 0 0 rgba(78,203,160,0);}
+}
 
-    .wrap{
-      position: relative;
-      z-index: 1;
-      max-width: var(--maxW);
-      margin: 0 auto;
-      padding: 0 14px calc(var(--navH) + var(--safeB) + 18px);
-    }
+.heroMain{
+  font-family:'DM Serif Display',serif;
+  font-size:34px;
+  line-height:1.1;
+  letter-spacing:-.01em;
+  margin-bottom:6px;
+}
+.heroSub{font-size:13px;color:var(--muted);line-height:1.5;}
 
-    .top{
-      position: sticky; top: 0; z-index: 120;
-      margin: 0 -14px;
-      padding: calc(12px + var(--safeT)) 14px 12px;
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      background: linear-gradient(180deg, rgba(7,10,18,.80), rgba(7,10,18,.45));
-      border-bottom: 1px solid rgba(255,255,255,.10);
-    }
-    .topRow{ display:flex; justify-content:space-between; align-items:flex-start; gap: 12px; }
+/* ── CTA row ── */
+.ctaRow{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.cta{
+  border-radius:22px;
+  border:1px solid var(--border2);
+  background:rgba(255,255,255,.05);
+  padding:14px 14px;
+  display:flex;align-items:center;gap:12px;
+  cursor:pointer;user-select:none;
+  position:relative;overflow:hidden;
+  transition:transform .13s,filter .13s;
+  min-height:72px;
+}
+.cta:active{transform:scale(.97);}
+.cta.moonCta::before{
+  content:"";position:absolute;inset:-2px;
+  background:radial-gradient(400px 120px at 10% 0%,rgba(124,156,255,.22),transparent);
+  pointer-events:none;
+}
+.cta.feedCta::before{
+  content:"";position:absolute;inset:-2px;
+  background:radial-gradient(400px 120px at 10% 0%,rgba(255,143,171,.22),transparent);
+  pointer-events:none;
+}
+.ctaIcon{
+  width:44px;height:44px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);
+  flex-shrink:0;
+  position:relative;z-index:1;
+}
+.ctaText{flex:1;min-width:0;position:relative;z-index:1;}
+.ctaText .label{font-size:14px;font-weight:700;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ctaText .sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ctaArrow{font-size:16px;color:rgba(240,242,250,.5);position:relative;z-index:1;flex-shrink:0;}
 
-    .brand{ min-width:0; display:flex; flex-direction:column; gap: 6px; }
-    .brandTitle{
-      font-size: 20px; font-weight: 1000; letter-spacing: -.02em; line-height:1.05;
-      background: linear-gradient(90deg, var(--teal), var(--vio), var(--rose));
-      -webkit-background-clip:text; background-clip:text; color: transparent;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
+/* ── section ── */
+.section{
+  margin-top:14px;
+  border-radius:26px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  overflow:hidden;
+}
+.secHead{
+  padding:14px 16px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid var(--border);
+  background:rgba(255,255,255,.03);
+}
+.secTitle{font-size:14px;font-weight:700;letter-spacing:.01em;}
 
-    .chips{ display:flex; gap: 8px; flex-wrap:wrap; font-size: 12px; color: var(--muted); }
-    .chip{
-      display:inline-flex; align-items:center; gap: 8px;
-      padding: 7px 10px; border-radius: var(--rfull);
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      white-space:nowrap;
-    }
+/* ── tab strip ── */
+.tabStrip{
+  display:flex;
+  border-bottom:1px solid var(--border);
+  background:rgba(255,255,255,.02);
+}
+.tab{
+  flex:1;padding:11px 8px;
+  font-size:13px;font-weight:500;
+  text-align:center;color:var(--muted);
+  cursor:pointer;user-select:none;
+  border-bottom:2px solid transparent;
+  transition:color .15s,border-color .15s;
+}
+.tab.active{color:var(--text);border-bottom-color:var(--moon);}
+.tab.active.feedTab{border-bottom-color:var(--feed);}
 
-    .hero{
-      margin-top: 12px;
-      border-radius: var(--r24);
-      border: 1px solid rgba(255,255,255,.14);
-      background:
-        radial-gradient(900px 360px at 15% 0%, rgba(34,211,238,.18), transparent 60%),
-        radial-gradient(900px 360px at 92% 0%, rgba(167,139,250,.16), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
-      box-shadow: var(--sh1);
-      overflow:hidden;
-      position:relative;
-    }
-    .heroIn{ padding: 16px; position:relative; z-index:1; }
-    .heroTop{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom: 10px; }
-    .heroTag{ font-size: 12px; font-weight: 1000; letter-spacing:.06em; color: rgba(245,248,255,.86); }
-    .dot{
-      width: 10px; height: 10px; border-radius:999px;
-      background: rgba(52,211,153,1);
-      box-shadow: 0 0 0 0 rgba(52,211,153,.55);
-      animation: ping 1.6s infinite;
-    }
-    @keyframes ping{
-      0%{ box-shadow: 0 0 0 0 rgba(52,211,153,.55); }
-      70%{ box-shadow: 0 0 0 12px rgba(52,211,153,0); }
-      100%{ box-shadow: 0 0 0 0 rgba(52,211,153,0); }
-    }
-    .heroMain{
-      font-size: 32px; font-weight: 1000; letter-spacing: -.03em;
-      line-height: 1.04; font-variant-numeric: tabular-nums; margin-bottom: 8px;
-    }
-    .heroSub{ font-size: 13px; color: var(--muted); line-height: 1.35; }
+.secLink{font-size:13px;font-weight:600;color:var(--moon);cursor:pointer;user-select:none;}
 
-    .ctaRow{ margin-top: 14px; display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .cta{
-      min-height: 66px;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      box-shadow: 0 18px 42px rgba(0,0,0,.35);
-      cursor:pointer; user-select:none;
-      padding: 12px 12px;
-      display:flex; align-items:center; justify-content:space-between; gap: 10px;
-      overflow:hidden; position: relative;
-      transition: transform .12s ease, filter .12s ease;
-    }
-    .cta:active{ transform: scale(.985); filter: brightness(.98); }
-    .cta::before{
-      content:""; position:absolute; inset:-2px; pointer-events:none; opacity:.9;
-      background: radial-gradient(700px 180px at 12% 0%, rgba(167,139,250,.26), transparent 60%);
-    }
-    .cta.feed::before{ background: radial-gradient(700px 180px at 12% 0%, rgba(251,113,133,.24), transparent 60%); }
+/* ── list / cards ── */
+.list{padding:12px 14px 14px;display:flex;flex-direction:column;gap:10px;}
 
-    .ctaL{ display:flex; align-items:center; gap: 12px; min-width:0; position:relative; z-index:1; }
-    .badge{
-      width: 46px; height: 46px; border-radius: 16px;
-      display:flex; align-items:center; justify-content:center;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06);
-      flex-shrink:0;
-    }
-    .badge span{ font-size: 22px; }
-    .ctaT{ display:flex; flex-direction:column; gap: 4px; min-width:0; }
-    .ctaT .t{ font-weight: 1000; font-size: 15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .ctaT .s{ font-size: 12px; color: var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .ctaR{ font-size: 12px; color: rgba(245,248,255,.78); font-weight: 1000; white-space:nowrap; position:relative; z-index:1; }
+.card{
+  border-radius:20px;
+  border:1px solid var(--border2);
+  background:rgba(255,255,255,.05);
+  padding:14px;
+  display:flex;gap:12px;align-items:flex-start;
+  position:relative;overflow:hidden;
+}
+.card::after{
+  content:"";position:absolute;inset:-2px;
+  background:radial-gradient(500px 100px at 10% -20%,rgba(255,255,255,.06),transparent);
+  pointer-events:none;
+}
 
-    .section{
-      margin-top: 12px;
-      border-radius: var(--r24);
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.05);
-      box-shadow: var(--sh1);
-      overflow:hidden;
-    }
-    .secHead{
-      padding: 14px 14px 10px;
-      display:flex; justify-content:space-between; align-items:center; gap: 12px;
-      border-bottom: 1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-    }
-    .secTitle{ font-size: 15px; font-weight: 1000; letter-spacing: -.01em; }
-    .secLink{ font-size: 13px; font-weight: 1000; color: rgba(34,211,238,.95); cursor:pointer; user-select:none; }
+.cardIco{
+  width:42px;height:42px;border-radius:13px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);
+  flex-shrink:0;
+  position:relative;z-index:1;
+}
 
-    .list{ padding: 12px 14px 14px; display:flex; flex-direction:column; gap: 10px; }
+.cardBody{flex:1;min-width:0;position:relative;z-index:1;}
+.cardTitle{font-size:13px;font-weight:700;margin-bottom:4px;line-height:1.2;}
+.cardDesc{font-size:12px;color:var(--muted);line-height:1.5;overflow-wrap:anywhere;}
 
-    .card{
-      display:flex; gap: 12px; padding: 12px;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      box-shadow: 0 16px 40px rgba(0,0,0,.24);
-      overflow:hidden; position:relative; align-items:flex-start;
-    }
-    .card::after{
-      content:""; position:absolute; inset:-2px;
-      background: radial-gradient(560px 140px at 18% 0%, rgba(255,255,255,.10), transparent 60%);
-      pointer-events:none; opacity:.7;
-    }
+.cardMeta{font-size:11px;color:var(--muted2);white-space:nowrap;position:relative;z-index:1;flex-shrink:0;}
 
-    .ico{
-      width: 46px; height: 46px; border-radius: 16px;
-      display:flex; align-items:center; justify-content:center;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.06);
-      flex-shrink:0;
-      position:relative; z-index: 1;
-    }
-    .ico span{ font-size: 22px; }
+.rowBtns{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:1;}
+.smallBtn{
+  padding:8px 14px;border-radius:12px;
+  border:1px solid var(--border2);
+  background:rgba(255,255,255,.06);
+  color:rgba(240,242,250,.88);
+  font-size:12px;font-weight:600;
+  cursor:pointer;user-select:none;
+  transition:transform .12s,background .12s;
+  white-space:nowrap;
+  min-height:36px;
+}
+.smallBtn:active{transform:scale(.97);}
+.smallBtn.danger{
+  border-color:rgba(255,100,100,.25);
+  background:rgba(255,80,80,.10);
+  color:rgba(255,140,140,1);
+}
 
-    .cc{ flex:1; min-width:0; position:relative; z-index:1; }
-    .ct{ font-size: 13px; font-weight: 1000; margin-bottom: 4px; line-height:1.15; }
-    .cd{ font-size: 12px; color: var(--muted); line-height: 1.35; overflow-wrap:anywhere; }
+/* day group */
+.dayGroup{
+  border-radius:20px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.03);
+  overflow:hidden;
+}
+.dayHeader{
+  padding:11px 14px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid var(--border);
+  background:rgba(255,255,255,.03);
+}
+.dayLabel{font-size:13px;font-weight:700;}
+.daySummary{font-size:12px;color:var(--muted);display:flex;gap:10px;align-items:center;}
+.dayTotal{
+  font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;
+  background:rgba(124,156,255,.12);color:var(--moon2);border:1px solid rgba(124,156,255,.25);
+}
+.dayTotal.feedTotal{background:rgba(255,143,171,.10);color:var(--feed2);border-color:rgba(255,143,171,.22);}
+.dayItems{padding:10px;display:flex;flex-direction:column;gap:8px;}
 
-    .time{
-      font-size: 11px; color: rgba(245,248,255,.72);
-      white-space:nowrap; margin-left: 6px;
-      position:relative; z-index: 1;
-    }
+.empty{text-align:center;padding:24px 12px;color:var(--muted);font-size:13px;}
 
-    .rowBtns{ margin-top: 10px; display:flex; gap: 10px; flex-wrap:wrap; position:relative; z-index:1; }
-    .smallBtn{
-      min-height: var(--tapMin);
-      padding: 12px 14px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: rgba(245,248,255,.92);
-      font-weight: 1000;
-      cursor:pointer; user-select:none;
-      transition: transform .12s ease, background .12s ease;
-      white-space:nowrap;
-    }
-    .smallBtn:active{ transform: scale(.985); }
-    .smallBtn.danger{
-      border-color: rgba(251,146,60,.35);
-      background: rgba(251,146,60,.10);
-      color: rgba(251,146,60,1);
-    }
+/* ── nav ── */
+.nav{
+  position:fixed;left:0;right:0;bottom:0;
+  height:calc(var(--navH) + var(--safeB));
+  padding:10px 12px calc(10px + var(--safeB));
+  background:rgba(8,9,15,.85);
+  border-top:1px solid var(--border);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  z-index:220;
+}
+.navIn{
+  max-width:var(--maxW);margin:0 auto;height:100%;
+  display:flex;align-items:center;justify-content:space-around;gap:8px;
+}
+.navItem{
+  flex:1;
+  border-radius:16px;
+  border:1px solid transparent;
+  background:transparent;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  cursor:pointer;user-select:none;
+  color:var(--muted);
+  min-height:48px;
+  transition:all .15s;
+}
+.navItem:active{transform:scale(.96);}
+.navItem.active{
+  color:var(--moon2);
+  background:rgba(124,156,255,.10);
+  border-color:rgba(124,156,255,.18);
+}
+.navItem.active.feedNav{color:var(--feed2);background:rgba(255,143,171,.10);border-color:rgba(255,143,171,.18);}
+.navIco{font-size:19px;line-height:1;}
+.navLbl{font-size:11px;font-weight:600;letter-spacing:.02em;}
 
-    .empty{ text-align:center; padding: 18px 10px; color: var(--muted); font-size: 13px; }
+/* ── modals ── */
+.modal{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.65);
+  z-index:1000;
+  padding-bottom:var(--safeB);
+  animation:mFade .18s ease-out;
+}
+.modal.active{display:flex;align-items:flex-end;}
+@keyframes mFade{from{opacity:0;}to{opacity:1;}}
+@keyframes mUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
 
-    .nav{
-      position: fixed; left:0; right:0; bottom:0;
-      height: calc(var(--navH) + var(--safeB));
-      padding: 10px 10px calc(10px + var(--safeB));
-      background: linear-gradient(180deg, rgba(7,10,18,.28), rgba(7,10,18,.92));
-      border-top: 1px solid rgba(255,255,255,.10);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      z-index: 220;
-    }
-    .navIn{
-      max-width: var(--maxW);
-      margin: 0 auto;
-      height: 100%;
-      display:flex; align-items:center; justify-content:space-around; gap: 10px;
-    }
-    .navItem{
-      flex:1; min-height: var(--tapMin);
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      display:flex; flex-direction:column;
-      align-items:center; justify-content:center; gap: 4px;
-      cursor:pointer; user-select:none;
-      color: rgba(245,248,255,.74);
-      transition: transform .12s ease, background .12s ease;
-    }
-    .navItem:active{ transform: scale(.985); background: rgba(255,255,255,.07); }
-    .navItem.active{
-      color: rgba(34,211,238,1);
-      background: rgba(34,211,238,.10);
-      border-color: rgba(34,211,238,.22);
-    }
-    .navIco{ font-size: 20px; line-height:1; }
-    .navLbl{ font-size: 11px; font-weight: 1000; }
+.sheet{
+  width:100%;max-height:92vh;
+  border-radius:30px 30px 0 0;
+  padding:20px 18px calc(20px + var(--safeB));
+  background:var(--surface2);
+  border-top:1px solid var(--border2);
+  box-shadow:0 -28px 80px rgba(0,0,0,.60);
+  overflow-y:auto;
+  animation:mUp .22s cubic-bezier(.25,.85,.45,1.0);
+}
+.mHead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;}
+.mTitle{font-family:'DM Serif Display',serif;font-size:22px;letter-spacing:.01em;}
+.mTitle.moonTitle{
+  background:linear-gradient(90deg,var(--moon2),var(--moon));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.mTitle.feedTitle{
+  background:linear-gradient(90deg,var(--feed2),var(--feed));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.closeX{
+  width:36px;height:36px;border-radius:99px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;color:var(--muted);
+  cursor:pointer;user-select:none;
+  border:1px solid var(--border2);background:rgba(255,255,255,.05);
+  transition:background .12s;
+}
+.closeX:active{background:rgba(255,255,255,.10);}
 
-    .modal{
-      display:none;
-      position: fixed; inset:0;
-      background: rgba(0,0,0,.62);
-      z-index: 1000;
-      padding-bottom: var(--safeB);
-      animation: fade .18s ease-out;
-    }
-    .modal.active{ display:flex; align-items:flex-end; }
-    @keyframes fade{ from{opacity:0;} to{opacity:1;} }
-    @keyframes up{ from{ transform: translateY(100%);} to{ transform: translateY(0);} }
+/* ── clock widget ── */
+.clockWidget{
+  border-radius:22px;
+  border:1px solid var(--border2);
+  background:rgba(255,255,255,.04);
+  padding:16px;
+  margin-bottom:14px;
+}
+.clockRow{display:flex;align-items:center;gap:16px;}
 
-    .sheet{
-      width: 100%;
-      max-height: 90vh;
-      border-radius: 28px 28px 0 0;
-      padding: 18px 16px calc(18px + var(--safeB));
-      background:
-        radial-gradient(980px 220px at 12% 0%, rgba(34,211,238,.12), transparent 60%),
-        radial-gradient(980px 220px at 92% 0%, rgba(167,139,250,.12), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-      border-top: 1px solid rgba(255,255,255,.14);
-      box-shadow: 0 -24px 70px rgba(0,0,0,.55);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      overflow-y:auto;
-      animation: up .22s ease-out;
-    }
-    .mHead{ display:flex; justify-content:space-between; align-items:center; gap: 12px; margin-bottom: 12px; }
-    .mTitle{ font-size: 18px; font-weight: 1000; }
-    .x{ font-size: 28px; color: rgba(245,248,255,.70); cursor:pointer; user-select:none; line-height:1; }
+.analogWrap{position:relative;width:108px;height:108px;flex-shrink:0;}
+.analogFace{
+  width:108px;height:108px;border-radius:99px;
+  position:relative;
+  background:radial-gradient(circle at 35% 25%,rgba(124,156,255,.18),transparent 55%),
+             radial-gradient(circle at 65% 75%,rgba(201,169,110,.10),transparent 55%),
+             var(--surface2);
+  border:1px solid rgba(124,156,255,.22);
+  box-shadow:inset 0 0 0 8px rgba(124,156,255,.06),0 12px 40px rgba(0,0,0,.50);
+  overflow:hidden;
+}
+.clockGlass{
+  position:absolute;inset:0;border-radius:99px;
+  background:radial-gradient(ellipse 70% 50% at 30% 20%,rgba(255,255,255,.12),transparent 55%);
+  pointer-events:none;
+}
+.tickRing{
+  position:absolute;inset:8px;border-radius:99px;
+  background:conic-gradient(from -90deg,
+    rgba(255,255,255,.35) 0deg 1.5deg, transparent 1.5deg 30deg,
+    rgba(255,255,255,.35) 30deg 31.5deg, transparent 31.5deg 60deg,
+    rgba(255,255,255,.35) 60deg 61.5deg, transparent 61.5deg 90deg,
+    rgba(255,255,255,.35) 90deg 91.5deg, transparent 91.5deg 120deg,
+    rgba(255,255,255,.35) 120deg 121.5deg, transparent 121.5deg 150deg,
+    rgba(255,255,255,.35) 150deg 151.5deg, transparent 151.5deg 180deg,
+    rgba(255,255,255,.35) 180deg 181.5deg, transparent 181.5deg 210deg,
+    rgba(255,255,255,.35) 210deg 211.5deg, transparent 211.5deg 240deg,
+    rgba(255,255,255,.35) 240deg 241.5deg, transparent 241.5deg 270deg,
+    rgba(255,255,255,.35) 270deg 271.5deg, transparent 271.5deg 300deg,
+    rgba(255,255,255,.35) 300deg 301.5deg, transparent 301.5deg 330deg,
+    rgba(255,255,255,.35) 330deg 331.5deg, transparent 331.5deg 360deg
+  );
+  mask:radial-gradient(circle,transparent 0 70%,#000 73% 100%);
+  -webkit-mask:radial-gradient(circle,transparent 0 70%,#000 73% 100%);
+  opacity:.5;
+}
+.cHand{
+  position:absolute;left:50%;top:50%;
+  transform-origin:50% 100%;
+  transform:translate(-50%,-100%) rotate(0deg);
+  border-radius:99px;
+}
+.cHand.h{width:4px;height:28px;background:linear-gradient(180deg,rgba(240,242,250,.90),rgba(240,242,250,.30));}
+.cHand.m{width:3px;height:36px;background:linear-gradient(180deg,var(--moon),rgba(124,156,255,.30));}
+.cHand.s{width:2px;height:42px;background:linear-gradient(180deg,var(--gold),rgba(201,169,110,.35));}
+.cPin{
+  position:absolute;left:50%;top:50%;
+  width:8px;height:8px;transform:translate(-50%,-50%);
+  border-radius:99px;
+  background:var(--gold);
+  border:1px solid rgba(201,169,110,.40);
+  box-shadow:0 2px 8px rgba(0,0,0,.40);
+}
+.clockTickAnim{animation:cTick .1s ease-out;}
+@keyframes cTick{
+  0%{transform:rotate(0) scale(1);}
+  40%{transform:rotate(-.3deg) scale(1.005);}
+  100%{transform:rotate(0) scale(1);}
+}
 
-    .mech{
-      border-radius: 24px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      box-shadow: 0 18px 46px rgba(0,0,0,.35);
-      padding: 14px;
-      margin-bottom: 12px;
-      overflow:hidden;
-    }
-    .mechRow{ display:flex; align-items:center; justify-content:space-between; gap: 14px; }
+.clockDig{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+.digTime{
+  font-family:'DM Serif Display',serif;
+  font-size:38px;letter-spacing:-.01em;font-variant-numeric:tabular-nums;
+  background:linear-gradient(90deg,var(--moon2),var(--moon));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.digTime.feedDig{background:linear-gradient(90deg,var(--feed2),var(--feed));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.digSub{font-size:12px;color:var(--muted);text-align:right;line-height:1.4;max-width:52vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
-    .analog{
-      width: 112px; height: 112px; border-radius: 999px; position: relative; flex-shrink:0;
-      background:
-        radial-gradient(circle at 28% 20%, rgba(216,178,106,.30), transparent 55%),
-        linear-gradient(180deg, var(--wood1), var(--wood2));
-      border: 1px solid rgba(216,178,106,.26);
-      box-shadow:
-        inset 0 0 0 2px rgba(255,255,255,0.04),
-        inset 0 0 0 8px rgba(216,178,106,0.10),
-        0 18px 38px rgba(0,0,0,0.44);
-    }
-    .dial{
-      position:absolute; inset: 10px; border-radius: 999px;
-      background:
-        radial-gradient(circle at 50% 42%, rgba(255,255,255,0.14), rgba(255,255,255,0.06) 55%, rgba(255,255,255,0.04) 100%),
-        radial-gradient(circle at 40% 20%, rgba(216,178,106,0.10), transparent 55%);
-      border: 1px solid rgba(255,255,255,0.10);
-      overflow:hidden;
-    }
-    .glass{
-      position:absolute; inset: 0; border-radius: 999px;
-      background:
-        radial-gradient(160px 100px at 26% 18%, rgba(255,255,255,0.18), transparent 62%),
-        linear-gradient(135deg, rgba(255,255,255,0.08), transparent 35%, rgba(255,255,255,0.03));
-      pointer-events:none;
-    }
-    .roman{
-      position:absolute; inset: 14px; border-radius: 999px; pointer-events:none;
-      display:flex; align-items:center; justify-content:center;
-      color: rgba(245,248,255,0.68);
-      font-weight: 1000; font-size: 10px; letter-spacing: 0.04em;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.30);
-    }
-    .roman span{
-      position:absolute;
-      transform-origin: 50% 40px;
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%) rotate(var(--rot)) translateY(-40px) rotate(calc(var(--rot) * -1));
-    }
-    .ticks{
-      position:absolute; inset: 16px; border-radius: 999px; pointer-events:none;
-      background:
-        conic-gradient(from -90deg,
-          rgba(255,255,255,0.30) 0deg 1deg, transparent 1deg 6deg,
-          rgba(255,255,255,0.22) 6deg 7deg, transparent 7deg 12deg,
-          rgba(255,255,255,0.22) 12deg 13deg, transparent 13deg 18deg,
-          rgba(255,255,255,0.22) 18deg 19deg, transparent 19deg 24deg,
-          rgba(255,255,255,0.30) 24deg 25deg, transparent 25deg 30deg
-        );
-      opacity: 0.30;
-      mask: radial-gradient(circle at 50% 50%, transparent 0 63%, #000 66% 100%);
-      -webkit-mask: radial-gradient(circle at 50% 50%, transparent 0 63%, #000 66% 100%);
-    }
-    .hand{
-      position:absolute; left:50%; top:50%;
-      transform-origin: 50% 100%;
-      transform: translate(-50%,-100%) rotate(0deg);
-      border-radius: 999px;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.45));
-    }
-    .hand.hour{ width: 4px; height: 28px; background: linear-gradient(180deg, rgba(245,248,255,0.92), rgba(245,248,255,0.40)); }
-    .hand.min{ width: 3px; height: 36px; background: linear-gradient(180deg, rgba(34,211,238,0.92), rgba(245,248,255,0.26)); }
-    .hand.sec{ width: 2px; height: 44px; background: linear-gradient(180deg, rgba(251,146,60,1), rgba(138,92,28,0.75)); }
+/* ── form ── */
+.formGroup{margin-top:14px;}
+.formLabel{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.formTextarea{
+  width:100%;min-height:80px;padding:12px;
+  border-radius:16px;border:1px solid var(--border2);
+  background:rgba(255,255,255,.05);
+  color:var(--text);font-size:14px;resize:vertical;font-family:inherit;outline:none;
+  transition:border-color .15s,box-shadow .15s;
+}
+.formTextarea:focus{border-color:rgba(124,156,255,.40);box-shadow:0 0 0 3px rgba(124,156,255,.10);}
+.formInput{
+  width:100%;height:50px;padding:12px;
+  border-radius:16px;border:1px solid var(--border2);
+  background:rgba(255,255,255,.05);
+  color:var(--text);font-size:14px;font-family:inherit;outline:none;
+  transition:border-color .15s,box-shadow .15s;
+}
+.formInput:focus{border-color:rgba(124,156,255,.40);box-shadow:0 0 0 3px rgba(124,156,255,.10);}
 
-    .pin{
-      position:absolute; left:50%; top:50%;
-      width: 10px; height: 10px; transform: translate(-50%,-50%);
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.30), rgba(255,255,255,0.00) 55%), var(--brass1);
-      border: 1px solid rgba(216,178,106,.30);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.35);
-    }
+.togRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.tog{
+  flex:1 1 100px;min-width:100px;
+  padding:11px 12px;border-radius:14px;
+  border:1px solid var(--border2);background:rgba(255,255,255,.05);
+  color:rgba(240,242,250,.85);font-size:13px;font-weight:600;
+  cursor:pointer;user-select:none;
+  transition:all .13s;white-space:nowrap;
+  min-height:44px;
+}
+.tog:active{transform:scale(.97);}
+.tog.active{background:rgba(255,143,171,.16);border-color:rgba(255,143,171,.30);color:var(--feed2);}
 
-    .tick{ animation: tick .12s ease-out; }
-    @keyframes tick{
-      0%{ transform: translateZ(0) rotate(0deg) scale(1); }
-      40%{ transform: translateZ(0) rotate(-0.4deg) scale(1.006); }
-      100%{ transform: translateZ(0) rotate(0deg) scale(1); }
-    }
+/* ── buttons ── */
+.bigBtn{
+  width:100%;min-height:56px;
+  border:none;border-radius:18px;
+  cursor:pointer;user-select:none;
+  font-size:15px;font-weight:700;letter-spacing:.01em;
+  transition:transform .12s,filter .12s;
+  position:relative;overflow:hidden;
+}
+.bigBtn:active{transform:scale(.985);filter:brightness(.97);}
+.bigBtn.moonBtn{
+  background:linear-gradient(110deg,var(--moon),#5b7dff);
+  color:#040812;
+  box-shadow:0 14px 40px rgba(124,156,255,.20);
+}
+.bigBtn.feedBtn{
+  background:linear-gradient(110deg,var(--feed),#ff6080);
+  color:#180610;
+  box-shadow:0 14px 40px rgba(255,143,171,.20);
+}
+.bigBtn.stopBtn{
+  background:linear-gradient(110deg,var(--orange),#ff6b2b);
+  color:#140a02;
+  box-shadow:0 14px 40px rgba(255,154,92,.18);
+}
+.bigBtn.greenBtn{
+  background:linear-gradient(110deg,var(--green),#2aad80);
+  color:#04110c;
+  box-shadow:0 14px 40px rgba(78,203,160,.18);
+}
+.bigBtn.neutralBtn{
+  background:rgba(255,255,255,.10);
+  border:1px solid var(--border2);
+  color:var(--text);
+  box-shadow:none;
+}
 
-    .dig{ flex: 1; min-width:0; display:flex; flex-direction:column; align-items:flex-end; gap: 6px; }
-    .digBig{
-      font-size: 42px; font-weight: 1000; letter-spacing: -.02em;
-      font-variant-numeric: tabular-nums;
-      background: linear-gradient(90deg, var(--teal), var(--vio));
-      -webkit-background-clip:text; background-clip:text; color: transparent;
-      white-space:nowrap;
-    }
-    .digSub{
-      font-size: 12px; color: var(--muted); text-align:right;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 56vw;
-    }
-
-    .group{ margin-top: 12px; }
-    .label{ display:block; font-size: 13px; font-weight: 1000; margin-bottom: 8px; color: rgba(245,248,255,.86); }
-    .textarea{
-      width:100%; min-height: 92px;
-      padding: 12px 12px; border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: rgba(245,248,255,.95);
-      outline:none; font-size: 15px; resize: vertical; font-family: inherit;
-    }
-    .textarea:focus{ border-color: rgba(34,211,238,.30); box-shadow: 0 0 0 3px rgba(34,211,238,.12); }
-
-    .input{
-      width:100%;
-      min-height: var(--tapMin);
-      height: 52px;
-      padding: 12px 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: rgba(245,248,255,.95);
-      outline:none;
-      font-size: 15px;
-    }
-    .input:focus{ border-color: rgba(34,211,238,.30); box-shadow: 0 0 0 3px rgba(34,211,238,.12); }
-
-    .togRow{ display:flex; gap: 10px; flex-wrap:wrap; margin-top: 10px; }
-    .tog{
-      flex: 1 1 120px; min-width: 120px; min-height: var(--tapMin);
-      padding: 12px; border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: rgba(245,248,255,.92);
-      font-weight: 1000;
-      cursor:pointer; user-select:none;
-      transition: transform .12s ease, background .12s ease;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-    .tog:active{ transform: scale(.985); }
-    .tog.active{
-      background: rgba(34,211,238,.18);
-      border-color: rgba(34,211,238,.28);
-      color: rgba(34,211,238,1);
-    }
-
-    .btn{
-      width: 100%;
-      min-height: calc(var(--tapMin) + 10px);
-      border:none;
-      border-radius: 20px;
-      cursor:pointer; user-select:none;
-      font-size: 15px; font-weight: 1000;
-      color: #061018;
-      background: linear-gradient(90deg, var(--teal), var(--vio));
-      box-shadow: 0 18px 45px rgba(34,211,238,.10);
-      transition: transform .12s ease, filter .12s ease;
-    }
-    .btn:active{ transform: scale(.985); filter: brightness(.98); }
-    .btn.awake{ background: linear-gradient(90deg, var(--vio), rgba(167,139,250,.85)); color:#0b0f1e; }
-    .btn.feed{ background: linear-gradient(90deg, var(--rose), rgba(251,113,133,.86)); color:#18040a; }
-    .btn.stop{ background: linear-gradient(90deg, var(--orange), rgba(251,146,60,.88)); color:#140a02; }
-    .btn.ok{ background: linear-gradient(90deg, var(--green), rgba(52,211,153,.86)); color:#04110c; }
-
-    @media (max-width: 360px){
-      .ctaRow{ grid-template-columns: 1fr; }
-      .heroMain{ font-size: 28px; }
-      .digBig{ font-size: 38px; }
-      .analog{ width: 106px; height: 106px; }
-    }
-  </style>
+.gap10{height:10px;}
+</style>
 </head>
-
 <body>
-  <div class="wrap">
-    <div class="top">
-      <div class="topRow">
-        <div class="brand">
-          <div class="brandTitle">Norian</div>
-          <div class="chips">
-            <span class="chip">Budan: <strong id="pillAwake">-</strong></span>
-            <span class="chip">Hranjenje: <strong id="pillFeed">-</strong></span>
-          </div>
-        </div>
-        <div style="width:var(--tapMin); height:var(--tapMin);"></div>
-      </div>
-    </div>
+<div class="wrap">
 
-    <div class="hero">
-      <div class="heroIn">
-        <div class="heroTop">
-          <div class="heroTag" id="heroTag"></div>
-          <div class="dot" id="dot"></div>
-        </div>
-        <div class="heroMain" id="heroMain">-</div>
-        <div class="heroSub" id="heroSub">-</div>
-
-        <div class="ctaRow">
-          <div class="cta" id="openAwake">
-            <div class="ctaL">
-              <div class="badge"><span>👀</span></div>
-              <div class="ctaT">
-                <div class="t">Budan</div>
-                <div class="s" id="ctaAwakeSub">Dodaj</div>
-              </div>
-            </div>
-            <div class="ctaR" id="ctaAwakeR">⟶</div>
-          </div>
-
-          <div class="cta feed" id="openFeed">
-            <div class="ctaL">
-              <div class="badge"><span>🍼</span></div>
-              <div class="ctaT">
-                <div class="t">Hranjenje</div>
-                <div class="s" id="ctaFeedSub">Dodaj</div>
-              </div>
-            </div>
-            <div class="ctaR" id="ctaFeedR">⟶</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="secHead">
-        <div class="secTitle" id="secTitle">Trenutno / posljednje</div>
-        <div class="secLink" id="toggleHistory">Historija</div>
-      </div>
-      <div class="list" id="list"></div>
-    </div>
-  </div>
-
-  <div class="nav">
-    <div class="navIn">
-      <div class="navItem active" id="navHome">
-        <div class="navIco">🏠</div>
-        <div class="navLbl">Početna</div>
-      </div>
-      <div class="navItem" id="navHistory">
-        <div class="navIco">📜</div>
-        <div class="navLbl">Historija</div>
-      </div>
-      <div class="navItem" id="navAwake">
-        <div class="navIco">👀</div>
-        <div class="navLbl">Budan</div>
-      </div>
-      <div class="navItem" id="navFeed">
-        <div class="navIco">🍼</div>
-        <div class="navLbl">Hranjenje</div>
+  <div class="top">
+    <div class="topRow">
+      <div class="wordmark">Norian</div>
+      <div class="pills">
+        <div class="pill sleep"><div class="dot"></div><span id="pillSleep">–</span></div>
+        <div class="pill feed"><div class="dot"></div><span id="pillFeed">–</span></div>
       </div>
     </div>
   </div>
 
-  <!-- Awake -->
-  <div class="modal" id="awakeModal">
-    <div class="sheet">
-      <div class="mHead">
-        <div class="mTitle">Budan</div>
-        <div class="x" data-close="awakeModal">×</div>
+  <!-- hero -->
+  <div class="hero">
+    <div class="heroContent">
+      <div class="heroStatus">
+        <div class="statusBadge" id="heroBadge">STATUS</div>
+        <div class="liveDot" id="liveDot" style="display:none;"></div>
       </div>
+      <div class="heroMain" id="heroMain">–</div>
+      <div class="heroSub" id="heroSub">–</div>
 
-      <div class="mech" id="awakeMech" style="display:none;">
-        <div class="mechRow">
-          <div class="analog" id="awakeClock">
-            <div class="dial"></div>
-            <div class="ticks"></div>
-            <div class="roman" id="awakeRoman"></div>
-            <div class="hand hour" id="awakeH"></div>
-            <div class="hand min" id="awakeM"></div>
-            <div class="hand sec" id="awakeS"></div>
-            <div class="pin"></div>
-            <div class="glass"></div>
+      <div class="ctaRow">
+        <div class="cta moonCta" id="openSleep">
+          <div class="ctaIcon">🌙</div>
+          <div class="ctaText">
+            <div class="label">Spavanje</div>
+            <div class="sub" id="ctaSleepSub">Dodaj</div>
           </div>
-          <div class="dig">
-            <div class="digBig" id="awakeElapsed">00:00:00</div>
-            <div class="digSub" id="awakeMeta">-</div>
-          </div>
+          <div class="ctaArrow" id="ctaSleepArr">→</div>
         </div>
-      </div>
-
-      <button class="btn awake" id="awakeStart">Budan počeo</button>
-      <div style="height:10px;"></div>
-      <button class="btn stop" id="awakeStop" style="display:none;">Budan završio</button>
-
-      <div class="group">
-        <label class="label">Bilješke (opcionalno)</label>
-        <textarea class="textarea" id="awakeNotes" placeholder="..."></textarea>
+        <div class="cta feedCta" id="openFeed">
+          <div class="ctaIcon">🍼</div>
+          <div class="ctaText">
+            <div class="label">Hranjenje</div>
+            <div class="sub" id="ctaFeedSub">Dodaj</div>
+          </div>
+          <div class="ctaArrow" id="ctaFeedArr">→</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Feeding -->
-  <div class="modal" id="feedModal">
-    <div class="sheet">
-      <div class="mHead">
-        <div class="mTitle">Hranjenje</div>
-        <div class="x" data-close="feedModal">×</div>
-      </div>
-
-      <div class="mech" id="feedMech" style="display:none;">
-        <div class="mechRow">
-          <div class="analog" id="feedClock">
-            <div class="dial"></div>
-            <div class="ticks"></div>
-            <div class="roman" id="feedRoman"></div>
-            <div class="hand hour" id="feedH"></div>
-            <div class="hand min" id="feedM"></div>
-            <div class="hand sec" id="feedS"></div>
-            <div class="pin"></div>
-            <div class="glass"></div>
-          </div>
-          <div class="dig">
-            <div class="digBig" id="feedElapsed">00:00:00</div>
-            <div class="digSub" id="feedMeta">-</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="group">
-        <label class="label">Dojka</label>
-        <div class="togRow" id="breastRow">
-          <button class="tog" data-b="left">Lijeva</button>
-          <button class="tog" data-b="right">Desna</button>
-          <button class="tog" data-b="both">Obje</button>
-        </div>
-      </div>
-
-      <button class="btn feed" id="feedStart">Počinje jesti</button>
-      <div style="height:10px;"></div>
-      <button class="btn ok" id="feedStop" style="display:none;">Završio jesti</button>
-
-      <div class="group">
-        <label class="label">Bilješke (opcionalno)</label>
-        <textarea class="textarea" id="feedNotes" placeholder="..."></textarea>
-      </div>
+  <!-- main section -->
+  <div class="section">
+    <div class="secHead">
+      <div class="secTitle" id="secTitle">Posljednje</div>
+      <div class="secLink" id="toggleHistory">Historija</div>
     </div>
+    <!-- tab strip (only shown in history mode) -->
+    <div class="tabStrip" id="tabStrip" style="display:none;">
+      <div class="tab active" id="tabSleep" data-t="sleep">🌙 Spavanje</div>
+      <div class="tab feedTab" id="tabFeed" data-t="feed">🍼 Hranjenje</div>
+    </div>
+    <div class="list" id="list"></div>
   </div>
 
-  <!-- Edit -->
-  <div class="modal" id="editModal">
-    <div class="sheet">
-      <div class="mHead">
-        <div class="mTitle">Ispravka unosa</div>
-        <div class="x" data-close="editModal">×</div>
-      </div>
+</div>
 
-      <div class="group">
-        <label class="label">Početak</label>
-        <input class="input" id="editStart" type="datetime-local">
-      </div>
+<!-- nav -->
+<div class="nav">
+  <div class="navIn">
+    <div class="navItem active" id="navHome"><div class="navIco">🏠</div><div class="navLbl">Početna</div></div>
+    <div class="navItem" id="navHistory"><div class="navIco">📜</div><div class="navLbl">Historija</div></div>
+    <div class="navItem" id="navSleep"><div class="navIco">🌙</div><div class="navLbl">Spavanje</div></div>
+    <div class="navItem feedNav" id="navFeed"><div class="navIco">🍼</div><div class="navLbl">Hranjenje</div></div>
+  </div>
+</div>
 
-      <div class="group">
-        <label class="label">Kraj</label>
-        <input class="input" id="editEnd" type="datetime-local">
-      </div>
-
-      <div class="group" id="editBreastWrap" style="display:none;">
-        <label class="label">Dojka</label>
-        <div class="togRow" id="editBreastRow">
-          <button class="tog" data-b="left">Lijeva</button>
-          <button class="tog" data-b="right">Desna</button>
-          <button class="tog" data-b="both">Obje</button>
+<!-- Sleep modal -->
+<div class="modal" id="sleepModal">
+  <div class="sheet">
+    <div class="mHead">
+      <div class="mTitle moonTitle">Spavanje</div>
+      <div class="closeX" data-close="sleepModal">×</div>
+    </div>
+    <div class="clockWidget" id="sleepClockWrap" style="display:none;">
+      <div class="clockRow">
+        <div class="analogWrap">
+          <div class="analogFace" id="sleepFace">
+            <div class="tickRing"></div>
+            <div class="cHand h" id="sleepH"></div>
+            <div class="cHand m" id="sleepM"></div>
+            <div class="cHand s" id="sleepS"></div>
+            <div class="cPin"></div>
+            <div class="clockGlass"></div>
+          </div>
+        </div>
+        <div class="clockDig">
+          <div class="digTime" id="sleepElapsed">00:00:00</div>
+          <div class="digSub" id="sleepMeta">–</div>
         </div>
       </div>
-
-      <div class="group">
-        <label class="label">Bilješke</label>
-        <textarea class="textarea" id="editNotes" placeholder="..."></textarea>
-      </div>
-
-      <button class="btn ok" id="editSave">Spremi ispravku</button>
+    </div>
+    <button class="bigBtn moonBtn" id="sleepStart">Beba zaspala</button>
+    <div class="gap10"></div>
+    <button class="bigBtn stopBtn" id="sleepStop" style="display:none;">Beba se probudila</button>
+    <div class="formGroup">
+      <label class="formLabel">Bilješka (opcionalno)</label>
+      <textarea class="formTextarea" id="sleepNotes" placeholder="..."></textarea>
     </div>
   </div>
+</div>
+
+<!-- Feed modal -->
+<div class="modal" id="feedModal">
+  <div class="sheet">
+    <div class="mHead">
+      <div class="mTitle feedTitle">Hranjenje</div>
+      <div class="closeX" data-close="feedModal">×</div>
+    </div>
+    <div class="clockWidget" id="feedClockWrap" style="display:none;">
+      <div class="clockRow">
+        <div class="analogWrap">
+          <div class="analogFace" id="feedFace">
+            <div class="tickRing"></div>
+            <div class="cHand h" id="feedH"></div>
+            <div class="cHand m" id="feedM"></div>
+            <div class="cHand s" id="feedS"></div>
+            <div class="cPin"></div>
+            <div class="clockGlass"></div>
+          </div>
+        </div>
+        <div class="clockDig">
+          <div class="digTime feedDig" id="feedElapsed">00:00:00</div>
+          <div class="digSub" id="feedMeta">–</div>
+        </div>
+      </div>
+    </div>
+    <div class="formGroup">
+      <label class="formLabel">Dojka</label>
+      <div class="togRow" id="breastRow">
+        <button class="tog" data-b="left">Lijeva</button>
+        <button class="tog" data-b="right">Desna</button>
+        <button class="tog" data-b="both">Obje</button>
+      </div>
+    </div>
+    <div class="gap10"></div>
+    <button class="bigBtn feedBtn" id="feedStart">Počinje jesti</button>
+    <div class="gap10"></div>
+    <button class="bigBtn greenBtn" id="feedStop" style="display:none;">Završio jesti</button>
+    <div class="formGroup">
+      <label class="formLabel">Bilješka (opcionalno)</label>
+      <textarea class="formTextarea" id="feedNotes" placeholder="..."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- Edit modal -->
+<div class="modal" id="editModal">
+  <div class="sheet">
+    <div class="mHead">
+      <div class="mTitle" style="font-size:18px;">Ispravka unosa</div>
+      <div class="closeX" data-close="editModal">×</div>
+    </div>
+    <div class="formGroup">
+      <label class="formLabel">Početak</label>
+      <input class="formInput" id="editStart" type="datetime-local">
+    </div>
+    <div class="formGroup">
+      <label class="formLabel">Kraj</label>
+      <input class="formInput" id="editEnd" type="datetime-local">
+    </div>
+    <div class="formGroup" id="editBreastWrap" style="display:none;">
+      <label class="formLabel">Dojka</label>
+      <div class="togRow" id="editBreastRow">
+        <button class="tog" data-b="left">Lijeva</button>
+        <button class="tog" data-b="right">Desna</button>
+        <button class="tog" data-b="both">Obje</button>
+      </div>
+    </div>
+    <div class="formGroup">
+      <label class="formLabel">Bilješka</label>
+      <textarea class="formTextarea" id="editNotes" placeholder="..."></textarea>
+    </div>
+    <div class="gap10"></div>
+    <button class="bigBtn neutralBtn" id="editSave">Spremi</button>
+  </div>
+</div>
 
 <script>
-  // storage keys
-  const KEY_ACTS = "babyActivities";
-  const KEY_ACTIVE_AWAKE = "activeAwake";
-  const KEY_ACTIVE_FEED  = "activeFeeding";
+const KEY_ACTS="babyActivities";
+const KEY_SLEEP="activeSleep";
+const KEY_FEED="activeFeeding";
+const SUPPORTED=new Set(["sleep","feeding"]);
 
-  const SUPPORTED = new Set(["awake","feeding"]);
+let activities=safeParse(localStorage.getItem(KEY_ACTS)||"[]",[]);
+let activeSleep=safeParse(localStorage.getItem(KEY_SLEEP)||"null",null);
+let activeFeeding=safeParse(localStorage.getItem(KEY_FEED)||"null",null);
 
-  let activities   = safeParse(localStorage.getItem(KEY_ACTS) || "[]", []);
-  let activeAwake  = safeParse(localStorage.getItem(KEY_ACTIVE_AWAKE) || "null", null);
-  let activeFeeding= safeParse(localStorage.getItem(KEY_ACTIVE_FEED) || "null", null);
+let isHistory=false;
+let histTab="sleep";
+let selectedBreast=null;
+let editId=null;
+let editBreast=null;
+let lastTickSec=null;
 
-  let isHistory = false;
-  let selectedBreast = null;
+normalizeAll();
 
-  let editId = null;
-  let editBreast = null;
+// ── utils ──
+function safeParse(j,f){try{return JSON.parse(j);}catch{return f;}}
+function uid(){return "a_"+Math.random().toString(16).slice(2)+"_"+Date.now().toString(16);}
+function pad2(n){return String(n).padStart(2,"0");}
+function esc(s){return String(s??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");}
+function isoToMs(iso){const d=new Date(iso);const t=d.getTime();return Number.isFinite(t)?t:null;}
+function msToISO(ms){return new Date(ms).toISOString();}
+function hmsFromMs(ms){
+  const t=Math.max(0,Math.floor(ms/1000));
+  const h=Math.floor(t/3600),m=Math.floor((t%3600)/60),s=t%60;
+  return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
+}
+function hmFromMs(ms){
+  const t=Math.max(0,Math.floor(ms/1000));
+  const h=Math.floor(t/3600),m=Math.floor((t%3600)/60);
+  if(h>0)return `${h}h ${m}m`;
+  return `${m}m`;
+}
+function agoPrecise(ms){
+  let diff=Date.now()-ms;if(diff<0)diff=0;
+  let sec=Math.floor(diff/1000);
+  const days=Math.floor(sec/86400);sec-=days*86400;
+  const hrs=Math.floor(sec/3600);sec-=hrs*3600;
+  const mins=Math.floor(sec/60);sec-=mins*60;
+  if(days>0)return `Prije ${days}d ${hrs}h ${mins}m`;
+  if(hrs>0)return `Prije ${hrs}h ${mins}m ${pad2(sec)}s`;
+  if(mins>0)return `Prije ${mins}m ${pad2(sec)}s`;
+  return sec<=1?"Upravo":`Prije ${sec}s`;
+}
+function relTime(ms){
+  const d=new Date(ms);
+  const today=new Date();today.setHours(0,0,0,0);
+  const that=new Date(ms);that.setHours(0,0,0,0);
+  const diff=Math.round((today-that)/86400000);
+  const t=`${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
+  if(diff===0)return `Danas ${t}`;
+  if(diff===1)return `Jučer ${t}`;
+  if(diff>1)return `Prije ${diff}d ${t}`;
+  return t;
+}
+function dayKey(ms){const d=new Date(ms);return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;}
+function dayLabel(key){
+  const [y,m,d]=key.split("-").map(Number);
+  const dt=new Date(`${y}-${pad2(m)}-${pad2(d)}T00:00:00`);
+  const today=new Date();today.setHours(0,0,0,0);
+  const yest=new Date(today);yest.setDate(yest.getDate()-1);
+  if(dt.getTime()===today.getTime())return "Danas";
+  if(dt.getTime()===yest.getTime())return "Jučer";
+  const diff=Math.round((today-dt)/86400000);
+  if(diff>1)return `Prije ${diff} dana`;
+  return `${pad2(d)}.${pad2(m)}.${y}`;
+}
+function toDTLocal(ms){
+  const d=new Date(ms);
+  return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}T${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+}
+function fromDTLocal(v){const d=new Date(v);const t=d.getTime();return Number.isFinite(t)?t:null;}
 
-  normalizeAll();
+// ── storage ──
+function saveActs(){localStorage.setItem(KEY_ACTS,JSON.stringify(activities));}
+function saveActive(){
+  if(activeSleep)localStorage.setItem(KEY_SLEEP,JSON.stringify(activeSleep));
+  else localStorage.removeItem(KEY_SLEEP);
+  if(activeFeeding)localStorage.setItem(KEY_FEED,JSON.stringify(activeFeeding));
+  else localStorage.removeItem(KEY_FEED);
+}
 
-  // ===== utilities =====
-  function safeParse(j, f){ try{return JSON.parse(j);}catch{return f;} }
-  function uid(){ return "a_" + Math.random().toString(16).slice(2) + "_" + Date.now().toString(16); }
-  function pad2(n){ return String(n).padStart(2,"0"); }
-  function escapeHtml(s){
-    return String(s ?? "")
-      .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+// ── normalize ──
+function normalizeActivity(a){
+  if(!a||!a.type)return null;
+  if(!a.id)a.id=uid();
+  if(!SUPPORTED.has(a.type)){
+    // migrate old "awake" type
+    if(a.type==="awake"){a.type="sleep";}
+    else return a;
   }
-  function isoToMs(iso){ const d = new Date(iso); const t = d.getTime(); return Number.isFinite(t) ? t : null; }
-  function msToISO(ms){ return new Date(ms).toISOString(); }
-
-  function hmsFromMs(ms){
-    const total = Math.max(0, Math.floor(ms/1000));
-    const h = Math.floor(total/3600);
-    const m = Math.floor((total%3600)/60);
-    const s = total%60;
-    return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
+  if(typeof a.startMs!=="number"){
+    const s=isoToMs(a.time||a.startIso||a.startTime);
+    if(s)a.startMs=s;
   }
-
-  function agoPrecise(ms){
-    let diff = Date.now() - ms;
-    if(diff < 0) diff = 0;
-    let sec = Math.floor(diff/1000);
-    const days = Math.floor(sec/86400); sec -= days*86400;
-    const hrs  = Math.floor(sec/3600);  sec -= hrs*3600;
-    const mins = Math.floor(sec/60);    sec -= mins*60;
-    if(days > 0) return `Prije ${days}d ${hrs}h ${mins}m ${pad2(sec)}s`;
-    if(hrs  > 0) return `Prije ${hrs}h ${mins}m ${pad2(sec)}s`;
-    if(mins > 0) return `Prije ${mins}m ${pad2(sec)}s`;
-    return sec <= 1 ? "Upravo" : `Prije ${sec}s`;
+  if(typeof a.endMs!=="number"){
+    const e=isoToMs(a.endTime||a.endIso||a.end);
+    if(e)a.endMs=e;
   }
-
-  function relativeDayTime(ms){
-    const d = new Date(ms);
-    const today = new Date(); today.setHours(0,0,0,0);
-    const that  = new Date(ms); that.setHours(0,0,0,0);
-    const diffDays = Math.round((today.getTime() - that.getTime())/86400000);
-
-    const hh = pad2(d.getHours());
-    const mi = pad2(d.getMinutes());
-    const ss = pad2(d.getSeconds());
-
-    if(diffDays === 0) return `Danas ${hh}:${mi}:${ss}`;
-    if(diffDays === 1) return `Jučer ${hh}:${mi}:${ss}`;
-    if(diffDays > 1)   return `Prije ${diffDays} dana ${hh}:${mi}:${ss}`;
-    return `${hh}:${mi}:${ss}`;
-  }
-
-  function dayKey(ms){
-    const d = new Date(ms);
-    return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
-  }
-
-  function dayLabel(key){
-    const [y,m,d] = key.split("-").map(Number);
-    const dt = new Date(`${y}-${pad2(m)}-${pad2(d)}T00:00:00`);
-    const today = new Date(); today.setHours(0,0,0,0);
-    const yest = new Date(today); yest.setDate(yest.getDate()-1);
-    if(dt.getTime() === today.getTime()) return "Danas";
-    if(dt.getTime() === yest.getTime()) return "Jučer";
-    const diff = Math.round((today.getTime() - dt.getTime())/86400000);
-    if(diff > 1) return `Prije ${diff} dana`;
-    return `${pad2(d)}.${pad2(m)}.${y}`;
-  }
-
-  function saveActs(){ localStorage.setItem(KEY_ACTS, JSON.stringify(activities)); }
-  function saveActive(){
-    if(activeAwake) localStorage.setItem(KEY_ACTIVE_AWAKE, JSON.stringify(activeAwake));
-    else localStorage.removeItem(KEY_ACTIVE_AWAKE);
-    if(activeFeeding) localStorage.setItem(KEY_ACTIVE_FEED, JSON.stringify(activeFeeding));
-    else localStorage.removeItem(KEY_ACTIVE_FEED);
-  }
-
-  // ===== normalization =====
-  function normalizeActivity(a){
-    if(!a || !a.type) return null;
-    if(!a.id) a.id = uid();
-    if(!SUPPORTED.has(a.type)) return a;
-
-    if(typeof a.startMs !== "number"){
-      const s = isoToMs(a.time || a.startIso || a.startTime);
-      if(s) a.startMs = s;
+  if((!a.endMs||a.endMs<=a.startMs)&&a.startMs&&a.duration!=null){
+    if(a.type==="sleep"){
+      const h=Number(a.duration);
+      if(Number.isFinite(h)&&h>0)a.endMs=a.startMs+Math.round(h*3600000);
+    }else if(a.type==="feeding"){
+      const m=Number(a.duration);
+      if(Number.isFinite(m)&&m>0)a.endMs=a.startMs+Math.round(m*60000);
     }
-    if(typeof a.endMs !== "number"){
-      const e = isoToMs(a.endTime || a.endIso || a.end);
-      if(e) a.endMs = e;
-    }
-
-    if((!a.endMs || a.endMs <= a.startMs) && a.startMs && a.duration != null){
-      // legacy duration support: hours for awake, minutes for feeding
-      if(a.type === "awake"){
-        const hours = Number(a.duration);
-        if(Number.isFinite(hours) && hours > 0) a.endMs = a.startMs + Math.round(hours * 3600 * 1000);
-      }else if(a.type === "feeding"){
-        const mins = Number(a.duration);
-        if(Number.isFinite(mins) && mins > 0) a.endMs = a.startMs + Math.round(mins * 60 * 1000);
-      }
-    }
-
-    if(a.startMs && !a.startIso) a.startIso = msToISO(a.startMs);
-    if(a.endMs && !a.endIso) a.endIso = msToISO(a.endMs);
-
-    if(a.notes == null) a.notes = "";
-    if(a.type === "feeding" && !a.breast) a.breast = null;
-    if(!a.timestamp) a.timestamp = Date.now();
-    return a;
   }
+  if(a.startMs&&!a.startIso)a.startIso=msToISO(a.startMs);
+  if(a.endMs&&!a.endIso)a.endIso=msToISO(a.endMs);
+  if(a.notes==null)a.notes="";
+  if(a.type==="feeding"&&!a.breast)a.breast=null;
+  if(!a.timestamp)a.timestamp=Date.now();
+  return a;
+}
+function normalizeActiveSleep(x){
+  if(!x)return null;
+  if(typeof x.startMs!=="number"){const s=isoToMs(x.startIso);if(s)x.startMs=s;}
+  if(x.startMs&&!x.startIso)x.startIso=msToISO(x.startMs);
+  return x.startMs?x:null;
+}
+function normalizeActiveFeeding(x){
+  if(!x)return null;
+  if(typeof x.startMs!=="number"){const s=isoToMs(x.startIso);if(s)x.startMs=s;}
+  if(x.startMs&&!x.startIso)x.startIso=msToISO(x.startMs);
+  if(!x.breast)x.breast=null;
+  return x.startMs?x:null;
+}
+function normalizeAll(){
+  activities=Array.isArray(activities)?activities.map(normalizeActivity).filter(Boolean):[];
+  activeSleep=normalizeActiveSleep(activeSleep);
+  activeFeeding=normalizeActiveFeeding(activeFeeding);
+  saveActs();saveActive();
+}
 
-  function normalizeActiveAwake(x){
-    if(!x) return null;
-    if(typeof x.startMs !== "number"){
-      const s = isoToMs(x.startIso);
-      if(s) x.startMs = s;
-    }
-    if(x.startMs && !x.startIso) x.startIso = msToISO(x.startMs);
-    if(!x.startDisplay && x.startMs){
-      const d = new Date(x.startMs);
-      x.startDisplay = d.toLocaleString("bs-BA", {hour:"2-digit", minute:"2-digit"});
-    }
-    return x.startMs ? x : null;
-  }
-
-  function normalizeActiveFeeding(x){
-    if(!x) return null;
-    if(typeof x.startMs !== "number"){
-      const s = isoToMs(x.startIso);
-      if(s) x.startMs = s;
-    }
-    if(x.startMs && !x.startIso) x.startIso = msToISO(x.startMs);
-    if(!x.startDisplay && x.startMs){
-      const d = new Date(x.startMs);
-      x.startDisplay = d.toLocaleString("bs-BA", {day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit"});
-    }
-    if(!x.breast) x.breast = null;
-    return x.startMs ? x : null;
-  }
-
-  function normalizeAll(){
-    activities = Array.isArray(activities) ? activities.map(normalizeActivity).filter(Boolean) : [];
-    activeAwake = normalizeActiveAwake(activeAwake);
-    activeFeeding = normalizeActiveFeeding(activeFeeding);
-    saveActs();
-    saveActive();
-  }
-
-  // ===== UI =====
-  function setActiveNav(which){
-    document.querySelectorAll(".navItem").forEach(x=>x.classList.remove("active"));
-    document.getElementById(which).classList.add("active");
-  }
-
-  function titleFor(a){
-    if(a.type === "awake") return "Budan";
-    const b = a.breast==="left" ? "Lijeva" : a.breast==="right" ? "Desna" : a.breast==="both" ? "Obje" : "—";
-    return `Hranjenje — ${b}`;
-  }
-
-  function detailsFor(a){
-    const start = relativeDayTime(a.startMs);
-    const end   = relativeDayTime(a.endMs);
-    const dur   = hmsFromMs(a.endMs - a.startMs);
-    const notes = a.notes ? ` • ${escapeHtml(a.notes)}` : "";
-    if(a.type==="awake"){
-      return `Početak: ${start} • Kraj: ${end} • Trajanje: ${dur}${notes}`;
-    }
-    const b = a.breast==="left" ? "Lijeva" : a.breast==="right" ? "Desna" : a.breast==="both" ? "Obje" : "—";
-    return `Početak: ${start} • Kraj: ${end} • Trajanje: ${dur} • Dojka: ${b}${notes}`;
-  }
-
-  function cardHTML(a){
-    const emoji = a.type==="awake" ? "👀" : "🍼";
-    return `
-      <div class="card">
-        <div class="ico"><span>${emoji}</span></div>
-        <div class="cc">
-          <div class="ct">${escapeHtml(titleFor(a))}</div>
-          <div class="cd">${detailsFor(a)}</div>
-          <div class="rowBtns">
-            <button class="smallBtn" data-edit="${a.id}">Uredi</button>
-            <button class="smallBtn danger" data-del="${a.id}">Obriši</button>
-          </div>
-        </div>
-        <div class="time">${agoPrecise(a.endMs || a.startMs)}</div>
+// ── card helpers ──
+function titleFor(a){
+  if(a.type==="sleep")return "Spavanje";
+  const b=a.breast==="left"?"Lijeva":a.breast==="right"?"Desna":a.breast==="both"?"Obje":"–";
+  return `Hranjenje — ${b}`;
+}
+function detailsFor(a){
+  const s=relTime(a.startMs),e=relTime(a.endMs),dur=hmsFromMs(a.endMs-a.startMs);
+  const notes=a.notes?` • ${esc(a.notes)}`:"";
+  if(a.type==="sleep")return `Početak: ${s} • Kraj: ${e} • Trajanje: ${dur}${notes}`;
+  const b=a.breast==="left"?"Lijeva":a.breast==="right"?"Desna":a.breast==="both"?"Obje":"–";
+  return `Početak: ${s} • Kraj: ${e} • Trajanje: ${dur} • Dojka: ${b}${notes}`;
+}
+function cardHTML(a){
+  const ico=a.type==="sleep"?"🌙":"🍼";
+  return `<div class="card">
+    <div class="cardIco">${ico}</div>
+    <div class="cardBody">
+      <div class="cardTitle">${esc(titleFor(a))}</div>
+      <div class="cardDesc">${detailsFor(a)}</div>
+      <div class="rowBtns">
+        <button class="smallBtn" data-edit="${a.id}">Uredi</button>
+        <button class="smallBtn danger" data-del="${a.id}">Obriši</button>
       </div>
-    `;
+    </div>
+    <div class="cardMeta">${agoPrecise(a.endMs||a.startMs)}</div>
+  </div>`;
+}
+
+function activeCardHTML(type){
+  if(type==="sleep"&&activeSleep){
+    const el=Date.now()-activeSleep.startMs;
+    return `<div class="card">
+      <div class="cardIco">🌙</div>
+      <div class="cardBody">
+        <div class="cardTitle">Spavanje u toku</div>
+        <div class="cardDesc">Počeo: ${relTime(activeSleep.startMs)} • Traje: ${hmsFromMs(el)}</div>
+      </div>
+      <div class="cardMeta">Sada</div>
+    </div>`;
+  }
+  if(type==="feeding"&&activeFeeding){
+    const el=Date.now()-activeFeeding.startMs;
+    const b=activeFeeding.breast==="left"?"Lijeva":activeFeeding.breast==="right"?"Desna":activeFeeding.breast==="both"?"Obje":"–";
+    return `<div class="card">
+      <div class="cardIco">🍼</div>
+      <div class="cardBody">
+        <div class="cardTitle">Hranjenje u toku — ${b}</div>
+        <div class="cardDesc">Počelo: ${relTime(activeFeeding.startMs)} • Traje: ${hmsFromMs(el)}</div>
+      </div>
+      <div class="cardMeta">Sada</div>
+    </div>`;
+  }
+  return "";
+}
+
+// ── UI updates ──
+function updatePills(){
+  const lastSleep=activities.filter(a=>a.type==="sleep"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
+  const lastFeed=activities.filter(a=>a.type==="feeding"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
+  document.getElementById("pillSleep").textContent=lastSleep?agoPrecise(lastSleep.endMs)+"  🌙":"–";
+  document.getElementById("pillFeed").textContent=lastFeed?agoPrecise(lastFeed.endMs)+"  🍼":"–";
+}
+
+function updateHero(){
+  const main=document.getElementById("heroMain");
+  const sub=document.getElementById("heroSub");
+  const badge=document.getElementById("heroBadge");
+  const dot=document.getElementById("liveDot");
+  const ctaSS=document.getElementById("ctaSleepSub");
+  const ctaSA=document.getElementById("ctaSleepArr");
+  const ctaFS=document.getElementById("ctaFeedSub");
+  const ctaFA=document.getElementById("ctaFeedArr");
+
+  ctaSS.textContent="Dodaj";ctaSA.textContent="→";
+  ctaFS.textContent="Dodaj";ctaFA.textContent="→";
+
+  if(activeSleep){
+    badge.textContent="SPAVA";badge.className="statusBadge sleep";dot.style.display="block";
+    main.textContent=`Spava • ${hmsFromMs(Date.now()-activeSleep.startMs)}`;
+    sub.textContent=`Zaspao: ${relTime(activeSleep.startMs)} • ${agoPrecise(activeSleep.startMs)}`;
+    ctaSS.textContent="Zaustavi";ctaSA.textContent="STOP";
+    return;
+  }
+  if(activeFeeding){
+    const b=activeFeeding.breast==="left"?"Lijeva":activeFeeding.breast==="right"?"Desna":activeFeeding.breast==="both"?"Obje":"–";
+    badge.textContent="JEDE";badge.className="statusBadge feed";dot.style.display="block";
+    main.textContent=`Jede (${b}) • ${hmsFromMs(Date.now()-activeFeeding.startMs)}`;
+    sub.textContent=`Počelo: ${relTime(activeFeeding.startMs)} • ${agoPrecise(activeFeeding.startMs)}`;
+    ctaFS.textContent="Zaustavi";ctaFA.textContent="STOP";
+    return;
   }
 
-  function activeCard(type){
-    if(type==="awake" && activeAwake){
-      const el = Date.now() - activeAwake.startMs;
-      return `
-        <div class="card">
-          <div class="ico"><span>👀</span></div>
-          <div class="cc">
-            <div class="ct">Budan u toku</div>
-            <div class="cd">Počeo: ${relativeDayTime(activeAwake.startMs)} • Traje: ${hmsFromMs(el)}</div>
-          </div>
-          <div class="time">Sada</div>
-        </div>`;
-    }
-    if(type==="feeding" && activeFeeding){
-      const el = Date.now() - activeFeeding.startMs;
-      const b = activeFeeding.breast==="left" ? "Lijeva" : activeFeeding.breast==="right" ? "Desna" : activeFeeding.breast==="both" ? "Obje" : "—";
-      return `
-        <div class="card">
-          <div class="ico"><span>🍼</span></div>
-          <div class="cc">
-            <div class="ct">Hranjenje u toku — ${b}</div>
-            <div class="cd">Počelo: ${relativeDayTime(activeFeeding.startMs)} • Traje: ${hmsFromMs(el)}</div>
-          </div>
-          <div class="time">Sada</div>
-        </div>`;
-    }
-    return "";
+  badge.textContent="STATUS";badge.className="statusBadge";dot.style.display="none";
+  const lastSleep=activities.filter(a=>a.type==="sleep"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
+  const lastFeed=activities.filter(a=>a.type==="feeding"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
+  if(lastSleep){
+    main.textContent=`Zadnji san završio ${agoPrecise(lastSleep.endMs)}`;
+    sub.textContent=`Trajao: ${hmsFromMs(lastSleep.endMs-lastSleep.startMs)}`;
+  } else {
+    main.textContent="Nema zapisa";
+    sub.textContent="Dodaj prvi unos →";
+  }
+}
+
+function updateList(){
+  const el=document.getElementById("list");
+  const title=document.getElementById("secTitle");
+  const tgl=document.getElementById("toggleHistory");
+  const strip=document.getElementById("tabStrip");
+
+  if(!isHistory){
+    title.textContent="Posljednje";tgl.textContent="Historija";
+    strip.style.display="none";
+    const blocks=[];
+    if(activeSleep)blocks.push(activeCardHTML("sleep"));
+    if(activeFeeding)blocks.push(activeCardHTML("feeding"));
+    const lastSleep=activities.filter(a=>a.type==="sleep"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
+    const lastFeed=activities.filter(a=>a.type==="feeding"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
+    if(!activeSleep&&lastSleep)blocks.push(cardHTML(lastSleep));
+    if(!activeFeeding&&lastFeed)blocks.push(cardHTML(lastFeed));
+    el.innerHTML=blocks.length?blocks.join(""):`<div class="empty">Nema aktivnosti.</div>`;
+    return;
   }
 
-  function updatePills(){
-    const lastAwake = activities.filter(a=>a.type==="awake" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
-    const lastFeed  = activities.filter(a=>a.type==="feeding" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
-    document.getElementById("pillAwake").textContent = lastAwake ? agoPrecise(lastAwake.endMs) : "-";
-    document.getElementById("pillFeed").textContent  = lastFeed  ? agoPrecise(lastFeed.endMs)  : "-";
+  title.textContent="Historija";tgl.textContent="Posljednje";
+  strip.style.display="flex";
+
+  const type=histTab==="sleep"?"sleep":"feeding";
+  const sorted=activities.filter(a=>a.type===type&&a.startMs&&a.endMs).sort((a,b)=>b.startMs-a.startMs);
+
+  if(!sorted.length){el.innerHTML=`<div class="empty">Nema zapisa.</div>`;return;}
+
+  const groups={};
+  for(const a of sorted){const k=dayKey(a.startMs);(groups[k]||=[]).push(a);}
+  const keys=Object.keys(groups).sort((a,b)=>a<b?1:-1);
+
+  el.innerHTML=keys.map(k=>{
+    const items=groups[k];
+    const label=dayLabel(k);
+    const count=`${items.length} zapisa`;
+
+    let summaryHTML="";
+    if(type==="sleep"){
+      const totalMs=items.reduce((s,a)=>s+(a.endMs-a.startMs),0);
+      summaryHTML=`<span class="dayTotal">Ukupno sna: ${hmFromMs(totalMs)}</span>`;
+    } else {
+      summaryHTML=`<span class="dayTotal feedTotal">${items.length}× hranjenje</span>`;
+    }
+
+    const cards=items.map(cardHTML).join("");
+    return `<div class="dayGroup">
+      <div class="dayHeader">
+        <div class="dayLabel">${label}</div>
+        <div class="daySummary">${summaryHTML}<span style="color:var(--muted2)">${count}</span></div>
+      </div>
+      <div class="dayItems">${cards}</div>
+    </div>`;
+  }).join("");
+}
+
+function updateAll(){updatePills();updateHero();updateList();}
+
+// ── modals ──
+function openModal(id){
+  document.getElementById(id).classList.add("active");
+  if(id==="sleepModal")paintSleepModal();
+  if(id==="feedModal")paintFeedModal();
+}
+function closeModal(id){document.getElementById(id).classList.remove("active");}
+
+document.querySelectorAll(".modal").forEach(m=>{
+  m.addEventListener("click",e=>{if(e.target===m)closeModal(m.id);});
+});
+document.querySelectorAll("[data-close]").forEach(x=>{
+  x.addEventListener("click",()=>closeModal(x.dataset.close));
+});
+
+// ── analog clock ──
+function setAnalog(pH,pM,pS,elMs){
+  const tot=Math.max(0,Math.floor(elMs/1000));
+  const s=tot%60,m=Math.floor(tot/60)%60,h=Math.floor(tot/3600)%12;
+  const sDeg=s*6,mDeg=m*6+s*.1,hDeg=h*30+m*.5;
+  pH.style.transform=`translate(-50%,-100%) rotate(${hDeg}deg)`;
+  pM.style.transform=`translate(-50%,-100%) rotate(${mDeg}deg)`;
+  pS.style.transform=`translate(-50%,-100%) rotate(${sDeg}deg)`;
+}
+function kickClock(faceId){
+  const el=document.getElementById(faceId);if(!el)return;
+  el.classList.remove("clockTickAnim");void el.offsetWidth;el.classList.add("clockTickAnim");
+}
+
+// ── sleep ──
+function paintSleepModal(){
+  if(activeSleep){
+    document.getElementById("sleepClockWrap").style.display="block";
+    document.getElementById("sleepStart").style.display="none";
+    document.getElementById("sleepStop").style.display="block";
+  }else{
+    document.getElementById("sleepClockWrap").style.display="none";
+    document.getElementById("sleepStart").style.display="block";
+    document.getElementById("sleepStop").style.display="none";
+    document.getElementById("sleepNotes").value="";
   }
+}
+document.getElementById("sleepStart").addEventListener("click",()=>{
+  if(activeSleep)return;
+  const ms=Date.now();
+  activeSleep={startMs:ms,startIso:new Date(ms).toISOString()};
+  saveActive();paintSleepModal();updateAll();
+});
+document.getElementById("sleepStop").addEventListener("click",()=>{
+  if(!activeSleep)return;
+  const endMs=Date.now();
+  const act=normalizeActivity({
+    id:uid(),type:"sleep",
+    time:activeSleep.startIso,endTime:new Date(endMs).toISOString(),
+    duration:(endMs-activeSleep.startMs)/3600000,
+    notes:document.getElementById("sleepNotes").value||"",
+    timestamp:Date.now()
+  });
+  activities.push(act);activeSleep=null;
+  saveActs();saveActive();closeModal("sleepModal");updateAll();
+});
 
-  function updateHero(){
-    const main = document.getElementById("heroMain");
-    const sub  = document.getElementById("heroSub");
-    const tag  = document.getElementById("heroTag");
-    const dot  = document.getElementById("dot");
+// ── feeding ──
+function setBreast(b){
+  selectedBreast=b;
+  document.querySelectorAll("#breastRow .tog").forEach(btn=>btn.classList.toggle("active",btn.dataset.b===b));
+}
+document.querySelectorAll("#breastRow .tog").forEach(btn=>btn.addEventListener("click",()=>setBreast(btn.dataset.b)));
 
-    if(activeAwake){
-      tag.textContent = "BUDAN U TOKU";
-      main.textContent = `Budan • ${hmsFromMs(Date.now() - activeAwake.startMs)}`;
-      sub.textContent  = `Počeo: ${relativeDayTime(activeAwake.startMs)} • ${agoPrecise(activeAwake.startMs)}`;
-      dot.style.display = "block";
-      document.getElementById("ctaAwakeSub").textContent = "Zaustavi";
-      document.getElementById("ctaAwakeR").textContent = "STOP";
-      return;
-    }
-    if(activeFeeding){
-      const b = activeFeeding.breast==="left" ? "Lijeva" : activeFeeding.breast==="right" ? "Desna" : activeFeeding.breast==="both" ? "Obje" : "—";
-      tag.textContent = "HRANJENJE U TOKU";
-      main.textContent = `Jede (${b}) • ${hmsFromMs(Date.now() - activeFeeding.startMs)}`;
-      sub.textContent  = `Počelo: ${relativeDayTime(activeFeeding.startMs)} • ${agoPrecise(activeFeeding.startMs)}`;
-      dot.style.display = "block";
-      document.getElementById("ctaFeedSub").textContent = "Zaustavi";
-      document.getElementById("ctaFeedR").textContent = "STOP";
-      return;
-    }
-
-    tag.textContent = "STATUS";
-    dot.style.display = "none";
-
-    const lastFeed  = activities.filter(a=>a.type==="feeding" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
-    const lastAwake = activities.filter(a=>a.type==="awake" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
-
-    main.textContent = lastAwake ? `Zadnji kraj budnosti • ${agoPrecise(lastAwake.endMs)}` : "";
-    sub.textContent  = lastFeed ? `Zadnje hranjenje: ${agoPrecise(lastFeed.endMs)}` : "";
-    document.getElementById("ctaAwakeSub").textContent = "Dodaj";
-    document.getElementById("ctaAwakeR").textContent = "⟶";
-    document.getElementById("ctaFeedSub").textContent = "Dodaj";
-    document.getElementById("ctaFeedR").textContent = "⟶";
+function paintFeedModal(){
+  if(activeFeeding){
+    document.getElementById("feedClockWrap").style.display="block";
+    document.getElementById("feedStart").style.display="none";
+    document.getElementById("feedStop").style.display="block";
+    setBreast(activeFeeding.breast);
+  }else{
+    document.getElementById("feedClockWrap").style.display="none";
+    document.getElementById("feedStart").style.display="block";
+    document.getElementById("feedStop").style.display="none";
+    setBreast(null);
+    document.getElementById("feedNotes").value="";
   }
+}
+document.getElementById("feedStart").addEventListener("click",()=>{
+  if(activeFeeding)return;
+  if(!selectedBreast)return alert("Odaberi dojku.");
+  const ms=Date.now();
+  activeFeeding={startMs:ms,startIso:new Date(ms).toISOString(),breast:selectedBreast};
+  saveActive();paintFeedModal();updateAll();
+});
+document.getElementById("feedStop").addEventListener("click",()=>{
+  if(!activeFeeding)return;
+  const endMs=Date.now();
+  const dur=Math.round((endMs-activeFeeding.startMs)/60000);
+  if(dur<=0)return alert("Greška u vremenima.");
+  const act=normalizeActivity({
+    id:uid(),type:"feeding",
+    time:activeFeeding.startIso,endTime:new Date(endMs).toISOString(),
+    breast:activeFeeding.breast,duration:dur,
+    notes:document.getElementById("feedNotes").value||"",
+    timestamp:Date.now()
+  });
+  activities.push(act);activeFeeding=null;
+  saveActs();saveActive();closeModal("feedModal");updateAll();
+});
 
-  function updateList(){
-    const el = document.getElementById("list");
-    const title = document.getElementById("secTitle");
-    const tgl = document.getElementById("toggleHistory");
-
-    if(!isHistory){
-      title.textContent = "Trenutno / posljednje";
-      tgl.textContent = "Historija";
-
-      const blocks = [];
-      if(activeAwake) blocks.push(activeCard("awake"));
-      if(activeFeeding) blocks.push(activeCard("feeding"));
-
-      const lastAwake = activities.filter(a=>a.type==="awake" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
-      const lastFeed  = activities.filter(a=>a.type==="feeding" && a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
-
-      if(!activeAwake && lastAwake) blocks.push(cardHTML(lastAwake));
-      if(!activeFeeding && lastFeed) blocks.push(cardHTML(lastFeed));
-
-      el.innerHTML = blocks.length ? blocks.join("") : `<div class="empty">Nema aktivnosti.</div>`;
-      return;
-    }
-
-    title.textContent = "Historija";
-    tgl.textContent = "Početna";
-
-    const sorted = activities.filter(a=>SUPPORTED.has(a.type) && a.startMs && a.endMs).sort((a,b)=>b.startMs-a.startMs);
-    if(!sorted.length){ el.innerHTML = `<div class="empty">Nema zapisa.</div>`; return; }
-
-    const groups = {};
-    for(const a of sorted){
-      const k = dayKey(a.startMs);
-      (groups[k] ||= []).push(a);
-    }
-    const keys = Object.keys(groups).sort((a,b)=>a<b?1:-1);
-
-    el.innerHTML = keys.map(k=>{
-      const items = groups[k].map(cardHTML).join("");
-      return `
-        <div class="card" style="flex-direction:column; gap:10px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; position:relative; z-index:1;">
-            <div class="ct">${dayLabel(k)}</div>
-            <div class="time">${groups[k].length} zapisa</div>
-          </div>
-          <div style="display:flex; flex-direction:column; gap:10px; position:relative; z-index:1;">${items}</div>
-        </div>
-      `;
-    }).join("");
+// ── edit ──
+function openEdit(id){
+  const a=activities.find(x=>x&&x.id===id);if(!a)return;
+  editId=id;
+  document.getElementById("editStart").value=a.startMs?toDTLocal(a.startMs):"";
+  document.getElementById("editEnd").value=a.endMs?toDTLocal(a.endMs):"";
+  document.getElementById("editNotes").value=a.notes||"";
+  if(a.type==="feeding"){
+    document.getElementById("editBreastWrap").style.display="block";
+    editBreast=a.breast||null;
+    document.querySelectorAll("#editBreastRow .tog").forEach(btn=>btn.classList.toggle("active",btn.dataset.b===editBreast));
+  }else{
+    document.getElementById("editBreastWrap").style.display="none";
+    editBreast=null;
   }
+  openModal("editModal");
+}
+document.querySelectorAll("#editBreastRow .tog").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    editBreast=btn.dataset.b;
+    document.querySelectorAll("#editBreastRow .tog").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+  });
+});
+document.getElementById("editSave").addEventListener("click",()=>{
+  if(!editId)return;
+  const a=activities.find(x=>x&&x.id===editId);if(!a)return;
+  const s=fromDTLocal(document.getElementById("editStart").value);
+  const e=fromDTLocal(document.getElementById("editEnd").value);
+  if(!s||!e)return alert("Unesi početak i kraj.");
+  if(e<=s)return alert("Kraj ne može biti prije početka.");
+  a.startMs=s;a.endMs=e;
+  a.startIso=msToISO(s);a.endIso=msToISO(e);
+  a.time=a.startIso;a.endTime=a.endIso;
+  a.notes=document.getElementById("editNotes").value||"";
+  if(a.type==="sleep"){a.duration=(e-s)/3600000;}
+  else if(a.type==="feeding"){
+    if(!editBreast)return alert("Odaberi dojku.");
+    a.breast=editBreast;a.duration=Math.round((e-s)/60000);
+    if(a.duration<=0)return alert("Greška u vremenima.");
+  }
+  normalizeAll();saveActs();closeModal("editModal");updateAll();
+});
 
-  function updateAll(){
-    updatePills();
-    updateHero();
+function deleteAct(id){
+  const idx=activities.findIndex(a=>a&&a.id===id);
+  if(idx<0)return;
+  if(!confirm("Obrisati zapis?"))return;
+  activities.splice(idx,1);saveActs();updateAll();
+}
+
+document.addEventListener("click",e=>{
+  const b1=e.target.closest("[data-edit]");if(b1)return openEdit(b1.dataset.edit);
+  const b2=e.target.closest("[data-del]");if(b2)return deleteAct(b2.dataset.del);
+});
+
+// ── tabs ──
+document.querySelectorAll(".tab").forEach(t=>{
+  t.addEventListener("click",()=>{
+    histTab=t.dataset.t;
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    t.classList.add("active");
     updateList();
-  }
-
-  // ===== modals =====
-  function openModal(id){
-    document.getElementById(id).classList.add("active");
-    if(id==="awakeModal") paintAwakeModal();
-    if(id==="feedModal") paintFeedModal();
-  }
-  function closeModal(id){ document.getElementById(id).classList.remove("active"); }
-
-  document.querySelectorAll(".modal").forEach(m=>{
-    m.addEventListener("click", (e)=>{ if(e.target===m) closeModal(m.id); });
   });
-  document.querySelectorAll("[data-close]").forEach(x=>{
-    x.addEventListener("click", ()=> closeModal(x.dataset.close));
-  });
+});
 
-  // ===== roman dial =====
-  function buildRoman(elId){
-    const el = document.getElementById(elId);
-    if(!el || el.dataset.built==="1") return;
-    el.dataset.built="1";
-    const romans = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
-    el.innerHTML = romans.map((r,i)=>{
-      const deg = i*30;
-      return `<span style="--rot:${deg}deg">${r}</span>`;
-    }).join("");
+// ── nav ──
+function setNav(which){document.querySelectorAll(".navItem").forEach(x=>x.classList.remove("active"));document.getElementById(which).classList.add("active");}
+document.getElementById("navHome").addEventListener("click",()=>{isHistory=false;setNav("navHome");updateAll();window.scrollTo({top:0,behavior:"instant"});});
+document.getElementById("navHistory").addEventListener("click",()=>{isHistory=true;setNav("navHistory");updateAll();window.scrollTo({top:0,behavior:"instant"});});
+document.getElementById("navSleep").addEventListener("click",()=>openModal("sleepModal"));
+document.getElementById("navFeed").addEventListener("click",()=>openModal("feedModal"));
+
+document.getElementById("toggleHistory").addEventListener("click",()=>{
+  isHistory=!isHistory;
+  setNav(isHistory?"navHistory":"navHome");
+  updateAll();window.scrollTo({top:0,behavior:"instant"});
+});
+
+document.getElementById("openSleep").addEventListener("click",()=>openModal("sleepModal"));
+document.getElementById("openFeed").addEventListener("click",()=>openModal("feedModal"));
+
+// ── live tick ──
+function tick(){
+  activities=safeParse(localStorage.getItem(KEY_ACTS)||"[]",[]);
+  activeSleep=safeParse(localStorage.getItem(KEY_SLEEP)||"null",null);
+  activeFeeding=safeParse(localStorage.getItem(KEY_FEED)||"null",null);
+  normalizeAll();
+  updatePills();updateHero();updateList();
+
+  const nowSec=Math.floor(Date.now()/1000);
+  const isNew=lastTickSec===null||nowSec!==lastTickSec;
+  if(isNew)lastTickSec=nowSec;
+
+  if(document.getElementById("sleepModal").classList.contains("active")&&activeSleep){
+    const el=Date.now()-activeSleep.startMs;
+    document.getElementById("sleepElapsed").textContent=hmsFromMs(el);
+    document.getElementById("sleepMeta").textContent=`Zaspao: ${relTime(activeSleep.startMs)} • ${agoPrecise(activeSleep.startMs)}`;
+    setAnalog(
+      document.getElementById("sleepH"),
+      document.getElementById("sleepM"),
+      document.getElementById("sleepS"),el
+    );
+    if(isNew)kickClock("sleepFace");
+    document.getElementById("sleepClockWrap").style.display="block";
   }
-  buildRoman("awakeRoman");
-  buildRoman("feedRoman");
-
-  // ===== mechanical clock =====
-  function setAnalog(elH, elM, elS, elapsedMs){
-    const totalSec = Math.floor(Math.max(0, elapsedMs)/1000);
-    const sec = totalSec % 60;
-    const min = Math.floor(totalSec/60) % 60;
-    const hr  = Math.floor(totalSec/3600) % 12;
-
-    const sDeg = sec * 6;                 // discrete tick
-    const mDeg = min * 6 + sec * 0.1;
-    const hDeg = hr * 30 + min * 0.5;
-
-    elS.style.transform = `translate(-50%,-100%) rotate(${sDeg}deg)`;
-    elM.style.transform = `translate(-50%,-100%) rotate(${mDeg}deg)`;
-    elH.style.transform = `translate(-50%,-100%) rotate(${hDeg}deg)`;
+  if(document.getElementById("feedModal").classList.contains("active")&&activeFeeding){
+    const el=Date.now()-activeFeeding.startMs;
+    const b=activeFeeding.breast==="left"?"Lijeva":activeFeeding.breast==="right"?"Desna":activeFeeding.breast==="both"?"Obje":"–";
+    document.getElementById("feedElapsed").textContent=hmsFromMs(el);
+    document.getElementById("feedMeta").textContent=`Počelo: ${relTime(activeFeeding.startMs)} • Dojka: ${b} • ${agoPrecise(activeFeeding.startMs)}`;
+    setAnalog(
+      document.getElementById("feedH"),
+      document.getElementById("feedM"),
+      document.getElementById("feedS"),el
+    );
+    if(isNew)kickClock("feedFace");
+    document.getElementById("feedClockWrap").style.display="block";
   }
+}
 
-  let lastTickSec = null;
-  function mechanicalKick(clockId){
-    const el = document.getElementById(clockId);
-    if(!el) return;
-    el.classList.remove("tick");
-    void el.offsetWidth;
-    el.classList.add("tick");
-  }
-
-  // ===== Awake =====
-  function paintAwakeModal(){
-    if(activeAwake){
-      document.getElementById("awakeMech").style.display = "block";
-      document.getElementById("awakeStart").style.display = "none";
-      document.getElementById("awakeStop").style.display = "block";
-    }else{
-      document.getElementById("awakeMech").style.display = "none";
-      document.getElementById("awakeStart").style.display = "block";
-      document.getElementById("awakeStop").style.display = "none";
-      document.getElementById("awakeNotes").value = "";
-    }
-  }
-
-  document.getElementById("awakeStart").addEventListener("click", ()=>{
-    if(activeAwake) return;
-    const ms = Date.now();
-    const d = new Date(ms);
-    activeAwake = { startIso: d.toISOString(), startMs: ms, startDisplay: d.toLocaleString("bs-BA", {hour:"2-digit", minute:"2-digit"}) };
-    saveActive();
-    paintAwakeModal();
-    updateAll();
-  });
-
-  document.getElementById("awakeStop").addEventListener("click", ()=>{
-    if(!activeAwake) return;
-
-    const endMs = Date.now();
-    const endDate = new Date(endMs);
-    const durationHours = (endMs - activeAwake.startMs)/3600000;
-
-    const act = normalizeActivity({
-      id: uid(),
-      type: "awake",
-      time: activeAwake.startIso,
-      endTime: endDate.toISOString(),
-      duration: durationHours,
-      notes: document.getElementById("awakeNotes").value || "",
-      timestamp: Date.now()
-    });
-
-    activities.push(act);
-    activeAwake = null;
-    saveActs();
-    saveActive();
-    closeModal("awakeModal");
-    updateAll();
-  });
-
-  // ===== Feeding =====
-  function setBreast(b){
-    selectedBreast = b;
-    document.querySelectorAll("#breastRow .tog").forEach(btn=>{
-      btn.classList.toggle("active", btn.dataset.b === b);
-    });
-  }
-  document.querySelectorAll("#breastRow .tog").forEach(btn=>{
-    btn.addEventListener("click", ()=> setBreast(btn.dataset.b));
-  });
-
-  function paintFeedModal(){
-    if(activeFeeding){
-      document.getElementById("feedMech").style.display = "block";
-      document.getElementById("feedStart").style.display = "none";
-      document.getElementById("feedStop").style.display = "block";
-      setBreast(activeFeeding.breast);
-    }else{
-      document.getElementById("feedMech").style.display = "none";
-      document.getElementById("feedStart").style.display = "block";
-      document.getElementById("feedStop").style.display = "none";
-      setBreast(null);
-      document.getElementById("feedNotes").value = "";
-    }
-  }
-
-  document.getElementById("feedStart").addEventListener("click", ()=>{
-    if(activeFeeding) return;
-    if(!selectedBreast) return alert("Odaberi dojku.");
-    const ms = Date.now();
-    const d = new Date(ms);
-    activeFeeding = {
-      startIso: d.toISOString(),
-      startMs: ms,
-      startDisplay: d.toLocaleString("bs-BA", {day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit"}),
-      breast: selectedBreast
-    };
-    saveActive();
-    paintFeedModal();
-    updateAll();
-  });
-
-  document.getElementById("feedStop").addEventListener("click", ()=>{
-    if(!activeFeeding) return;
-
-    const endMs = Date.now();
-    const endDate = new Date(endMs);
-    const durationMin = Math.round((endMs - activeFeeding.startMs)/60000);
-    if(durationMin <= 0) return alert("Greška u vremenima.");
-
-    const act = normalizeActivity({
-      id: uid(),
-      type: "feeding",
-      time: activeFeeding.startIso,
-      endTime: endDate.toISOString(),
-      breast: activeFeeding.breast,
-      duration: durationMin,
-      notes: document.getElementById("feedNotes").value || "",
-      timestamp: Date.now()
-    });
-
-    activities.push(act);
-    activeFeeding = null;
-    saveActs();
-    saveActive();
-    closeModal("feedModal");
-    updateAll();
-  });
-
-  // ===== edit =====
-  function toDTLocal(ms){
-    const d = new Date(ms);
-    const y = d.getFullYear();
-    const m = pad2(d.getMonth()+1);
-    const da= pad2(d.getDate());
-    const hh= pad2(d.getHours());
-    const mi= pad2(d.getMinutes());
-    return `${y}-${m}-${da}T${hh}:${mi}`;
-  }
-  function fromDTLocal(val){
-    const d = new Date(val);
-    const t = d.getTime();
-    return Number.isFinite(t) ? t : null;
-  }
-
-  function openEdit(id){
-    const a = activities.find(x => x && x.id === id);
-    if(!a) return;
-
-    editId = id;
-    document.getElementById("editStart").value = a.startMs ? toDTLocal(a.startMs) : "";
-    document.getElementById("editEnd").value   = a.endMs ? toDTLocal(a.endMs) : "";
-    document.getElementById("editNotes").value = a.notes || "";
-
-    if(a.type === "feeding"){
-      document.getElementById("editBreastWrap").style.display = "block";
-      editBreast = a.breast || null;
-      document.querySelectorAll("#editBreastRow .tog").forEach(btn=>{
-        btn.classList.toggle("active", btn.dataset.b === editBreast);
-      });
-    }else{
-      document.getElementById("editBreastWrap").style.display = "none";
-      editBreast = null;
-    }
-
-    openModal("editModal");
-  }
-
-  document.querySelectorAll("#editBreastRow .tog").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      editBreast = btn.dataset.b;
-      document.querySelectorAll("#editBreastRow .tog").forEach(b=>b.classList.remove("active"));
-      btn.classList.add("active");
-    });
-  });
-
-  document.getElementById("editSave").addEventListener("click", ()=>{
-    if(!editId) return;
-    const a = activities.find(x => x && x.id === editId);
-    if(!a) return;
-
-    const s = fromDTLocal(document.getElementById("editStart").value);
-    const e = fromDTLocal(document.getElementById("editEnd").value);
-    if(!s || !e) return alert("Unesi početak i kraj.");
-    if(e <= s) return alert("Kraj ne može biti prije početka.");
-
-    a.startMs = s; a.endMs = e;
-    a.startIso = msToISO(s);
-    a.endIso = msToISO(e);
-    a.time = a.startIso;
-    a.endTime = a.endIso;
-    a.notes = document.getElementById("editNotes").value || "";
-
-    if(a.type === "awake"){
-      a.duration = (e - s)/3600000;
-    }else if(a.type === "feeding"){
-      if(!editBreast) return alert("Odaberi dojku.");
-      a.breast = editBreast;
-      a.duration = Math.round((e - s)/60000);
-      if(a.duration <= 0) return alert("Greška u vremenima.");
-    }
-
-    normalizeAll();
-    saveActs();
-    closeModal("editModal");
-    updateAll();
-  });
-
-  function deleteAct(id){
-    const idx = activities.findIndex(a => a && a.id === id);
-    if(idx < 0) return;
-    if(!confirm("Obrisati zapis?")) return;
-    activities.splice(idx, 1);
-    saveActs();
-    updateAll();
-  }
-
-  document.addEventListener("click", (e)=>{
-    const b1 = e.target.closest("[data-edit]");
-    if(b1) return openEdit(b1.dataset.edit);
-    const b2 = e.target.closest("[data-del]");
-    if(b2) return deleteAct(b2.dataset.del);
-  });
-
-  // ===== nav + CTAs =====
-  document.getElementById("navHome").addEventListener("click", ()=>{
-    isHistory = false; setActiveNav("navHome"); updateAll(); window.scrollTo({top:0, behavior:"instant"});
-  });
-  document.getElementById("navHistory").addEventListener("click", ()=>{
-    isHistory = true; setActiveNav("navHistory"); updateAll(); window.scrollTo({top:0, behavior:"instant"});
-  });
-  document.getElementById("navAwake").addEventListener("click", ()=> openModal("awakeModal"));
-  document.getElementById("navFeed").addEventListener("click", ()=> openModal("feedModal"));
-
-  document.getElementById("toggleHistory").addEventListener("click", ()=>{
-    isHistory = !isHistory;
-    setActiveNav(isHistory ? "navHistory" : "navHome");
-    updateAll();
-    window.scrollTo({top:0, behavior:"instant"});
-  });
-
-  document.getElementById("openAwake").addEventListener("click", ()=> openModal("awakeModal"));
-  document.getElementById("openFeed").addEventListener("click", ()=> openModal("feedModal"));
-
-  // ===== live tick =====
-  function tick(){
-    activities    = safeParse(localStorage.getItem(KEY_ACTS) || "[]", []);
-    activeAwake   = safeParse(localStorage.getItem(KEY_ACTIVE_AWAKE) || "null", null);
-    activeFeeding = safeParse(localStorage.getItem(KEY_ACTIVE_FEED) || "null", null);
-    normalizeAll();
-
-    updatePills();
-    updateHero();
-    updateList();
-
-    const nowSec = Math.floor(Date.now()/1000);
-    if(lastTickSec === null) lastTickSec = nowSec;
-    const isNewSecond = nowSec !== lastTickSec;
-    if(isNewSecond) lastTickSec = nowSec;
-
-    if(document.getElementById("awakeModal").classList.contains("active") && activeAwake){
-      const el = Date.now() - activeAwake.startMs;
-      document.getElementById("awakeElapsed").textContent = hmsFromMs(el);
-      document.getElementById("awakeMeta").textContent = `Počeo: ${relativeDayTime(activeAwake.startMs)} • ${agoPrecise(activeAwake.startMs)}`;
-      setAnalog(
-        document.getElementById("awakeH"),
-        document.getElementById("awakeM"),
-        document.getElementById("awakeS"),
-        el
-      );
-      if(isNewSecond) mechanicalKick("awakeClock");
-      document.getElementById("awakeMech").style.display = "block";
-    }
-
-    if(document.getElementById("feedModal").classList.contains("active") && activeFeeding){
-      const el = Date.now() - activeFeeding.startMs;
-      const b = activeFeeding.breast==="left" ? "Lijeva" : activeFeeding.breast==="right" ? "Desna" : activeFeeding.breast==="both" ? "Obje" : "—";
-      document.getElementById("feedElapsed").textContent = hmsFromMs(el);
-      document.getElementById("feedMeta").textContent = `Počelo: ${relativeDayTime(activeFeeding.startMs)} • Dojka: ${b} • ${agoPrecise(activeFeeding.startMs)}`;
-      setAnalog(
-        document.getElementById("feedH"),
-        document.getElementById("feedM"),
-        document.getElementById("feedS"),
-        el
-      );
-      if(isNewSecond) mechanicalKick("feedClock");
-      document.getElementById("feedMech").style.display = "block";
-    }
-  }
-
-  updateAll();
-  paintAwakeModal();
-  paintFeedModal();
-  setInterval(tick, 1000);
+updateAll();paintSleepModal();paintFeedModal();
+setInterval(tick,1000);
 </script>
 </body>
 </html>
-
-
