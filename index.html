@@ -5,1233 +5,499 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>Norian</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#08090F;
-  --surface:#0F1118;
-  --surface2:#151822;
-  --border:rgba(255,255,255,.09);
-  --border2:rgba(255,255,255,.15);
-  --text:#F0F2FA;
-  --muted:rgba(200,208,232,.60);
-  --muted2:rgba(200,208,232,.40);
-
-  --moon:#7C9CFF;
-  --moon2:#A8BDFF;
-  --feed:#FF8FAB;
-  --feed2:#FFB3C6;
-  --gold:#C9A96E;
-  --gold2:#E8C98A;
-  --green:#4ECBA0;
-  --orange:#FF9A5C;
-
-  --navH:72px;
-  --safeT:env(safe-area-inset-top,0px);
-  --safeB:env(safe-area-inset-bottom,0px);
-  --maxW:680px;
+  --bg:#07080E;--surf:#0E1019;--surf2:#13161F;
+  --b1:rgba(255,255,255,.08);--b2:rgba(255,255,255,.14);
+  --txt:#EFF1FA;--mu:rgba(190,200,228,.58);--mu2:rgba(190,200,228,.35);
+  --moon:#7B9BFF;--moon2:#AABFFF;--feed:#FF8FAB;--feed2:#FFB3C6;
+  --gold:#C8A86C;--grn:#4EC9A0;--orn:#FF9A5C;
+  --navH:68px;
+  --safeT:env(safe-area-inset-top,0px);--safeB:env(safe-area-inset-bottom,0px);
+  --maxW:660px;
 }
-
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden;-webkit-tap-highlight-color:transparent;}
 
-body{
-  font-family:'DM Sans',system-ui,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  overflow-x:hidden;
-  -webkit-tap-highlight-color:transparent;
-}
+.wrap{max-width:var(--maxW);margin:0 auto;padding:0 14px calc(var(--navH) + var(--safeB) + 28px);position:relative;z-index:1;}
 
-.wrap{
-  max-width:var(--maxW);
-  margin:0 auto;
-  padding:0 16px calc(var(--navH) + var(--safeB) + 24px);
-  position:relative;
-  z-index:1;
+/* header */
+.hdr{
+  position:sticky;top:0;z-index:120;margin:0 -14px;
+  background:rgba(7,8,14,.88);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  border-bottom:1px solid var(--b1);padding:calc(10px + var(--safeT)) 16px 12px;
 }
+.hdrTop{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;}
+.wordmark{font-family:'DM Serif Display',serif;font-size:24px;background:linear-gradient(100deg,var(--moon2) 0%,var(--feed) 52%,var(--gold) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hdrPill{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(78,201,160,.11);border:1px solid rgba(78,201,160,.20);color:var(--grn);}
+.statRow{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.stat{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:14px;border:1px solid var(--b2);background:rgba(255,255,255,.04);min-width:0;overflow:hidden;}
+.statDot{width:8px;height:8px;border-radius:99px;flex-shrink:0;}
+.statDot.sl{background:var(--moon);}
+.statDot.fe{background:var(--feed);}
+.statInfo{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+.statLbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--mu2);white-space:nowrap;}
+.statVal{font-size:12px;font-weight:600;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-/* ── top bar ── */
-.top{
-  position:sticky;top:0;z-index:120;
-  margin:0 -16px;
-  padding:calc(14px + var(--safeT)) 20px 14px;
-  background:rgba(8,9,15,.82);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-}
-.topRow{display:flex;justify-content:space-between;align-items:center;gap:12px;}
+/* hero */
+.hero{margin-top:12px;border-radius:26px;border:1px solid var(--b2);background:linear-gradient(145deg,rgba(123,155,255,.13),rgba(255,143,171,.08) 55%,rgba(200,168,108,.07));position:relative;overflow:hidden;padding:18px;}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 55% at 5% -5%,rgba(123,155,255,.20),transparent 55%),radial-gradient(ellipse 55% 40% at 95% 105%,rgba(255,143,171,.15),transparent 55%);}
+.heroIn{position:relative;z-index:1;}
+.heroBRow{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.heroTag{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:3px 10px;border-radius:99px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);color:var(--mu);}
+.heroTag.sl{border-color:rgba(123,155,255,.30);background:rgba(123,155,255,.12);color:var(--moon2);}
+.heroTag.fe{border-color:rgba(255,143,171,.30);background:rgba(255,143,171,.12);color:var(--feed2);}
+.liveDot{width:8px;height:8px;border-radius:99px;background:var(--grn);flex-shrink:0;box-shadow:0 0 0 0 rgba(78,201,160,.5);animation:ping 1.9s infinite;}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(78,201,160,.5);}70%{box-shadow:0 0 0 9px rgba(78,201,160,0);}100%{box-shadow:0 0 0 0 rgba(78,201,160,0);}}
+.heroMain{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.1;letter-spacing:-.01em;margin-bottom:5px;}
+.heroSub{font-size:13px;color:var(--mu);line-height:1.5;}
 
-.wordmark{
-  font-family:'DM Serif Display',serif;
-  font-size:22px;
-  letter-spacing:.01em;
-  background:linear-gradient(110deg,var(--moon2),var(--feed),var(--gold2));
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
+/* cta row */
+.ctaRow{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.cta{border-radius:20px;border:1px solid var(--b2);background:rgba(255,255,255,.05);padding:13px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;position:relative;overflow:hidden;transition:transform .13s,filter .13s;min-height:70px;}
+.cta:active{transform:scale(.97);filter:brightness(.95);}
+.cta.sc::before{content:"";position:absolute;inset:-2px;pointer-events:none;background:radial-gradient(380px 110px at 8% 0%,rgba(123,155,255,.24),transparent);}
+.cta.fc::before{content:"";position:absolute;inset:-2px;pointer-events:none;background:radial-gradient(380px 110px at 8% 0%,rgba(255,143,171,.22),transparent);}
+.ctaIco{width:42px;height:42px;border-radius:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:19px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);position:relative;z-index:1;}
+.ctaTxt{flex:1;min-width:0;position:relative;z-index:1;}
+.ctaTxt .lbl{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ctaTxt .sub{font-size:11px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
+.ctaArr{font-size:15px;color:rgba(240,242,250,.40);position:relative;z-index:1;flex-shrink:0;}
 
-.pills{display:flex;gap:8px;flex-wrap:wrap;}
-.pill{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:5px 11px;border-radius:99px;
-  font-size:12px;font-weight:500;
-  border:1px solid var(--border2);
-  background:rgba(255,255,255,.05);
-  color:var(--muted);
-  white-space:nowrap;
-}
-.pill .dot{width:7px;height:7px;border-radius:99px;flex-shrink:0;}
-.pill.sleep .dot{background:var(--moon);}
-.pill.feed .dot{background:var(--feed);}
-
-/* ── hero ── */
-.hero{
-  margin-top:14px;
-  border-radius:28px;
-  border:1px solid var(--border2);
-  background:linear-gradient(145deg,rgba(124,156,255,.12) 0%,rgba(255,143,171,.08) 60%,rgba(201,169,110,.06) 100%);
-  overflow:hidden;
-  position:relative;
-  padding:20px;
-}
-.hero::before{
-  content:"";
-  position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse 80% 60% at 10% -10%,rgba(124,156,255,.18),transparent 55%),
-    radial-gradient(ellipse 60% 40% at 90% 100%,rgba(255,143,171,.14),transparent 55%);
-  pointer-events:none;
-}
-.heroContent{position:relative;z-index:1;}
-.heroStatus{
-  display:flex;align-items:center;gap:8px;
-  margin-bottom:8px;
-}
-.statusBadge{
-  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  padding:4px 10px;border-radius:99px;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.07);
-  color:var(--muted);
-}
-.statusBadge.sleep{border-color:rgba(124,156,255,.30);background:rgba(124,156,255,.12);color:var(--moon2);}
-.statusBadge.feed{border-color:rgba(255,143,171,.30);background:rgba(255,143,171,.12);color:var(--feed2);}
-
-.liveDot{
-  width:8px;height:8px;border-radius:99px;
-  background:var(--green);
-  box-shadow:0 0 0 0 rgba(78,203,160,.5);
-  animation:livePing 1.8s infinite;
-  flex-shrink:0;
-}
-@keyframes livePing{
-  0%{box-shadow:0 0 0 0 rgba(78,203,160,.5);}
-  70%{box-shadow:0 0 0 10px rgba(78,203,160,0);}
-  100%{box-shadow:0 0 0 0 rgba(78,203,160,0);}
-}
-
-.heroMain{
-  font-family:'DM Serif Display',serif;
-  font-size:34px;
-  line-height:1.1;
-  letter-spacing:-.01em;
-  margin-bottom:6px;
-}
-.heroSub{font-size:13px;color:var(--muted);line-height:1.5;}
-
-/* ── CTA row ── */
-.ctaRow{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.cta{
-  border-radius:22px;
-  border:1px solid var(--border2);
-  background:rgba(255,255,255,.05);
-  padding:14px 14px;
-  display:flex;align-items:center;gap:12px;
-  cursor:pointer;user-select:none;
-  position:relative;overflow:hidden;
-  transition:transform .13s,filter .13s;
-  min-height:72px;
-}
-.cta:active{transform:scale(.97);}
-.cta.moonCta::before{
-  content:"";position:absolute;inset:-2px;
-  background:radial-gradient(400px 120px at 10% 0%,rgba(124,156,255,.22),transparent);
-  pointer-events:none;
-}
-.cta.feedCta::before{
-  content:"";position:absolute;inset:-2px;
-  background:radial-gradient(400px 120px at 10% 0%,rgba(255,143,171,.22),transparent);
-  pointer-events:none;
-}
-.ctaIcon{
-  width:44px;height:44px;border-radius:14px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:20px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.06);
-  flex-shrink:0;
-  position:relative;z-index:1;
-}
-.ctaText{flex:1;min-width:0;position:relative;z-index:1;}
-.ctaText .label{font-size:14px;font-weight:700;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.ctaText .sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.ctaArrow{font-size:16px;color:rgba(240,242,250,.5);position:relative;z-index:1;flex-shrink:0;}
-
-/* ── section ── */
-.section{
-  margin-top:14px;
-  border-radius:26px;
-  border:1px solid var(--border);
-  background:var(--surface);
-  overflow:hidden;
-}
-.secHead{
-  padding:14px 16px;
-  display:flex;justify-content:space-between;align-items:center;
-  border-bottom:1px solid var(--border);
-  background:rgba(255,255,255,.03);
-}
-.secTitle{font-size:14px;font-weight:700;letter-spacing:.01em;}
-
-/* ── tab strip ── */
-.tabStrip{
-  display:flex;
-  border-bottom:1px solid var(--border);
-  background:rgba(255,255,255,.02);
-}
-.tab{
-  flex:1;padding:11px 8px;
-  font-size:13px;font-weight:500;
-  text-align:center;color:var(--muted);
-  cursor:pointer;user-select:none;
-  border-bottom:2px solid transparent;
-  transition:color .15s,border-color .15s;
-}
-.tab.active{color:var(--text);border-bottom-color:var(--moon);}
-.tab.active.feedTab{border-bottom-color:var(--feed);}
-
+/* section */
+.sec{margin-top:12px;border-radius:24px;border:1px solid var(--b1);background:var(--surf);overflow:hidden;}
+.secHead{padding:13px 15px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--b1);background:rgba(255,255,255,.03);}
+.secTitle{font-size:14px;font-weight:700;}
 .secLink{font-size:13px;font-weight:600;color:var(--moon);cursor:pointer;user-select:none;}
+.tabs{display:flex;border-bottom:1px solid var(--b1);background:rgba(255,255,255,.02);}
+.tabBtn{flex:1;padding:10px 8px;text-align:center;font-size:13px;font-weight:600;color:var(--mu);cursor:pointer;user-select:none;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;}
+.tabBtn.on{color:var(--txt);border-bottom-color:var(--moon);}
+.tabBtn.ft.on{border-bottom-color:var(--feed);}
 
-/* ── list / cards ── */
-.list{padding:12px 14px 14px;display:flex;flex-direction:column;gap:10px;}
-
-.card{
-  border-radius:20px;
-  border:1px solid var(--border2);
-  background:rgba(255,255,255,.05);
-  padding:14px;
-  display:flex;gap:12px;align-items:flex-start;
-  position:relative;overflow:hidden;
-}
-.card::after{
-  content:"";position:absolute;inset:-2px;
-  background:radial-gradient(500px 100px at 10% -20%,rgba(255,255,255,.06),transparent);
-  pointer-events:none;
-}
-
-.cardIco{
-  width:42px;height:42px;border-radius:13px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.06);
-  flex-shrink:0;
-  position:relative;z-index:1;
-}
-
+/* list & cards */
+.list{padding:11px 13px 13px;display:flex;flex-direction:column;gap:9px;}
+.empty{text-align:center;padding:22px 10px;color:var(--mu);font-size:13px;}
+.card{border-radius:18px;border:1px solid var(--b2);background:rgba(255,255,255,.05);padding:13px;display:flex;gap:11px;align-items:flex-start;position:relative;overflow:hidden;}
+.card::after{content:"";position:absolute;inset:-2px;pointer-events:none;background:radial-gradient(450px 90px at 8% -10%,rgba(255,255,255,.06),transparent);}
+.cardIco{width:40px;height:40px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:17px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.06);position:relative;z-index:1;}
 .cardBody{flex:1;min-width:0;position:relative;z-index:1;}
-.cardTitle{font-size:13px;font-weight:700;margin-bottom:4px;line-height:1.2;}
-.cardDesc{font-size:12px;color:var(--muted);line-height:1.5;overflow-wrap:anywhere;}
-
-.cardMeta{font-size:11px;color:var(--muted2);white-space:nowrap;position:relative;z-index:1;flex-shrink:0;}
-
-.rowBtns{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:1;}
-.smallBtn{
-  padding:8px 14px;border-radius:12px;
-  border:1px solid var(--border2);
-  background:rgba(255,255,255,.06);
-  color:rgba(240,242,250,.88);
-  font-size:12px;font-weight:600;
-  cursor:pointer;user-select:none;
-  transition:transform .12s,background .12s;
-  white-space:nowrap;
-  min-height:36px;
-}
-.smallBtn:active{transform:scale(.97);}
-.smallBtn.danger{
-  border-color:rgba(255,100,100,.25);
-  background:rgba(255,80,80,.10);
-  color:rgba(255,140,140,1);
-}
+.cardTitle{font-size:13px;font-weight:700;margin-bottom:3px;line-height:1.2;}
+.cardDesc{font-size:12px;color:var(--mu);line-height:1.5;overflow-wrap:anywhere;}
+.rowBtns{margin-top:9px;display:flex;gap:7px;flex-wrap:wrap;}
+.smBtn{padding:7px 13px;border-radius:11px;border:1px solid var(--b2);background:rgba(255,255,255,.06);color:rgba(240,242,250,.85);font-size:12px;font-weight:600;cursor:pointer;user-select:none;transition:transform .12s;min-height:34px;}
+.smBtn:active{transform:scale(.96);}
+.smBtn.danger{border-color:rgba(255,90,90,.22);background:rgba(255,70,70,.10);color:rgba(255,130,130,1);}
+.cardMeta{font-size:11px;color:var(--mu2);flex-shrink:0;position:relative;z-index:1;white-space:nowrap;}
 
 /* day group */
-.dayGroup{
-  border-radius:20px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.03);
-  overflow:hidden;
-}
-.dayHeader{
-  padding:11px 14px;
-  display:flex;justify-content:space-between;align-items:center;
-  border-bottom:1px solid var(--border);
-  background:rgba(255,255,255,.03);
-}
+.dayGroup{border-radius:18px;border:1px solid var(--b1);background:rgba(255,255,255,.03);overflow:hidden;}
+.dayHdr{padding:10px 13px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--b1);background:rgba(255,255,255,.03);}
 .dayLabel{font-size:13px;font-weight:700;}
-.daySummary{font-size:12px;color:var(--muted);display:flex;gap:10px;align-items:center;}
-.dayTotal{
-  font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;
-  background:rgba(124,156,255,.12);color:var(--moon2);border:1px solid rgba(124,156,255,.25);
-}
-.dayTotal.feedTotal{background:rgba(255,143,171,.10);color:var(--feed2);border-color:rgba(255,143,171,.22);}
-.dayItems{padding:10px;display:flex;flex-direction:column;gap:8px;}
+.dayMeta{display:flex;align-items:center;gap:8px;}
+.dayBadge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;background:rgba(123,155,255,.12);color:var(--moon2);border:1px solid rgba(123,155,255,.22);}
+.dayBadge.fb{background:rgba(255,143,171,.10);color:var(--feed2);border-color:rgba(255,143,171,.20);}
+.dayCount{font-size:11px;color:var(--mu2);}
+.dayItems{padding:9px;display:flex;flex-direction:column;gap:7px;}
 
-.empty{text-align:center;padding:24px 12px;color:var(--muted);font-size:13px;}
+/* nav */
+.nav{position:fixed;left:0;right:0;bottom:0;height:calc(var(--navH) + var(--safeB));padding:8px 12px calc(8px + var(--safeB));background:rgba(7,8,14,.90);border-top:1px solid var(--b1);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);z-index:220;}
+.navIn{max-width:var(--maxW);margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-around;gap:6px;}
+.navItem{flex:1;border-radius:14px;border:1px solid transparent;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;user-select:none;color:var(--mu);min-height:48px;transition:all .14s;}
+.navItem:active{transform:scale(.95);}
+.navItem.on{color:var(--moon2);background:rgba(123,155,255,.10);border-color:rgba(123,155,255,.18);}
+.navItem.fn.on{color:var(--feed2);background:rgba(255,143,171,.10);border-color:rgba(255,143,171,.18);}
+.navIco{font-size:18px;line-height:1;}
+.navLbl{font-size:10px;font-weight:700;letter-spacing:.03em;}
 
-/* ── nav ── */
-.nav{
-  position:fixed;left:0;right:0;bottom:0;
-  height:calc(var(--navH) + var(--safeB));
-  padding:10px 12px calc(10px + var(--safeB));
-  background:rgba(8,9,15,.85);
-  border-top:1px solid var(--border);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  z-index:220;
-}
-.navIn{
-  max-width:var(--maxW);margin:0 auto;height:100%;
-  display:flex;align-items:center;justify-content:space-around;gap:8px;
-}
-.navItem{
-  flex:1;
-  border-radius:16px;
-  border:1px solid transparent;
-  background:transparent;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
-  cursor:pointer;user-select:none;
-  color:var(--muted);
-  min-height:48px;
-  transition:all .15s;
-}
-.navItem:active{transform:scale(.96);}
-.navItem.active{
-  color:var(--moon2);
-  background:rgba(124,156,255,.10);
-  border-color:rgba(124,156,255,.18);
-}
-.navItem.active.feedNav{color:var(--feed2);background:rgba(255,143,171,.10);border-color:rgba(255,143,171,.18);}
-.navIco{font-size:19px;line-height:1;}
-.navLbl{font-size:11px;font-weight:600;letter-spacing:.02em;}
-
-/* ── modals ── */
-.modal{
-  display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,.65);
-  z-index:1000;
-  padding-bottom:var(--safeB);
-  animation:mFade .18s ease-out;
-}
+/* modal */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:1000;padding-bottom:var(--safeB);animation:mf .18s ease-out;}
 .modal.active{display:flex;align-items:flex-end;}
-@keyframes mFade{from{opacity:0;}to{opacity:1;}}
-@keyframes mUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
-
-.sheet{
-  width:100%;max-height:92vh;
-  border-radius:30px 30px 0 0;
-  padding:20px 18px calc(20px + var(--safeB));
-  background:var(--surface2);
-  border-top:1px solid var(--border2);
-  box-shadow:0 -28px 80px rgba(0,0,0,.60);
-  overflow-y:auto;
-  animation:mUp .22s cubic-bezier(.25,.85,.45,1.0);
-}
+@keyframes mf{from{opacity:0;}to{opacity:1;}}
+@keyframes mu{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.sheet{width:100%;max-height:92vh;border-radius:28px 28px 0 0;padding:18px 16px calc(18px + var(--safeB));background:var(--surf2);border-top:1px solid var(--b2);box-shadow:0 -26px 70px rgba(0,0,0,.60);overflow-y:auto;animation:mu .22s cubic-bezier(.25,.85,.45,1.0);}
 .mHead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;}
-.mTitle{font-family:'DM Serif Display',serif;font-size:22px;letter-spacing:.01em;}
-.mTitle.moonTitle{
-  background:linear-gradient(90deg,var(--moon2),var(--moon));
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.mTitle.feedTitle{
-  background:linear-gradient(90deg,var(--feed2),var(--feed));
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.closeX{
-  width:36px;height:36px;border-radius:99px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:20px;color:var(--muted);
-  cursor:pointer;user-select:none;
-  border:1px solid var(--border2);background:rgba(255,255,255,.05);
-  transition:background .12s;
-}
+.mTitle{font-family:'DM Serif Display',serif;font-size:22px;}
+.mTitle.sl{background:linear-gradient(90deg,var(--moon2),var(--moon));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.mTitle.fe{background:linear-gradient(90deg,var(--feed2),var(--feed));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.closeX{width:34px;height:34px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--mu);cursor:pointer;user-select:none;border:1px solid var(--b2);background:rgba(255,255,255,.05);}
 .closeX:active{background:rgba(255,255,255,.10);}
 
-/* ── clock widget ── */
-.clockWidget{
-  border-radius:22px;
-  border:1px solid var(--border2);
-  background:rgba(255,255,255,.04);
-  padding:16px;
-  margin-bottom:14px;
-}
-.clockRow{display:flex;align-items:center;gap:16px;}
+/* clock */
+.clockBox{border-radius:20px;border:1px solid var(--b2);background:rgba(255,255,255,.04);padding:14px;margin-bottom:14px;}
+.clockRow{display:flex;align-items:center;gap:14px;}
+.face{width:104px;height:104px;border-radius:99px;flex-shrink:0;position:relative;background:radial-gradient(circle at 33% 24%,rgba(123,155,255,.18),transparent 52%),var(--surf2);border:1px solid rgba(123,155,255,.20);box-shadow:inset 0 0 0 7px rgba(123,155,255,.06),0 10px 36px rgba(0,0,0,.50);overflow:hidden;}
+.fGlass{position:absolute;inset:0;border-radius:99px;background:radial-gradient(ellipse 68% 48% at 28% 18%,rgba(255,255,255,.14),transparent 58%);pointer-events:none;}
+.fTicks{position:absolute;inset:7px;border-radius:99px;background:conic-gradient(from -90deg,rgba(255,255,255,.38) 0 1.4deg,transparent 1.4deg 30deg,rgba(255,255,255,.38) 30deg 31.4deg,transparent 31.4deg 60deg,rgba(255,255,255,.38) 60deg 61.4deg,transparent 61.4deg 90deg,rgba(255,255,255,.38) 90deg 91.4deg,transparent 91.4deg 120deg,rgba(255,255,255,.38) 120deg 121.4deg,transparent 121.4deg 150deg,rgba(255,255,255,.38) 150deg 151.4deg,transparent 151.4deg 180deg,rgba(255,255,255,.38) 180deg 181.4deg,transparent 181.4deg 210deg,rgba(255,255,255,.38) 210deg 211.4deg,transparent 211.4deg 240deg,rgba(255,255,255,.38) 240deg 241.4deg,transparent 241.4deg 270deg,rgba(255,255,255,.38) 270deg 271.4deg,transparent 271.4deg 300deg,rgba(255,255,255,.38) 300deg 301.4deg,transparent 301.4deg 330deg,rgba(255,255,255,.38) 330deg 331.4deg,transparent 331.4deg 360deg);mask:radial-gradient(circle,transparent 0 68%,#000 71% 100%);-webkit-mask:radial-gradient(circle,transparent 0 68%,#000 71% 100%);opacity:.55;}
+.hnd{position:absolute;left:50%;top:50%;transform-origin:50% 100%;transform:translate(-50%,-100%) rotate(0deg);border-radius:99px;}
+.hnd.h{width:4px;height:26px;background:linear-gradient(180deg,rgba(240,242,250,.92),rgba(240,242,250,.28));}
+.hnd.m{width:3px;height:34px;background:linear-gradient(180deg,var(--moon),rgba(123,155,255,.22));}
+.hnd.s{width:2px;height:40px;background:linear-gradient(180deg,var(--gold),rgba(200,168,108,.28));}
+.cpin{position:absolute;left:50%;top:50%;width:8px;height:8px;transform:translate(-50%,-50%);border-radius:99px;background:var(--gold);border:1px solid rgba(200,168,108,.35);}
+.faceKick{animation:fk .11s ease-out;}
+@keyframes fk{0%{transform:rotate(0)scale(1);}40%{transform:rotate(-.3deg)scale(1.004);}100%{transform:rotate(0)scale(1);}}
+.digCol{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-end;gap:5px;}
+.digTime{font-family:'DM Serif Display',serif;font-size:36px;font-variant-numeric:tabular-nums;letter-spacing:-.01em;background:linear-gradient(90deg,var(--moon2),var(--moon));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.digTime.fe{background:linear-gradient(90deg,var(--feed2),var(--feed));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.digSub{font-size:11px;color:var(--mu);text-align:right;line-height:1.4;max-width:52vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
-.analogWrap{position:relative;width:108px;height:108px;flex-shrink:0;}
-.analogFace{
-  width:108px;height:108px;border-radius:99px;
-  position:relative;
-  background:radial-gradient(circle at 35% 25%,rgba(124,156,255,.18),transparent 55%),
-             radial-gradient(circle at 65% 75%,rgba(201,169,110,.10),transparent 55%),
-             var(--surface2);
-  border:1px solid rgba(124,156,255,.22);
-  box-shadow:inset 0 0 0 8px rgba(124,156,255,.06),0 12px 40px rgba(0,0,0,.50);
-  overflow:hidden;
-}
-.clockGlass{
-  position:absolute;inset:0;border-radius:99px;
-  background:radial-gradient(ellipse 70% 50% at 30% 20%,rgba(255,255,255,.12),transparent 55%);
-  pointer-events:none;
-}
-.tickRing{
-  position:absolute;inset:8px;border-radius:99px;
-  background:conic-gradient(from -90deg,
-    rgba(255,255,255,.35) 0deg 1.5deg, transparent 1.5deg 30deg,
-    rgba(255,255,255,.35) 30deg 31.5deg, transparent 31.5deg 60deg,
-    rgba(255,255,255,.35) 60deg 61.5deg, transparent 61.5deg 90deg,
-    rgba(255,255,255,.35) 90deg 91.5deg, transparent 91.5deg 120deg,
-    rgba(255,255,255,.35) 120deg 121.5deg, transparent 121.5deg 150deg,
-    rgba(255,255,255,.35) 150deg 151.5deg, transparent 151.5deg 180deg,
-    rgba(255,255,255,.35) 180deg 181.5deg, transparent 181.5deg 210deg,
-    rgba(255,255,255,.35) 210deg 211.5deg, transparent 211.5deg 240deg,
-    rgba(255,255,255,.35) 240deg 241.5deg, transparent 241.5deg 270deg,
-    rgba(255,255,255,.35) 270deg 271.5deg, transparent 271.5deg 300deg,
-    rgba(255,255,255,.35) 300deg 301.5deg, transparent 301.5deg 330deg,
-    rgba(255,255,255,.35) 330deg 331.5deg, transparent 331.5deg 360deg
-  );
-  mask:radial-gradient(circle,transparent 0 70%,#000 73% 100%);
-  -webkit-mask:radial-gradient(circle,transparent 0 70%,#000 73% 100%);
-  opacity:.5;
-}
-.cHand{
-  position:absolute;left:50%;top:50%;
-  transform-origin:50% 100%;
-  transform:translate(-50%,-100%) rotate(0deg);
-  border-radius:99px;
-}
-.cHand.h{width:4px;height:28px;background:linear-gradient(180deg,rgba(240,242,250,.90),rgba(240,242,250,.30));}
-.cHand.m{width:3px;height:36px;background:linear-gradient(180deg,var(--moon),rgba(124,156,255,.30));}
-.cHand.s{width:2px;height:42px;background:linear-gradient(180deg,var(--gold),rgba(201,169,110,.35));}
-.cPin{
-  position:absolute;left:50%;top:50%;
-  width:8px;height:8px;transform:translate(-50%,-50%);
-  border-radius:99px;
-  background:var(--gold);
-  border:1px solid rgba(201,169,110,.40);
-  box-shadow:0 2px 8px rgba(0,0,0,.40);
-}
-.clockTickAnim{animation:cTick .1s ease-out;}
-@keyframes cTick{
-  0%{transform:rotate(0) scale(1);}
-  40%{transform:rotate(-.3deg) scale(1.005);}
-  100%{transform:rotate(0) scale(1);}
-}
-
-.clockDig{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
-.digTime{
-  font-family:'DM Serif Display',serif;
-  font-size:38px;letter-spacing:-.01em;font-variant-numeric:tabular-nums;
-  background:linear-gradient(90deg,var(--moon2),var(--moon));
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.digTime.feedDig{background:linear-gradient(90deg,var(--feed2),var(--feed));-webkit-background-clip:text;background-clip:text;color:transparent;}
-.digSub{font-size:12px;color:var(--muted);text-align:right;line-height:1.4;max-width:52vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-
-/* ── form ── */
-.formGroup{margin-top:14px;}
-.formLabel{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
-.formTextarea{
-  width:100%;min-height:80px;padding:12px;
-  border-radius:16px;border:1px solid var(--border2);
-  background:rgba(255,255,255,.05);
-  color:var(--text);font-size:14px;resize:vertical;font-family:inherit;outline:none;
-  transition:border-color .15s,box-shadow .15s;
-}
-.formTextarea:focus{border-color:rgba(124,156,255,.40);box-shadow:0 0 0 3px rgba(124,156,255,.10);}
-.formInput{
-  width:100%;height:50px;padding:12px;
-  border-radius:16px;border:1px solid var(--border2);
-  background:rgba(255,255,255,.05);
-  color:var(--text);font-size:14px;font-family:inherit;outline:none;
-  transition:border-color .15s,box-shadow .15s;
-}
-.formInput:focus{border-color:rgba(124,156,255,.40);box-shadow:0 0 0 3px rgba(124,156,255,.10);}
-
+/* form */
+.fg{margin-top:13px;}
+.fl{display:block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu2);margin-bottom:7px;}
+.ftx{width:100%;min-height:76px;padding:11px;border-radius:14px;border:1px solid var(--b2);background:rgba(255,255,255,.05);color:var(--txt);font-size:14px;resize:vertical;font-family:inherit;outline:none;}
+.ftx:focus{border-color:rgba(123,155,255,.38);box-shadow:0 0 0 3px rgba(123,155,255,.09);}
+.fin{width:100%;height:48px;padding:11px;border-radius:14px;border:1px solid var(--b2);background:rgba(255,255,255,.05);color:var(--txt);font-size:14px;font-family:inherit;outline:none;}
+.fin:focus{border-color:rgba(123,155,255,.38);box-shadow:0 0 0 3px rgba(123,155,255,.09);}
 .togRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
-.tog{
-  flex:1 1 100px;min-width:100px;
-  padding:11px 12px;border-radius:14px;
-  border:1px solid var(--border2);background:rgba(255,255,255,.05);
-  color:rgba(240,242,250,.85);font-size:13px;font-weight:600;
-  cursor:pointer;user-select:none;
-  transition:all .13s;white-space:nowrap;
-  min-height:44px;
-}
-.tog:active{transform:scale(.97);}
-.tog.active{background:rgba(255,143,171,.16);border-color:rgba(255,143,171,.30);color:var(--feed2);}
+.tog{flex:1 1 90px;min-width:90px;padding:10px;border-radius:13px;border:1px solid var(--b2);background:rgba(255,255,255,.05);color:rgba(240,242,250,.82);font-size:13px;font-weight:600;cursor:pointer;user-select:none;transition:all .12s;min-height:42px;}
+.tog:active{transform:scale(.96);}
+.tog.on{background:rgba(255,143,171,.15);border-color:rgba(255,143,171,.28);color:var(--feed2);}
 
-/* ── buttons ── */
-.bigBtn{
-  width:100%;min-height:56px;
-  border:none;border-radius:18px;
-  cursor:pointer;user-select:none;
-  font-size:15px;font-weight:700;letter-spacing:.01em;
-  transition:transform .12s,filter .12s;
-  position:relative;overflow:hidden;
-}
-.bigBtn:active{transform:scale(.985);filter:brightness(.97);}
-.bigBtn.moonBtn{
-  background:linear-gradient(110deg,var(--moon),#5b7dff);
-  color:#040812;
-  box-shadow:0 14px 40px rgba(124,156,255,.20);
-}
-.bigBtn.feedBtn{
-  background:linear-gradient(110deg,var(--feed),#ff6080);
-  color:#180610;
-  box-shadow:0 14px 40px rgba(255,143,171,.20);
-}
-.bigBtn.stopBtn{
-  background:linear-gradient(110deg,var(--orange),#ff6b2b);
-  color:#140a02;
-  box-shadow:0 14px 40px rgba(255,154,92,.18);
-}
-.bigBtn.greenBtn{
-  background:linear-gradient(110deg,var(--green),#2aad80);
-  color:#04110c;
-  box-shadow:0 14px 40px rgba(78,203,160,.18);
-}
-.bigBtn.neutralBtn{
-  background:rgba(255,255,255,.10);
-  border:1px solid var(--border2);
-  color:var(--text);
-  box-shadow:none;
-}
-
-.gap10{height:10px;}
+/* buttons */
+.btn{width:100%;min-height:54px;border:none;border-radius:17px;cursor:pointer;user-select:none;font-size:15px;font-weight:700;letter-spacing:.01em;transition:transform .12s,filter .12s;overflow:hidden;position:relative;}
+.btn:active{transform:scale(.985);filter:brightness(.97);}
+.btn.sl{background:linear-gradient(105deg,var(--moon2),#5b7bff);color:#030812;box-shadow:0 12px 36px rgba(123,155,255,.22);}
+.btn.fe{background:linear-gradient(105deg,var(--feed2),#ff5e80);color:#140610;box-shadow:0 12px 36px rgba(255,143,171,.22);}
+.btn.st{background:linear-gradient(105deg,var(--orn),#ff5f20);color:#140a02;box-shadow:0 12px 36px rgba(255,154,92,.18);}
+.btn.gr{background:linear-gradient(105deg,var(--grn),#28ad7e);color:#041109;box-shadow:0 12px 36px rgba(78,201,160,.18);}
+.btn.nt{background:rgba(255,255,255,.09);border:1px solid var(--b2);color:var(--txt);}
+.g10{height:10px;}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <div class="top">
-    <div class="topRow">
+  <div class="hdr">
+    <div class="hdrTop">
       <div class="wordmark">Norian</div>
-      <div class="pills">
-        <div class="pill sleep"><div class="dot"></div><span id="pillSleep">–</span></div>
-        <div class="pill feed"><div class="dot"></div><span id="pillFeed">–</span></div>
+      <div class="hdrPill">Baby tracker</div>
+    </div>
+    <div class="statRow">
+      <div class="stat">
+        <div class="statDot sl"></div>
+        <div class="statInfo">
+          <div class="statLbl">Zadnji san</div>
+          <div class="statVal" id="pillSleep">–</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="statDot fe"></div>
+        <div class="statInfo">
+          <div class="statLbl">Zadnje hranjenje</div>
+          <div class="statVal" id="pillFeed">–</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- hero -->
   <div class="hero">
-    <div class="heroContent">
-      <div class="heroStatus">
-        <div class="statusBadge" id="heroBadge">STATUS</div>
+    <div class="heroIn">
+      <div class="heroBRow">
+        <div class="heroTag" id="heroTag">STATUS</div>
         <div class="liveDot" id="liveDot" style="display:none;"></div>
       </div>
       <div class="heroMain" id="heroMain">–</div>
       <div class="heroSub" id="heroSub">–</div>
-
       <div class="ctaRow">
-        <div class="cta moonCta" id="openSleep">
-          <div class="ctaIcon">🌙</div>
-          <div class="ctaText">
-            <div class="label">Spavanje</div>
-            <div class="sub" id="ctaSleepSub">Dodaj</div>
-          </div>
-          <div class="ctaArrow" id="ctaSleepArr">→</div>
+        <div class="cta sc" id="openSleep">
+          <div class="ctaIco">🌙</div>
+          <div class="ctaTxt"><div class="lbl">Spavanje</div><div class="sub" id="ctaSleepSub">Dodaj</div></div>
+          <div class="ctaArr" id="ctaSleepArr">→</div>
         </div>
-        <div class="cta feedCta" id="openFeed">
-          <div class="ctaIcon">🍼</div>
-          <div class="ctaText">
-            <div class="label">Hranjenje</div>
-            <div class="sub" id="ctaFeedSub">Dodaj</div>
-          </div>
-          <div class="ctaArrow" id="ctaFeedArr">→</div>
+        <div class="cta fc" id="openFeed">
+          <div class="ctaIco">🍼</div>
+          <div class="ctaTxt"><div class="lbl">Hranjenje</div><div class="sub" id="ctaFeedSub">Dodaj</div></div>
+          <div class="ctaArr" id="ctaFeedArr">→</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- main section -->
-  <div class="section">
+  <div class="sec">
     <div class="secHead">
       <div class="secTitle" id="secTitle">Posljednje</div>
       <div class="secLink" id="toggleHistory">Historija</div>
     </div>
-    <!-- tab strip (only shown in history mode) -->
-    <div class="tabStrip" id="tabStrip" style="display:none;">
-      <div class="tab active" id="tabSleep" data-t="sleep">🌙 Spavanje</div>
-      <div class="tab feedTab" id="tabFeed" data-t="feed">🍼 Hranjenje</div>
+    <div class="tabs" id="tabStrip" style="display:none;">
+      <div class="tabBtn on" data-t="sleep">🌙 Spavanje</div>
+      <div class="tabBtn ft" data-t="feed">🍼 Hranjenje</div>
     </div>
     <div class="list" id="list"></div>
   </div>
 
 </div>
 
-<!-- nav -->
 <div class="nav">
   <div class="navIn">
-    <div class="navItem active" id="navHome"><div class="navIco">🏠</div><div class="navLbl">Početna</div></div>
+    <div class="navItem on" id="navHome"><div class="navIco">🏠</div><div class="navLbl">Početna</div></div>
     <div class="navItem" id="navHistory"><div class="navIco">📜</div><div class="navLbl">Historija</div></div>
     <div class="navItem" id="navSleep"><div class="navIco">🌙</div><div class="navLbl">Spavanje</div></div>
-    <div class="navItem feedNav" id="navFeed"><div class="navIco">🍼</div><div class="navLbl">Hranjenje</div></div>
+    <div class="navItem fn" id="navFeed"><div class="navIco">🍼</div><div class="navLbl">Hranjenje</div></div>
   </div>
 </div>
 
-<!-- Sleep modal -->
+<!-- SLEEP MODAL -->
 <div class="modal" id="sleepModal">
   <div class="sheet">
-    <div class="mHead">
-      <div class="mTitle moonTitle">Spavanje</div>
-      <div class="closeX" data-close="sleepModal">×</div>
-    </div>
-    <div class="clockWidget" id="sleepClockWrap" style="display:none;">
+    <div class="mHead"><div class="mTitle sl">Spavanje</div><div class="closeX" data-close="sleepModal">×</div></div>
+    <div class="clockBox" id="sleepClockBox" style="display:none;">
       <div class="clockRow">
-        <div class="analogWrap">
-          <div class="analogFace" id="sleepFace">
-            <div class="tickRing"></div>
-            <div class="cHand h" id="sleepH"></div>
-            <div class="cHand m" id="sleepM"></div>
-            <div class="cHand s" id="sleepS"></div>
-            <div class="cPin"></div>
-            <div class="clockGlass"></div>
-          </div>
+        <div class="face" id="sleepFace">
+          <div class="fTicks"></div>
+          <div class="hnd h" id="sleepH"></div><div class="hnd m" id="sleepM"></div><div class="hnd s" id="sleepS"></div>
+          <div class="cpin"></div><div class="fGlass"></div>
         </div>
-        <div class="clockDig">
+        <div class="digCol">
           <div class="digTime" id="sleepElapsed">00:00:00</div>
           <div class="digSub" id="sleepMeta">–</div>
         </div>
       </div>
     </div>
-    <button class="bigBtn moonBtn" id="sleepStart">Beba zaspala</button>
-    <div class="gap10"></div>
-    <button class="bigBtn stopBtn" id="sleepStop" style="display:none;">Beba se probudila</button>
-    <div class="formGroup">
-      <label class="formLabel">Bilješka (opcionalno)</label>
-      <textarea class="formTextarea" id="sleepNotes" placeholder="..."></textarea>
-    </div>
+    <button class="btn sl" id="sleepStart">🌙 Beba zaspala</button>
+    <div class="g10"></div>
+    <button class="btn st" id="sleepStop" style="display:none;">☀️ Beba se probudila</button>
+    <div class="fg"><label class="fl">Bilješka (opcionalno)</label><textarea class="ftx" id="sleepNotes" placeholder="..."></textarea></div>
   </div>
 </div>
 
-<!-- Feed modal -->
+<!-- FEED MODAL -->
 <div class="modal" id="feedModal">
   <div class="sheet">
-    <div class="mHead">
-      <div class="mTitle feedTitle">Hranjenje</div>
-      <div class="closeX" data-close="feedModal">×</div>
-    </div>
-    <div class="clockWidget" id="feedClockWrap" style="display:none;">
+    <div class="mHead"><div class="mTitle fe">Hranjenje</div><div class="closeX" data-close="feedModal">×</div></div>
+    <div class="clockBox" id="feedClockBox" style="display:none;">
       <div class="clockRow">
-        <div class="analogWrap">
-          <div class="analogFace" id="feedFace">
-            <div class="tickRing"></div>
-            <div class="cHand h" id="feedH"></div>
-            <div class="cHand m" id="feedM"></div>
-            <div class="cHand s" id="feedS"></div>
-            <div class="cPin"></div>
-            <div class="clockGlass"></div>
-          </div>
+        <div class="face" id="feedFace">
+          <div class="fTicks"></div>
+          <div class="hnd h" id="feedH"></div><div class="hnd m" id="feedM"></div><div class="hnd s" id="feedS"></div>
+          <div class="cpin"></div><div class="fGlass"></div>
         </div>
-        <div class="clockDig">
-          <div class="digTime feedDig" id="feedElapsed">00:00:00</div>
+        <div class="digCol">
+          <div class="digTime fe" id="feedElapsed">00:00:00</div>
           <div class="digSub" id="feedMeta">–</div>
         </div>
       </div>
     </div>
-    <div class="formGroup">
-      <label class="formLabel">Dojka</label>
+    <div class="fg"><label class="fl">Dojka</label>
       <div class="togRow" id="breastRow">
         <button class="tog" data-b="left">Lijeva</button>
         <button class="tog" data-b="right">Desna</button>
         <button class="tog" data-b="both">Obje</button>
       </div>
     </div>
-    <div class="gap10"></div>
-    <button class="bigBtn feedBtn" id="feedStart">Počinje jesti</button>
-    <div class="gap10"></div>
-    <button class="bigBtn greenBtn" id="feedStop" style="display:none;">Završio jesti</button>
-    <div class="formGroup">
-      <label class="formLabel">Bilješka (opcionalno)</label>
-      <textarea class="formTextarea" id="feedNotes" placeholder="..."></textarea>
-    </div>
+    <div class="g10"></div>
+    <button class="btn fe" id="feedStart">🍼 Počinje jesti</button>
+    <div class="g10"></div>
+    <button class="btn gr" id="feedStop" style="display:none;">✓ Završio jesti</button>
+    <div class="fg"><label class="fl">Bilješka (opcionalno)</label><textarea class="ftx" id="feedNotes" placeholder="..."></textarea></div>
   </div>
 </div>
 
-<!-- Edit modal -->
+<!-- EDIT MODAL -->
 <div class="modal" id="editModal">
   <div class="sheet">
-    <div class="mHead">
-      <div class="mTitle" style="font-size:18px;">Ispravka unosa</div>
-      <div class="closeX" data-close="editModal">×</div>
-    </div>
-    <div class="formGroup">
-      <label class="formLabel">Početak</label>
-      <input class="formInput" id="editStart" type="datetime-local">
-    </div>
-    <div class="formGroup">
-      <label class="formLabel">Kraj</label>
-      <input class="formInput" id="editEnd" type="datetime-local">
-    </div>
-    <div class="formGroup" id="editBreastWrap" style="display:none;">
-      <label class="formLabel">Dojka</label>
+    <div class="mHead"><div class="mTitle" style="font-size:19px;font-family:'DM Sans',sans-serif;font-weight:700;">Ispravka unosa</div><div class="closeX" data-close="editModal">×</div></div>
+    <div class="fg"><label class="fl">Početak</label><input class="fin" id="editStart" type="datetime-local"></div>
+    <div class="fg"><label class="fl">Kraj</label><input class="fin" id="editEnd" type="datetime-local"></div>
+    <div class="fg" id="editBreastWrap" style="display:none;"><label class="fl">Dojka</label>
       <div class="togRow" id="editBreastRow">
         <button class="tog" data-b="left">Lijeva</button>
         <button class="tog" data-b="right">Desna</button>
         <button class="tog" data-b="both">Obje</button>
       </div>
     </div>
-    <div class="formGroup">
-      <label class="formLabel">Bilješka</label>
-      <textarea class="formTextarea" id="editNotes" placeholder="..."></textarea>
-    </div>
-    <div class="gap10"></div>
-    <button class="bigBtn neutralBtn" id="editSave">Spremi</button>
+    <div class="fg"><label class="fl">Bilješka</label><textarea class="ftx" id="editNotes" placeholder="..."></textarea></div>
+    <div class="g10"></div>
+    <button class="btn nt" id="editSave">Spremi</button>
   </div>
 </div>
 
 <script>
-const KEY_ACTS="babyActivities";
-const KEY_SLEEP="activeSleep";
-const KEY_FEED="activeFeeding";
-const SUPPORTED=new Set(["sleep","feeding"]);
+const KA="babyActivities",KS="activeSleep",KF="activeFeeding";
+const SUP=new Set(["sleep","feeding"]);
+let acts=sP(localStorage.getItem(KA)||"[]",[]);
+let aSleep=sP(localStorage.getItem(KS)||"null",null);
+let aFeed=sP(localStorage.getItem(KF)||"null",null);
+let isHist=false,hTab="sleep",selB=null,eId=null,eB=null,lastSec=null;
+normAll();
 
-let activities=safeParse(localStorage.getItem(KEY_ACTS)||"[]",[]);
-let activeSleep=safeParse(localStorage.getItem(KEY_SLEEP)||"null",null);
-let activeFeeding=safeParse(localStorage.getItem(KEY_FEED)||"null",null);
-
-let isHistory=false;
-let histTab="sleep";
-let selectedBreast=null;
-let editId=null;
-let editBreast=null;
-let lastTickSec=null;
-
-normalizeAll();
-
-// ── utils ──
-function safeParse(j,f){try{return JSON.parse(j);}catch{return f;}}
-function uid(){return "a_"+Math.random().toString(16).slice(2)+"_"+Date.now().toString(16);}
-function pad2(n){return String(n).padStart(2,"0");}
+function sP(j,f){try{return JSON.parse(j);}catch{return f;}}
+function uid(){return"a_"+Math.random().toString(16).slice(2)+"_"+Date.now().toString(16);}
+function p2(n){return String(n).padStart(2,"0");}
 function esc(s){return String(s??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");}
-function isoToMs(iso){const d=new Date(iso);const t=d.getTime();return Number.isFinite(t)?t:null;}
-function msToISO(ms){return new Date(ms).toISOString();}
-function hmsFromMs(ms){
-  const t=Math.max(0,Math.floor(ms/1000));
-  const h=Math.floor(t/3600),m=Math.floor((t%3600)/60),s=t%60;
-  return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
+function isoMs(i){const t=new Date(i).getTime();return Number.isFinite(t)?t:null;}
+function msISO(m){return new Date(m).toISOString();}
+function hms(ms){const t=Math.max(0,Math.floor(ms/1000)),h=Math.floor(t/3600),m=Math.floor((t%3600)/60),s=t%60;return`${p2(h)}:${p2(m)}:${p2(s)}`;}
+function hm(ms){const t=Math.max(0,Math.floor(ms/1000)),h=Math.floor(t/3600),m=Math.floor((t%3600)/60);return h>0?`${h}h ${m}m`:`${m}m`;}
+function ago(ms){
+  let d=Date.now()-ms;if(d<0)d=0;let s=Math.floor(d/1000);
+  const dy=Math.floor(s/86400);s-=dy*86400;const hr=Math.floor(s/3600);s-=hr*3600;const mi=Math.floor(s/60);s-=mi*60;
+  if(dy>0)return`Prije ${dy}d ${hr}h ${mi}m`;if(hr>0)return`Prije ${hr}h ${mi}m ${p2(s)}s`;if(mi>0)return`Prije ${mi}m ${p2(s)}s`;return s<=1?"Upravo":`Prije ${s}s`;
 }
-function hmFromMs(ms){
-  const t=Math.max(0,Math.floor(ms/1000));
-  const h=Math.floor(t/3600),m=Math.floor((t%3600)/60);
-  if(h>0)return `${h}h ${m}m`;
-  return `${m}m`;
+function relT(ms){
+  const d=new Date(ms),now=new Date();now.setHours(0,0,0,0);const th=new Date(ms);th.setHours(0,0,0,0);
+  const df=Math.round((now-th)/86400000);const t=`${p2(d.getHours())}:${p2(d.getMinutes())}:${p2(d.getSeconds())}`;
+  if(df===0)return`Danas ${t}`;if(df===1)return`Jučer ${t}`;if(df>1)return`Prije ${df}d ${t}`;return t;
 }
-function agoPrecise(ms){
-  let diff=Date.now()-ms;if(diff<0)diff=0;
-  let sec=Math.floor(diff/1000);
-  const days=Math.floor(sec/86400);sec-=days*86400;
-  const hrs=Math.floor(sec/3600);sec-=hrs*3600;
-  const mins=Math.floor(sec/60);sec-=mins*60;
-  if(days>0)return `Prije ${days}d ${hrs}h ${mins}m`;
-  if(hrs>0)return `Prije ${hrs}h ${mins}m ${pad2(sec)}s`;
-  if(mins>0)return `Prije ${mins}m ${pad2(sec)}s`;
-  return sec<=1?"Upravo":`Prije ${sec}s`;
+function dKey(ms){const d=new Date(ms);return`${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`;}
+function dLbl(k){
+  const[y,m,d]=k.split("-").map(Number);
+  const dt=new Date(`${y}-${p2(m)}-${p2(d)}T00:00:00`);
+  const now=new Date();now.setHours(0,0,0,0);const yest=new Date(now);yest.setDate(yest.getDate()-1);
+  if(dt.getTime()===now.getTime())return"Danas";if(dt.getTime()===yest.getTime())return"Jučer";
+  const df=Math.round((now-dt)/86400000);if(df>1)return`Prije ${df} dana`;return`${p2(d)}.${p2(m)}.${y}`;
 }
-function relTime(ms){
-  const d=new Date(ms);
-  const today=new Date();today.setHours(0,0,0,0);
-  const that=new Date(ms);that.setHours(0,0,0,0);
-  const diff=Math.round((today-that)/86400000);
-  const t=`${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
-  if(diff===0)return `Danas ${t}`;
-  if(diff===1)return `Jučer ${t}`;
-  if(diff>1)return `Prije ${diff}d ${t}`;
-  return t;
+function dtL(ms){const d=new Date(ms);return`${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}T${p2(d.getHours())}:${p2(d.getMinutes())}`;}
+function fromDL(v){const t=new Date(v).getTime();return Number.isFinite(t)?t:null;}
+function saveA(){localStorage.setItem(KA,JSON.stringify(acts));}
+function saveAct(){
+  if(aSleep)localStorage.setItem(KS,JSON.stringify(aSleep));else localStorage.removeItem(KS);
+  if(aFeed)localStorage.setItem(KF,JSON.stringify(aFeed));else localStorage.removeItem(KF);
 }
-function dayKey(ms){const d=new Date(ms);return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;}
-function dayLabel(key){
-  const [y,m,d]=key.split("-").map(Number);
-  const dt=new Date(`${y}-${pad2(m)}-${pad2(d)}T00:00:00`);
-  const today=new Date();today.setHours(0,0,0,0);
-  const yest=new Date(today);yest.setDate(yest.getDate()-1);
-  if(dt.getTime()===today.getTime())return "Danas";
-  if(dt.getTime()===yest.getTime())return "Jučer";
-  const diff=Math.round((today-dt)/86400000);
-  if(diff>1)return `Prije ${diff} dana`;
-  return `${pad2(d)}.${pad2(m)}.${y}`;
-}
-function toDTLocal(ms){
-  const d=new Date(ms);
-  return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}T${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
-}
-function fromDTLocal(v){const d=new Date(v);const t=d.getTime();return Number.isFinite(t)?t:null;}
-
-// ── storage ──
-function saveActs(){localStorage.setItem(KEY_ACTS,JSON.stringify(activities));}
-function saveActive(){
-  if(activeSleep)localStorage.setItem(KEY_SLEEP,JSON.stringify(activeSleep));
-  else localStorage.removeItem(KEY_SLEEP);
-  if(activeFeeding)localStorage.setItem(KEY_FEED,JSON.stringify(activeFeeding));
-  else localStorage.removeItem(KEY_FEED);
-}
-
-// ── normalize ──
-function normalizeActivity(a){
-  if(!a||!a.type)return null;
-  if(!a.id)a.id=uid();
-  if(!SUPPORTED.has(a.type)){
-    // migrate old "awake" type
-    if(a.type==="awake"){a.type="sleep";}
-    else return a;
-  }
-  if(typeof a.startMs!=="number"){
-    const s=isoToMs(a.time||a.startIso||a.startTime);
-    if(s)a.startMs=s;
-  }
-  if(typeof a.endMs!=="number"){
-    const e=isoToMs(a.endTime||a.endIso||a.end);
-    if(e)a.endMs=e;
-  }
+function normAct(a){
+  if(!a||!a.type)return null;if(!a.id)a.id=uid();
+  if(a.type==="awake")a.type="sleep";if(!SUP.has(a.type))return a;
+  if(typeof a.startMs!=="number"){const s=isoMs(a.time||a.startIso||a.startTime);if(s)a.startMs=s;}
+  if(typeof a.endMs!=="number"){const e=isoMs(a.endTime||a.endIso||a.end);if(e)a.endMs=e;}
   if((!a.endMs||a.endMs<=a.startMs)&&a.startMs&&a.duration!=null){
-    if(a.type==="sleep"){
-      const h=Number(a.duration);
-      if(Number.isFinite(h)&&h>0)a.endMs=a.startMs+Math.round(h*3600000);
-    }else if(a.type==="feeding"){
-      const m=Number(a.duration);
-      if(Number.isFinite(m)&&m>0)a.endMs=a.startMs+Math.round(m*60000);
-    }
+    if(a.type==="sleep"){const h=Number(a.duration);if(Number.isFinite(h)&&h>0)a.endMs=a.startMs+Math.round(h*3600000);}
+    else{const m=Number(a.duration);if(Number.isFinite(m)&&m>0)a.endMs=a.startMs+Math.round(m*60000);}
   }
-  if(a.startMs&&!a.startIso)a.startIso=msToISO(a.startMs);
-  if(a.endMs&&!a.endIso)a.endIso=msToISO(a.endMs);
-  if(a.notes==null)a.notes="";
-  if(a.type==="feeding"&&!a.breast)a.breast=null;
-  if(!a.timestamp)a.timestamp=Date.now();
-  return a;
+  if(a.startMs&&!a.startIso)a.startIso=msISO(a.startMs);if(a.endMs&&!a.endIso)a.endIso=msISO(a.endMs);
+  if(a.notes==null)a.notes="";if(a.type==="feeding"&&!a.breast)a.breast=null;if(!a.timestamp)a.timestamp=Date.now();return a;
 }
-function normalizeActiveSleep(x){
-  if(!x)return null;
-  if(typeof x.startMs!=="number"){const s=isoToMs(x.startIso);if(s)x.startMs=s;}
-  if(x.startMs&&!x.startIso)x.startIso=msToISO(x.startMs);
-  return x.startMs?x:null;
-}
-function normalizeActiveFeeding(x){
-  if(!x)return null;
-  if(typeof x.startMs!=="number"){const s=isoToMs(x.startIso);if(s)x.startMs=s;}
-  if(x.startMs&&!x.startIso)x.startIso=msToISO(x.startMs);
-  if(!x.breast)x.breast=null;
-  return x.startMs?x:null;
-}
-function normalizeAll(){
-  activities=Array.isArray(activities)?activities.map(normalizeActivity).filter(Boolean):[];
-  activeSleep=normalizeActiveSleep(activeSleep);
-  activeFeeding=normalizeActiveFeeding(activeFeeding);
-  saveActs();saveActive();
-}
+function normSl(x){if(!x)return null;if(typeof x.startMs!=="number"){const s=isoMs(x.startIso);if(s)x.startMs=s;}if(x.startMs&&!x.startIso)x.startIso=msISO(x.startMs);return x.startMs?x:null;}
+function normFe(x){if(!x)return null;if(typeof x.startMs!=="number"){const s=isoMs(x.startIso);if(s)x.startMs=s;}if(x.startMs&&!x.startIso)x.startIso=msISO(x.startMs);if(!x.breast)x.breast=null;return x.startMs?x:null;}
+function normAll(){acts=Array.isArray(acts)?acts.map(normAct).filter(Boolean):[];aSleep=normSl(aSleep);aFeed=normFe(aFeed);saveA();saveAct();}
 
-// ── card helpers ──
-function titleFor(a){
-  if(a.type==="sleep")return "Spavanje";
-  const b=a.breast==="left"?"Lijeva":a.breast==="right"?"Desna":a.breast==="both"?"Obje":"–";
-  return `Hranjenje — ${b}`;
+function bStr(b){return b==="left"?"Lijeva":b==="right"?"Desna":b==="both"?"Obje":"–";}
+function titleFor(a){return a.type==="sleep"?"Spavanje":`Hranjenje — ${bStr(a.breast)}`;}
+function detFor(a){
+  const s=relT(a.startMs),e=relT(a.endMs),dur=hms(a.endMs-a.startMs),n=a.notes?` • ${esc(a.notes)}`:"";
+  if(a.type==="sleep")return`Početak: ${s} • Kraj: ${e} • Trajanje: ${dur}${n}`;
+  return`Početak: ${s} • Kraj: ${e} • Trajanje: ${dur} • Dojka: ${bStr(a.breast)}${n}`;
 }
-function detailsFor(a){
-  const s=relTime(a.startMs),e=relTime(a.endMs),dur=hmsFromMs(a.endMs-a.startMs);
-  const notes=a.notes?` • ${esc(a.notes)}`:"";
-  if(a.type==="sleep")return `Početak: ${s} • Kraj: ${e} • Trajanje: ${dur}${notes}`;
-  const b=a.breast==="left"?"Lijeva":a.breast==="right"?"Desna":a.breast==="both"?"Obje":"–";
-  return `Početak: ${s} • Kraj: ${e} • Trajanje: ${dur} • Dojka: ${b}${notes}`;
+function cardH(a){return`<div class="card"><div class="cardIco">${a.type==="sleep"?"🌙":"🍼"}</div><div class="cardBody"><div class="cardTitle">${esc(titleFor(a))}</div><div class="cardDesc">${detFor(a)}</div><div class="rowBtns"><button class="smBtn" data-edit="${a.id}">Uredi</button><button class="smBtn danger" data-del="${a.id}">Obriši</button></div></div><div class="cardMeta">${ago(a.endMs||a.startMs)}</div></div>`;}
+function liveH(type){
+  if(type==="sleep"&&aSleep){const el=Date.now()-aSleep.startMs;return`<div class="card"><div class="cardIco">🌙</div><div class="cardBody"><div class="cardTitle">Spavanje u toku</div><div class="cardDesc">Počeo: ${relT(aSleep.startMs)} • Traje: ${hms(el)}</div></div><div class="cardMeta">Sada</div></div>`;}
+  if(type==="feeding"&&aFeed){const el=Date.now()-aFeed.startMs;return`<div class="card"><div class="cardIco">🍼</div><div class="cardBody"><div class="cardTitle">Hranjenje u toku — ${bStr(aFeed.breast)}</div><div class="cardDesc">Počelo: ${relT(aFeed.startMs)} • Traje: ${hms(el)}</div></div><div class="cardMeta">Sada</div></div>`;}
+  return"";
 }
-function cardHTML(a){
-  const ico=a.type==="sleep"?"🌙":"🍼";
-  return `<div class="card">
-    <div class="cardIco">${ico}</div>
-    <div class="cardBody">
-      <div class="cardTitle">${esc(titleFor(a))}</div>
-      <div class="cardDesc">${detailsFor(a)}</div>
-      <div class="rowBtns">
-        <button class="smallBtn" data-edit="${a.id}">Uredi</button>
-        <button class="smallBtn danger" data-del="${a.id}">Obriši</button>
-      </div>
-    </div>
-    <div class="cardMeta">${agoPrecise(a.endMs||a.startMs)}</div>
-  </div>`;
+function updP(){
+  const ls=acts.filter(a=>a.type==="sleep"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
+  const lf=acts.filter(a=>a.type==="feeding"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
+  document.getElementById("pillSleep").textContent=ls?ago(ls.endMs):"–";
+  document.getElementById("pillFeed").textContent=lf?ago(lf.endMs):"–";
 }
-
-function activeCardHTML(type){
-  if(type==="sleep"&&activeSleep){
-    const el=Date.now()-activeSleep.startMs;
-    return `<div class="card">
-      <div class="cardIco">🌙</div>
-      <div class="cardBody">
-        <div class="cardTitle">Spavanje u toku</div>
-        <div class="cardDesc">Počeo: ${relTime(activeSleep.startMs)} • Traje: ${hmsFromMs(el)}</div>
-      </div>
-      <div class="cardMeta">Sada</div>
-    </div>`;
+function updH(){
+  const main=document.getElementById("heroMain"),sub=document.getElementById("heroSub"),tag=document.getElementById("heroTag"),dot=document.getElementById("liveDot");
+  const css=document.getElementById("ctaSleepSub"),csa=document.getElementById("ctaSleepArr"),cfs=document.getElementById("ctaFeedSub"),cfa=document.getElementById("ctaFeedArr");
+  css.textContent="Dodaj";csa.textContent="→";cfs.textContent="Dodaj";cfa.textContent="→";
+  if(aSleep){tag.textContent="SPAVA";tag.className="heroTag sl";dot.style.display="block";main.textContent=`Spava • ${hms(Date.now()-aSleep.startMs)}`;sub.textContent=`Zaspao: ${relT(aSleep.startMs)} • ${ago(aSleep.startMs)}`;css.textContent="Zaustavi";csa.textContent="STOP";return;}
+  if(aFeed){tag.textContent="JEDE";tag.className="heroTag fe";dot.style.display="block";main.textContent=`Jede (${bStr(aFeed.breast)}) • ${hms(Date.now()-aFeed.startMs)}`;sub.textContent=`Počelo: ${relT(aFeed.startMs)} • ${ago(aFeed.startMs)}`;cfs.textContent="Zaustavi";cfa.textContent="STOP";return;}
+  tag.textContent="STATUS";tag.className="heroTag";dot.style.display="none";
+  const ls=acts.filter(a=>a.type==="sleep"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
+  if(ls){main.textContent=`Zadnji san završio ${ago(ls.endMs)}`;sub.textContent=`Trajao: ${hms(ls.endMs-ls.startMs)}`;}else{main.textContent="Nema zapisa";sub.textContent="Dodaj prvi unos →";}
+}
+function updL(){
+  const el=document.getElementById("list"),title=document.getElementById("secTitle"),tgl=document.getElementById("toggleHistory"),strip=document.getElementById("tabStrip");
+  if(!isHist){
+    title.textContent="Posljednje";tgl.textContent="Historija";strip.style.display="none";
+    const b=[];if(aSleep)b.push(liveH("sleep"));if(aFeed)b.push(liveH("feeding"));
+    const ls=acts.filter(a=>a.type==="sleep"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
+    const lf=acts.filter(a=>a.type==="feeding"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
+    if(!aSleep&&ls)b.push(cardH(ls));if(!aFeed&&lf)b.push(cardH(lf));
+    el.innerHTML=b.length?b.join(""):`<div class="empty">Nema aktivnosti.</div>`;return;
   }
-  if(type==="feeding"&&activeFeeding){
-    const el=Date.now()-activeFeeding.startMs;
-    const b=activeFeeding.breast==="left"?"Lijeva":activeFeeding.breast==="right"?"Desna":activeFeeding.breast==="both"?"Obje":"–";
-    return `<div class="card">
-      <div class="cardIco">🍼</div>
-      <div class="cardBody">
-        <div class="cardTitle">Hranjenje u toku — ${b}</div>
-        <div class="cardDesc">Počelo: ${relTime(activeFeeding.startMs)} • Traje: ${hmsFromMs(el)}</div>
-      </div>
-      <div class="cardMeta">Sada</div>
-    </div>`;
-  }
-  return "";
-}
-
-// ── UI updates ──
-function updatePills(){
-  const lastSleep=activities.filter(a=>a.type==="sleep"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
-  const lastFeed=activities.filter(a=>a.type==="feeding"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
-  document.getElementById("pillSleep").textContent=lastSleep?agoPrecise(lastSleep.endMs)+"  🌙":"–";
-  document.getElementById("pillFeed").textContent=lastFeed?agoPrecise(lastFeed.endMs)+"  🍼":"–";
-}
-
-function updateHero(){
-  const main=document.getElementById("heroMain");
-  const sub=document.getElementById("heroSub");
-  const badge=document.getElementById("heroBadge");
-  const dot=document.getElementById("liveDot");
-  const ctaSS=document.getElementById("ctaSleepSub");
-  const ctaSA=document.getElementById("ctaSleepArr");
-  const ctaFS=document.getElementById("ctaFeedSub");
-  const ctaFA=document.getElementById("ctaFeedArr");
-
-  ctaSS.textContent="Dodaj";ctaSA.textContent="→";
-  ctaFS.textContent="Dodaj";ctaFA.textContent="→";
-
-  if(activeSleep){
-    badge.textContent="SPAVA";badge.className="statusBadge sleep";dot.style.display="block";
-    main.textContent=`Spava • ${hmsFromMs(Date.now()-activeSleep.startMs)}`;
-    sub.textContent=`Zaspao: ${relTime(activeSleep.startMs)} • ${agoPrecise(activeSleep.startMs)}`;
-    ctaSS.textContent="Zaustavi";ctaSA.textContent="STOP";
-    return;
-  }
-  if(activeFeeding){
-    const b=activeFeeding.breast==="left"?"Lijeva":activeFeeding.breast==="right"?"Desna":activeFeeding.breast==="both"?"Obje":"–";
-    badge.textContent="JEDE";badge.className="statusBadge feed";dot.style.display="block";
-    main.textContent=`Jede (${b}) • ${hmsFromMs(Date.now()-activeFeeding.startMs)}`;
-    sub.textContent=`Počelo: ${relTime(activeFeeding.startMs)} • ${agoPrecise(activeFeeding.startMs)}`;
-    ctaFS.textContent="Zaustavi";ctaFA.textContent="STOP";
-    return;
-  }
-
-  badge.textContent="STATUS";badge.className="statusBadge";dot.style.display="none";
-  const lastSleep=activities.filter(a=>a.type==="sleep"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
-  const lastFeed=activities.filter(a=>a.type==="feeding"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
-  if(lastSleep){
-    main.textContent=`Zadnji san završio ${agoPrecise(lastSleep.endMs)}`;
-    sub.textContent=`Trajao: ${hmsFromMs(lastSleep.endMs-lastSleep.startMs)}`;
-  } else {
-    main.textContent="Nema zapisa";
-    sub.textContent="Dodaj prvi unos →";
-  }
-}
-
-function updateList(){
-  const el=document.getElementById("list");
-  const title=document.getElementById("secTitle");
-  const tgl=document.getElementById("toggleHistory");
-  const strip=document.getElementById("tabStrip");
-
-  if(!isHistory){
-    title.textContent="Posljednje";tgl.textContent="Historija";
-    strip.style.display="none";
-    const blocks=[];
-    if(activeSleep)blocks.push(activeCardHTML("sleep"));
-    if(activeFeeding)blocks.push(activeCardHTML("feeding"));
-    const lastSleep=activities.filter(a=>a.type==="sleep"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
-    const lastFeed=activities.filter(a=>a.type==="feeding"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
-    if(!activeSleep&&lastSleep)blocks.push(cardHTML(lastSleep));
-    if(!activeFeeding&&lastFeed)blocks.push(cardHTML(lastFeed));
-    el.innerHTML=blocks.length?blocks.join(""):`<div class="empty">Nema aktivnosti.</div>`;
-    return;
-  }
-
-  title.textContent="Historija";tgl.textContent="Posljednje";
-  strip.style.display="flex";
-
-  const type=histTab==="sleep"?"sleep":"feeding";
-  const sorted=activities.filter(a=>a.type===type&&a.startMs&&a.endMs).sort((a,b)=>b.startMs-a.startMs);
-
+  title.textContent="Historija";tgl.textContent="Posljednje";strip.style.display="flex";
+  document.querySelectorAll(".tabBtn").forEach(t=>{t.classList.toggle("on",t.dataset.t===hTab);});
+  const type=hTab==="sleep"?"sleep":"feeding";
+  const sorted=acts.filter(a=>a.type===type&&a.startMs&&a.endMs).sort((a,b)=>b.startMs-a.startMs);
   if(!sorted.length){el.innerHTML=`<div class="empty">Nema zapisa.</div>`;return;}
-
-  const groups={};
-  for(const a of sorted){const k=dayKey(a.startMs);(groups[k]||=[]).push(a);}
+  const groups={};for(const a of sorted){const k=dKey(a.startMs);(groups[k]||=[]).push(a);}
   const keys=Object.keys(groups).sort((a,b)=>a<b?1:-1);
-
   el.innerHTML=keys.map(k=>{
     const items=groups[k];
-    const label=dayLabel(k);
-    const count=`${items.length} zapisa`;
-
-    let summaryHTML="";
-    if(type==="sleep"){
-      const totalMs=items.reduce((s,a)=>s+(a.endMs-a.startMs),0);
-      summaryHTML=`<span class="dayTotal">Ukupno sna: ${hmFromMs(totalMs)}</span>`;
-    } else {
-      summaryHTML=`<span class="dayTotal feedTotal">${items.length}× hranjenje</span>`;
-    }
-
-    const cards=items.map(cardHTML).join("");
-    return `<div class="dayGroup">
-      <div class="dayHeader">
-        <div class="dayLabel">${label}</div>
-        <div class="daySummary">${summaryHTML}<span style="color:var(--muted2)">${count}</span></div>
-      </div>
-      <div class="dayItems">${cards}</div>
-    </div>`;
+    const badge=type==="sleep"?`<span class="dayBadge">Ukupno: ${hm(items.reduce((s,a)=>s+(a.endMs-a.startMs),0))}</span>`:`<span class="dayBadge fb">${items.length}× hranjenje</span>`;
+    return`<div class="dayGroup"><div class="dayHdr"><div class="dayLabel">${dLbl(k)}</div><div class="dayMeta">${badge}<span class="dayCount">${items.length} zapisa</span></div></div><div class="dayItems">${items.map(cardH).join("")}</div></div>`;
   }).join("");
 }
+function updAll(){updP();updH();updL();}
 
-function updateAll(){updatePills();updateHero();updateList();}
+function openM(id){document.getElementById(id).classList.add("active");if(id==="sleepModal")pSleep();if(id==="feedModal")pFeed();}
+function closeM(id){document.getElementById(id).classList.remove("active");}
+document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)closeM(m.id);}));
+document.querySelectorAll("[data-close]").forEach(x=>x.addEventListener("click",()=>closeM(x.dataset.close)));
 
-// ── modals ──
-function openModal(id){
-  document.getElementById(id).classList.add("active");
-  if(id==="sleepModal")paintSleepModal();
-  if(id==="feedModal")paintFeedModal();
+function setH(H,M,S,ms){const t=Math.max(0,Math.floor(ms/1000)),s=t%60,m=Math.floor(t/60)%60,h=Math.floor(t/3600)%12;H.style.transform=`translate(-50%,-100%) rotate(${h*30+m*.5}deg)`;M.style.transform=`translate(-50%,-100%) rotate(${m*6+s*.1}deg)`;S.style.transform=`translate(-50%,-100%) rotate(${s*6}deg)`;}
+function kick(id){const el=document.getElementById(id);if(!el)return;el.classList.remove("faceKick");void el.offsetWidth;el.classList.add("faceKick");}
+
+function pSleep(){
+  if(aSleep){document.getElementById("sleepClockBox").style.display="block";document.getElementById("sleepStart").style.display="none";document.getElementById("sleepStop").style.display="block";}
+  else{document.getElementById("sleepClockBox").style.display="none";document.getElementById("sleepStart").style.display="block";document.getElementById("sleepStop").style.display="none";document.getElementById("sleepNotes").value="";}
 }
-function closeModal(id){document.getElementById(id).classList.remove("active");}
-
-document.querySelectorAll(".modal").forEach(m=>{
-  m.addEventListener("click",e=>{if(e.target===m)closeModal(m.id);});
-});
-document.querySelectorAll("[data-close]").forEach(x=>{
-  x.addEventListener("click",()=>closeModal(x.dataset.close));
-});
-
-// ── analog clock ──
-function setAnalog(pH,pM,pS,elMs){
-  const tot=Math.max(0,Math.floor(elMs/1000));
-  const s=tot%60,m=Math.floor(tot/60)%60,h=Math.floor(tot/3600)%12;
-  const sDeg=s*6,mDeg=m*6+s*.1,hDeg=h*30+m*.5;
-  pH.style.transform=`translate(-50%,-100%) rotate(${hDeg}deg)`;
-  pM.style.transform=`translate(-50%,-100%) rotate(${mDeg}deg)`;
-  pS.style.transform=`translate(-50%,-100%) rotate(${sDeg}deg)`;
-}
-function kickClock(faceId){
-  const el=document.getElementById(faceId);if(!el)return;
-  el.classList.remove("clockTickAnim");void el.offsetWidth;el.classList.add("clockTickAnim");
-}
-
-// ── sleep ──
-function paintSleepModal(){
-  if(activeSleep){
-    document.getElementById("sleepClockWrap").style.display="block";
-    document.getElementById("sleepStart").style.display="none";
-    document.getElementById("sleepStop").style.display="block";
-  }else{
-    document.getElementById("sleepClockWrap").style.display="none";
-    document.getElementById("sleepStart").style.display="block";
-    document.getElementById("sleepStop").style.display="none";
-    document.getElementById("sleepNotes").value="";
-  }
-}
-document.getElementById("sleepStart").addEventListener("click",()=>{
-  if(activeSleep)return;
-  const ms=Date.now();
-  activeSleep={startMs:ms,startIso:new Date(ms).toISOString()};
-  saveActive();paintSleepModal();updateAll();
-});
+document.getElementById("sleepStart").addEventListener("click",()=>{if(aSleep)return;const ms=Date.now();aSleep={startMs:ms,startIso:new Date(ms).toISOString()};saveAct();pSleep();updAll();});
 document.getElementById("sleepStop").addEventListener("click",()=>{
-  if(!activeSleep)return;
-  const endMs=Date.now();
-  const act=normalizeActivity({
-    id:uid(),type:"sleep",
-    time:activeSleep.startIso,endTime:new Date(endMs).toISOString(),
-    duration:(endMs-activeSleep.startMs)/3600000,
-    notes:document.getElementById("sleepNotes").value||"",
-    timestamp:Date.now()
-  });
-  activities.push(act);activeSleep=null;
-  saveActs();saveActive();closeModal("sleepModal");updateAll();
+  if(!aSleep)return;const endMs=Date.now();
+  const a=normAct({id:uid(),type:"sleep",time:aSleep.startIso,endTime:new Date(endMs).toISOString(),duration:(endMs-aSleep.startMs)/3600000,notes:document.getElementById("sleepNotes").value||"",timestamp:Date.now()});
+  acts.push(a);aSleep=null;saveA();saveAct();closeM("sleepModal");updAll();
 });
 
-// ── feeding ──
-function setBreast(b){
-  selectedBreast=b;
-  document.querySelectorAll("#breastRow .tog").forEach(btn=>btn.classList.toggle("active",btn.dataset.b===b));
-}
+function setBreast(b){selB=b;document.querySelectorAll("#breastRow .tog").forEach(btn=>btn.classList.toggle("on",btn.dataset.b===b));}
 document.querySelectorAll("#breastRow .tog").forEach(btn=>btn.addEventListener("click",()=>setBreast(btn.dataset.b)));
-
-function paintFeedModal(){
-  if(activeFeeding){
-    document.getElementById("feedClockWrap").style.display="block";
-    document.getElementById("feedStart").style.display="none";
-    document.getElementById("feedStop").style.display="block";
-    setBreast(activeFeeding.breast);
-  }else{
-    document.getElementById("feedClockWrap").style.display="none";
-    document.getElementById("feedStart").style.display="block";
-    document.getElementById("feedStop").style.display="none";
-    setBreast(null);
-    document.getElementById("feedNotes").value="";
-  }
+function pFeed(){
+  if(aFeed){document.getElementById("feedClockBox").style.display="block";document.getElementById("feedStart").style.display="none";document.getElementById("feedStop").style.display="block";setBreast(aFeed.breast);}
+  else{document.getElementById("feedClockBox").style.display="none";document.getElementById("feedStart").style.display="block";document.getElementById("feedStop").style.display="none";setBreast(null);document.getElementById("feedNotes").value="";}
 }
-document.getElementById("feedStart").addEventListener("click",()=>{
-  if(activeFeeding)return;
-  if(!selectedBreast)return alert("Odaberi dojku.");
-  const ms=Date.now();
-  activeFeeding={startMs:ms,startIso:new Date(ms).toISOString(),breast:selectedBreast};
-  saveActive();paintFeedModal();updateAll();
-});
+document.getElementById("feedStart").addEventListener("click",()=>{if(aFeed)return;if(!selB)return alert("Odaberi dojku.");const ms=Date.now();aFeed={startMs:ms,startIso:new Date(ms).toISOString(),breast:selB};saveAct();pFeed();updAll();});
 document.getElementById("feedStop").addEventListener("click",()=>{
-  if(!activeFeeding)return;
-  const endMs=Date.now();
-  const dur=Math.round((endMs-activeFeeding.startMs)/60000);
-  if(dur<=0)return alert("Greška u vremenima.");
-  const act=normalizeActivity({
-    id:uid(),type:"feeding",
-    time:activeFeeding.startIso,endTime:new Date(endMs).toISOString(),
-    breast:activeFeeding.breast,duration:dur,
-    notes:document.getElementById("feedNotes").value||"",
-    timestamp:Date.now()
-  });
-  activities.push(act);activeFeeding=null;
-  saveActs();saveActive();closeModal("feedModal");updateAll();
+  if(!aFeed)return;const endMs=Date.now();const dur=Math.round((endMs-aFeed.startMs)/60000);if(dur<=0)return alert("Greška u vremenima.");
+  const a=normAct({id:uid(),type:"feeding",time:aFeed.startIso,endTime:new Date(endMs).toISOString(),breast:aFeed.breast,duration:dur,notes:document.getElementById("feedNotes").value||"",timestamp:Date.now()});
+  acts.push(a);aFeed=null;saveA();saveAct();closeM("feedModal");updAll();
 });
 
-// ── edit ──
 function openEdit(id){
-  const a=activities.find(x=>x&&x.id===id);if(!a)return;
-  editId=id;
-  document.getElementById("editStart").value=a.startMs?toDTLocal(a.startMs):"";
-  document.getElementById("editEnd").value=a.endMs?toDTLocal(a.endMs):"";
-  document.getElementById("editNotes").value=a.notes||"";
-  if(a.type==="feeding"){
-    document.getElementById("editBreastWrap").style.display="block";
-    editBreast=a.breast||null;
-    document.querySelectorAll("#editBreastRow .tog").forEach(btn=>btn.classList.toggle("active",btn.dataset.b===editBreast));
-  }else{
-    document.getElementById("editBreastWrap").style.display="none";
-    editBreast=null;
-  }
-  openModal("editModal");
+  const a=acts.find(x=>x&&x.id===id);if(!a)return;eId=id;
+  document.getElementById("editStart").value=a.startMs?dtL(a.startMs):"";document.getElementById("editEnd").value=a.endMs?dtL(a.endMs):"";document.getElementById("editNotes").value=a.notes||"";
+  if(a.type==="feeding"){document.getElementById("editBreastWrap").style.display="block";eB=a.breast||null;document.querySelectorAll("#editBreastRow .tog").forEach(b=>b.classList.toggle("on",b.dataset.b===eB));}
+  else{document.getElementById("editBreastWrap").style.display="none";eB=null;}openM("editModal");
 }
-document.querySelectorAll("#editBreastRow .tog").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    editBreast=btn.dataset.b;
-    document.querySelectorAll("#editBreastRow .tog").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-  });
-});
+document.querySelectorAll("#editBreastRow .tog").forEach(btn=>btn.addEventListener("click",()=>{eB=btn.dataset.b;document.querySelectorAll("#editBreastRow .tog").forEach(b=>b.classList.remove("on"));btn.classList.add("on");}));
 document.getElementById("editSave").addEventListener("click",()=>{
-  if(!editId)return;
-  const a=activities.find(x=>x&&x.id===editId);if(!a)return;
-  const s=fromDTLocal(document.getElementById("editStart").value);
-  const e=fromDTLocal(document.getElementById("editEnd").value);
-  if(!s||!e)return alert("Unesi početak i kraj.");
-  if(e<=s)return alert("Kraj ne može biti prije početka.");
-  a.startMs=s;a.endMs=e;
-  a.startIso=msToISO(s);a.endIso=msToISO(e);
-  a.time=a.startIso;a.endTime=a.endIso;
-  a.notes=document.getElementById("editNotes").value||"";
-  if(a.type==="sleep"){a.duration=(e-s)/3600000;}
-  else if(a.type==="feeding"){
-    if(!editBreast)return alert("Odaberi dojku.");
-    a.breast=editBreast;a.duration=Math.round((e-s)/60000);
-    if(a.duration<=0)return alert("Greška u vremenima.");
-  }
-  normalizeAll();saveActs();closeModal("editModal");updateAll();
+  if(!eId)return;const a=acts.find(x=>x&&x.id===eId);if(!a)return;
+  const s=fromDL(document.getElementById("editStart").value),e=fromDL(document.getElementById("editEnd").value);
+  if(!s||!e)return alert("Unesi početak i kraj.");if(e<=s)return alert("Kraj ne može biti prije početka.");
+  a.startMs=s;a.endMs=e;a.startIso=msISO(s);a.endIso=msISO(e);a.time=a.startIso;a.endTime=a.endIso;a.notes=document.getElementById("editNotes").value||"";
+  if(a.type==="sleep"){a.duration=(e-s)/3600000;}else{if(!eB)return alert("Odaberi dojku.");a.breast=eB;a.duration=Math.round((e-s)/60000);if(a.duration<=0)return alert("Greška u vremenima.");}
+  normAll();saveA();closeM("editModal");updAll();
 });
+function delAct(id){const i=acts.findIndex(a=>a&&a.id===id);if(i<0)return;if(!confirm("Obrisati zapis?"))return;acts.splice(i,1);saveA();updAll();}
+document.addEventListener("click",e=>{const b1=e.target.closest("[data-edit]");if(b1)return openEdit(b1.dataset.edit);const b2=e.target.closest("[data-del]");if(b2)return delAct(b2.dataset.del);});
 
-function deleteAct(id){
-  const idx=activities.findIndex(a=>a&&a.id===id);
-  if(idx<0)return;
-  if(!confirm("Obrisati zapis?"))return;
-  activities.splice(idx,1);saveActs();updateAll();
-}
+document.querySelectorAll(".tabBtn").forEach(t=>t.addEventListener("click",()=>{hTab=t.dataset.t;updL();}));
 
-document.addEventListener("click",e=>{
-  const b1=e.target.closest("[data-edit]");if(b1)return openEdit(b1.dataset.edit);
-  const b2=e.target.closest("[data-del]");if(b2)return deleteAct(b2.dataset.del);
-});
+function setNav(id){document.querySelectorAll(".navItem").forEach(x=>x.classList.remove("on"));document.getElementById(id).classList.add("on");}
+document.getElementById("navHome").addEventListener("click",()=>{isHist=false;setNav("navHome");updAll();window.scrollTo({top:0,behavior:"instant"});});
+document.getElementById("navHistory").addEventListener("click",()=>{isHist=true;setNav("navHistory");updAll();window.scrollTo({top:0,behavior:"instant"});});
+document.getElementById("navSleep").addEventListener("click",()=>openM("sleepModal"));
+document.getElementById("navFeed").addEventListener("click",()=>openM("feedModal"));
+document.getElementById("toggleHistory").addEventListener("click",()=>{isHist=!isHist;setNav(isHist?"navHistory":"navHome");updAll();window.scrollTo({top:0,behavior:"instant"});});
+document.getElementById("openSleep").addEventListener("click",()=>openM("sleepModal"));
+document.getElementById("openFeed").addEventListener("click",()=>openM("feedModal"));
 
-// ── tabs ──
-document.querySelectorAll(".tab").forEach(t=>{
-  t.addEventListener("click",()=>{
-    histTab=t.dataset.t;
-    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-    t.classList.add("active");
-    updateList();
-  });
-});
-
-// ── nav ──
-function setNav(which){document.querySelectorAll(".navItem").forEach(x=>x.classList.remove("active"));document.getElementById(which).classList.add("active");}
-document.getElementById("navHome").addEventListener("click",()=>{isHistory=false;setNav("navHome");updateAll();window.scrollTo({top:0,behavior:"instant"});});
-document.getElementById("navHistory").addEventListener("click",()=>{isHistory=true;setNav("navHistory");updateAll();window.scrollTo({top:0,behavior:"instant"});});
-document.getElementById("navSleep").addEventListener("click",()=>openModal("sleepModal"));
-document.getElementById("navFeed").addEventListener("click",()=>openModal("feedModal"));
-
-document.getElementById("toggleHistory").addEventListener("click",()=>{
-  isHistory=!isHistory;
-  setNav(isHistory?"navHistory":"navHome");
-  updateAll();window.scrollTo({top:0,behavior:"instant"});
-});
-
-document.getElementById("openSleep").addEventListener("click",()=>openModal("sleepModal"));
-document.getElementById("openFeed").addEventListener("click",()=>openModal("feedModal"));
-
-// ── live tick ──
 function tick(){
-  activities=safeParse(localStorage.getItem(KEY_ACTS)||"[]",[]);
-  activeSleep=safeParse(localStorage.getItem(KEY_SLEEP)||"null",null);
-  activeFeeding=safeParse(localStorage.getItem(KEY_FEED)||"null",null);
-  normalizeAll();
-  updatePills();updateHero();updateList();
-
-  const nowSec=Math.floor(Date.now()/1000);
-  const isNew=lastTickSec===null||nowSec!==lastTickSec;
-  if(isNew)lastTickSec=nowSec;
-
-  if(document.getElementById("sleepModal").classList.contains("active")&&activeSleep){
-    const el=Date.now()-activeSleep.startMs;
-    document.getElementById("sleepElapsed").textContent=hmsFromMs(el);
-    document.getElementById("sleepMeta").textContent=`Zaspao: ${relTime(activeSleep.startMs)} • ${agoPrecise(activeSleep.startMs)}`;
-    setAnalog(
-      document.getElementById("sleepH"),
-      document.getElementById("sleepM"),
-      document.getElementById("sleepS"),el
-    );
-    if(isNew)kickClock("sleepFace");
-    document.getElementById("sleepClockWrap").style.display="block";
+  acts=sP(localStorage.getItem(KA)||"[]",[]);aSleep=sP(localStorage.getItem(KS)||"null",null);aFeed=sP(localStorage.getItem(KF)||"null",null);normAll();updP();updH();updL();
+  const nowSec=Math.floor(Date.now()/1000),isNew=lastSec===null||nowSec!==lastSec;if(isNew)lastSec=nowSec;
+  if(document.getElementById("sleepModal").classList.contains("active")&&aSleep){
+    const el=Date.now()-aSleep.startMs;document.getElementById("sleepElapsed").textContent=hms(el);document.getElementById("sleepMeta").textContent=`Zaspao: ${relT(aSleep.startMs)} • ${ago(aSleep.startMs)}`;
+    setH(document.getElementById("sleepH"),document.getElementById("sleepM"),document.getElementById("sleepS"),el);if(isNew)kick("sleepFace");document.getElementById("sleepClockBox").style.display="block";
   }
-  if(document.getElementById("feedModal").classList.contains("active")&&activeFeeding){
-    const el=Date.now()-activeFeeding.startMs;
-    const b=activeFeeding.breast==="left"?"Lijeva":activeFeeding.breast==="right"?"Desna":activeFeeding.breast==="both"?"Obje":"–";
-    document.getElementById("feedElapsed").textContent=hmsFromMs(el);
-    document.getElementById("feedMeta").textContent=`Počelo: ${relTime(activeFeeding.startMs)} • Dojka: ${b} • ${agoPrecise(activeFeeding.startMs)}`;
-    setAnalog(
-      document.getElementById("feedH"),
-      document.getElementById("feedM"),
-      document.getElementById("feedS"),el
-    );
-    if(isNew)kickClock("feedFace");
-    document.getElementById("feedClockWrap").style.display="block";
+  if(document.getElementById("feedModal").classList.contains("active")&&aFeed){
+    const el=Date.now()-aFeed.startMs;document.getElementById("feedElapsed").textContent=hms(el);document.getElementById("feedMeta").textContent=`Počelo: ${relT(aFeed.startMs)} • Dojka: ${bStr(aFeed.breast)} • ${ago(aFeed.startMs)}`;
+    setH(document.getElementById("feedH"),document.getElementById("feedM"),document.getElementById("feedS"),el);if(isNew)kick("feedFace");document.getElementById("feedClockBox").style.display="block";
   }
 }
-
-updateAll();paintSleepModal();paintFeedModal();
-setInterval(tick,1000);
+updAll();pSleep();pFeed();setInterval(tick,1000);
 </script>
 </body>
 </html>
