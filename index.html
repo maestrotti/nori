@@ -56,7 +56,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .heroSub{font-size:13px;color:var(--mu);line-height:1.5;}
 
 /* cta row */
-.ctaRow{margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.ctaRow{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.cta.fd{grid-column:1/-1;}
 .cta{border-radius:20px;border:1px solid var(--b2);background:rgba(255,255,255,.05);padding:13px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;position:relative;overflow:hidden;transition:transform .13s,filter .13s;min-height:70px;}
 .cta:active{transform:scale(.97);filter:brightness(.95);}
 .cta.sc::before{content:"";position:absolute;inset:-2px;pointer-events:none;background:radial-gradient(380px 110px at 8% 0%,rgba(123,155,255,.24),transparent);}
@@ -64,8 +65,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .cta.fd::before{content:"";position:absolute;inset:-2px;pointer-events:none;background:radial-gradient(380px 110px at 8% 0%,rgba(244,201,93,.22),transparent);}
 .ctaIco{width:42px;height:42px;border-radius:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:19px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);position:relative;z-index:1;}
 .ctaTxt{flex:1;min-width:0;position:relative;z-index:1;}
-.ctaTxt .lbl{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.ctaTxt .sub{font-size:11px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
+.ctaTxt .lbl{font-size:14px;font-weight:700;white-space:normal;overflow:visible;}
+.ctaTxt .sub{font-size:11px;color:var(--mu);white-space:normal;overflow:visible;margin-top:2px;}
 .ctaArr{font-size:15px;color:rgba(240,242,250,.40);position:relative;z-index:1;flex-shrink:0;}
 
 /* section */
@@ -193,7 +194,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
           <div class="statLbl">Zadnje hranjenje</div>
           <div class="statVal" id="pillFeed">–</div>
         </div>
-      </div>
       </div>
     </div>
   </div>
@@ -403,7 +403,7 @@ function normAct(a){
   if(typeof a.endMs!=="number"){const e=isoMs(a.endTime||a.endIso||a.end);if(e)a.endMs=e;}
   if((!a.endMs||a.endMs<=a.startMs)&&a.startMs&&a.duration!=null){
     if(a.type==="sleep"){const h=Number(a.duration);if(Number.isFinite(h)&&h>0)a.endMs=a.startMs+Math.round(h*3600000);}
-    else{const m=Number(a.duration);if(Number.isFinite(m)&&m>0)a.endMs=a.startMs+Math.round(m*60000);}
+    else if(a.type==="feeding"){const m=Number(a.duration);if(Number.isFinite(m)&&m>0)a.endMs=a.startMs+Math.round(m*60000);}
   }
   if(a.startMs&&!a.startIso)a.startIso=msISO(a.startMs);if(a.endMs&&!a.endIso)a.endIso=msISO(a.endMs);
   if(a.notes==null)a.notes="";if(a.type==="feeding"&&!a.breast)a.breast=null;if(a.type==="food"){if(!a.foodName)a.foodName="";if(!a.liked)a.liked=null;if(a.startMs&&!a.endMs)a.endMs=a.startMs;}if(!a.timestamp)a.timestamp=Date.now();return a;
@@ -418,7 +418,8 @@ function detFor(a){
   const s=relT(a.startMs),e=relT(a.endMs),dur=hms(a.endMs-a.startMs),n=a.notes?` • ${esc(a.notes)}`:"";
   if(a.type==="sleep")return`Početak: ${s} • Kraj: ${e} • Trajanje: ${dur}${n}`;
   if(a.type==="feeding")return`Početak: ${s} • Kraj: ${e} • Trajanje: ${dur} • Dojka: ${bStr(a.breast)}${n}`;
-  return`Vrijeme: ${s} • ${a.liked==="yes"?"Svidjelo mu se":"Nije mu se svidjelo"}${n}`;
+  const liked=a.liked==="yes"?"Svidjelo mu se":a.liked==="no"?"Nije mu se svidjelo":"Nije označeno";
+  return`Vrijeme: ${s} • ${liked}${n}`;
 }
 function cardH(a){return`<div class="card"><div class="cardIco">${a.type==="sleep"?"🌙":a.type==="feeding"?"🍼":"🥣"}</div><div class="cardBody"><div class="cardTitle">${esc(titleFor(a))}</div><div class="cardDesc">${detFor(a)}</div><div class="rowBtns"><button class="smBtn" data-edit="${a.id}">Uredi</button><button class="smBtn danger" data-del="${a.id}">Obriši</button></div></div><div class="cardMeta">${ago(a.endMs||a.startMs)}</div></div>`;}
 function liveH(type){
@@ -429,10 +430,8 @@ function liveH(type){
 function updP(){
   const ls=acts.filter(a=>a.type==="sleep"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
   const lf=acts.filter(a=>a.type==="feeding"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
-  const lfd=acts.filter(a=>a.type==="food"&&a.startMs).sort((a,b)=>b.startMs-a.startMs)[0];
   document.getElementById("pillSleep").textContent=ls?ago(ls.endMs):"–";
   document.getElementById("pillFeed").textContent=lf?ago(lf.endMs):"–";
-  document.getElementById("pillFood").textContent=lfd?ago(lfd.startMs):"–";
 }
 function updH(){
   const main=document.getElementById("heroMain"),sub=document.getElementById("heroSub"),tag=document.getElementById("heroTag"),dot=document.getElementById("liveDot");
@@ -451,8 +450,7 @@ function updL(){
     const b=[];if(aSleep)b.push(liveH("sleep"));if(aFeed)b.push(liveH("feeding"));
     const ls=acts.filter(a=>a.type==="sleep"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
     const lf=acts.filter(a=>a.type==="feeding"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
-    const lfd=acts.filter(a=>a.type==="food"&&a.startMs).sort((a,b)=>b.startMs-a.startMs)[0];
-    if(!aSleep&&ls)b.push(cardH(ls));if(!aFeed&&lf)b.push(cardH(lf));if(lfd)b.push(cardH(lfd));
+    if(!aSleep&&ls)b.push(cardH(ls));if(!aFeed&&lf)b.push(cardH(lf));
     el.innerHTML=b.length?b.join(""):`<div class="empty">Nema aktivnosti.</div>`;return;
   }
   title.textContent="Historija";tgl.textContent="Posljednje";strip.style.display="flex";
