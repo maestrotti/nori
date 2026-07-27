@@ -32,15 +32,15 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .hdrTop{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;}
 .wordmark{font-family:'DM Serif Display',serif;font-size:24px;background:linear-gradient(100deg,var(--moon2) 0%,var(--feed) 52%,var(--gold) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
 .hdrPill{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(78,201,160,.11);border:1px solid rgba(78,201,160,.20);color:var(--grn);}
-.statRow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.stat{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:14px;border:1px solid var(--b2);background:rgba(255,255,255,.04);min-width:0;overflow:hidden;}
-.statDot{width:8px;height:8px;border-radius:99px;flex-shrink:0;}
+.statRow{display:grid;grid-template-columns:1fr;gap:9px;}
+.stat{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;border:1px solid var(--b2);background:rgba(255,255,255,.04);min-width:0;}
+.statDot{width:10px;height:10px;border-radius:99px;flex-shrink:0;box-shadow:0 0 14px currentColor;}
 .statDot.sl{background:var(--moon);}
 .statDot.fe{background:var(--feed);}
 .statDot.fo{background:var(--food);}
-.statInfo{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
-.statLbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--mu2);white-space:nowrap;}
-.statVal{font-size:12px;font-weight:600;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.statInfo{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
+.statLbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mu2);}
+.statVal{font-size:16px;font-weight:700;color:var(--txt);line-height:1.25;white-space:normal;overflow:visible;word-break:normal;}
 
 /* hero */
 .hero{margin-top:12px;border-radius:26px;border:1px solid var(--b2);background:linear-gradient(145deg,rgba(123,155,255,.13),rgba(255,143,171,.08) 55%,rgba(200,168,108,.07));position:relative;overflow:hidden;padding:18px;}
