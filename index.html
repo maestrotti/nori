@@ -12,7 +12,7 @@
   --b1:rgba(255,255,255,.08);--b2:rgba(255,255,255,.14);
   --txt:#EFF1FA;--mu:rgba(190,200,228,.58);--mu2:rgba(190,200,228,.35);
   --moon:#7B9BFF;--moon2:#AABFFF;--feed:#FF8FAB;--feed2:#FFB3C6;
-  --gold:#C8A86C;--grn:#4EC9A0;--orn:#FF9A5C;
+  --food:#F4C95D;--food2:#FFE49A;--gold:#C8A86C;--grn:#4EC9A0;--orn:#FF9A5C;
   --navH:68px;
   --safeT:env(safe-area-inset-top,0px);--safeB:env(safe-area-inset-bottom,0px);
   --maxW:660px;
@@ -32,11 +32,12 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .hdrTop{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;}
 .wordmark{font-family:'DM Serif Display',serif;font-size:24px;background:linear-gradient(100deg,var(--moon2) 0%,var(--feed) 52%,var(--gold) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
 .hdrPill{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(78,201,160,.11);border:1px solid rgba(78,201,160,.20);color:var(--grn);}
-.statRow{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.statRow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .stat{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:14px;border:1px solid var(--b2);background:rgba(255,255,255,.04);min-width:0;overflow:hidden;}
 .statDot{width:8px;height:8px;border-radius:99px;flex-shrink:0;}
 .statDot.sl{background:var(--moon);}
 .statDot.fe{background:var(--feed);}
+.statDot.fo{background:var(--food);}
 .statInfo{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
 .statLbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--mu2);white-space:nowrap;}
 .statVal{font-size:12px;font-weight:600;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -55,11 +56,12 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .heroSub{font-size:13px;color:var(--mu);line-height:1.5;}
 
 /* cta row */
-.ctaRow{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.ctaRow{margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
 .cta{border-radius:20px;border:1px solid var(--b2);background:rgba(255,255,255,.05);padding:13px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;position:relative;overflow:hidden;transition:transform .13s,filter .13s;min-height:70px;}
 .cta:active{transform:scale(.97);filter:brightness(.95);}
 .cta.sc::before{content:"";position:absolute;inset:-2px;pointer-events:none;background:radial-gradient(380px 110px at 8% 0%,rgba(123,155,255,.24),transparent);}
 .cta.fc::before{content:"";position:absolute;inset:-2px;pointer-events:none;background:radial-gradient(380px 110px at 8% 0%,rgba(255,143,171,.22),transparent);}
+.cta.fd::before{content:"";position:absolute;inset:-2px;pointer-events:none;background:radial-gradient(380px 110px at 8% 0%,rgba(244,201,93,.22),transparent);}
 .ctaIco{width:42px;height:42px;border-radius:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:19px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);position:relative;z-index:1;}
 .ctaTxt{flex:1;min-width:0;position:relative;z-index:1;}
 .ctaTxt .lbl{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -75,6 +77,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .tabBtn{flex:1;padding:10px 8px;text-align:center;font-size:13px;font-weight:600;color:var(--mu);cursor:pointer;user-select:none;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;}
 .tabBtn.on{color:var(--txt);border-bottom-color:var(--moon);}
 .tabBtn.ft.on{border-bottom-color:var(--feed);}
+.tabBtn.fo.on{border-bottom-color:var(--food);}
 
 /* list & cards */
 .list{padding:11px 13px 13px;display:flex;flex-direction:column;gap:9px;}
@@ -108,6 +111,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .navItem:active{transform:scale(.95);}
 .navItem.on{color:var(--moon2);background:rgba(123,155,255,.10);border-color:rgba(123,155,255,.18);}
 .navItem.fn.on{color:var(--feed2);background:rgba(255,143,171,.10);border-color:rgba(255,143,171,.18);}
+.navItem.fo.on{color:var(--food2);background:rgba(244,201,93,.10);border-color:rgba(244,201,93,.18);}
 .navIco{font-size:18px;line-height:1;}
 .navLbl{font-size:10px;font-weight:700;letter-spacing:.03em;}
 
@@ -121,6 +125,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .mTitle{font-family:'DM Serif Display',serif;font-size:22px;}
 .mTitle.sl{background:linear-gradient(90deg,var(--moon2),var(--moon));-webkit-background-clip:text;background-clip:text;color:transparent;}
 .mTitle.fe{background:linear-gradient(90deg,var(--feed2),var(--feed));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.mTitle.fo{background:linear-gradient(90deg,var(--food2),var(--food));-webkit-background-clip:text;background-clip:text;color:transparent;}
 .closeX{width:34px;height:34px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--mu);cursor:pointer;user-select:none;border:1px solid var(--b2);background:rgba(255,255,255,.05);}
 .closeX:active{background:rgba(255,255,255,.10);}
 
@@ -161,6 +166,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .btn.fe{background:linear-gradient(105deg,var(--feed2),#ff5e80);color:#140610;box-shadow:0 12px 36px rgba(255,143,171,.22);}
 .btn.st{background:linear-gradient(105deg,var(--orn),#ff5f20);color:#140a02;box-shadow:0 12px 36px rgba(255,154,92,.18);}
 .btn.gr{background:linear-gradient(105deg,var(--grn),#28ad7e);color:#041109;box-shadow:0 12px 36px rgba(78,201,160,.18);}
+.btn.fo{background:linear-gradient(105deg,var(--food2),var(--food));color:#161003;box-shadow:0 12px 36px rgba(244,201,93,.20);}
 .btn.nt{background:rgba(255,255,255,.09);border:1px solid var(--b2);color:var(--txt);}
 .g10{height:10px;}
 </style>
@@ -188,6 +194,13 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
           <div class="statVal" id="pillFeed">–</div>
         </div>
       </div>
+      <div class="stat">
+        <div class="statDot fo"></div>
+        <div class="statInfo">
+          <div class="statLbl">Zadnja hrana</div>
+          <div class="statVal" id="pillFood">–</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -210,6 +223,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
           <div class="ctaTxt"><div class="lbl">Hranjenje</div><div class="sub" id="ctaFeedSub">Dodaj</div></div>
           <div class="ctaArr" id="ctaFeedArr">→</div>
         </div>
+        <div class="cta fd" id="openFood">
+          <div class="ctaIco">🥣</div>
+          <div class="ctaTxt"><div class="lbl">Hrana</div><div class="sub">Dodaj obrok</div></div>
+          <div class="ctaArr">→</div>
+        </div>
       </div>
     </div>
   </div>
@@ -222,6 +240,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
     <div class="tabs" id="tabStrip" style="display:none;">
       <div class="tabBtn on" data-t="sleep">🌙 Spavanje</div>
       <div class="tabBtn ft" data-t="feed">🍼 Hranjenje</div>
+      <div class="tabBtn fo" data-t="food">🥣 Hrana</div>
     </div>
     <div class="list" id="list"></div>
   </div>
@@ -234,6 +253,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
     <div class="navItem" id="navHistory"><div class="navIco">📜</div><div class="navLbl">Historija</div></div>
     <div class="navItem" id="navSleep"><div class="navIco">🌙</div><div class="navLbl">Spavanje</div></div>
     <div class="navItem fn" id="navFeed"><div class="navIco">🍼</div><div class="navLbl">Hranjenje</div></div>
+    <div class="navItem fo" id="navFood"><div class="navIco">🥣</div><div class="navLbl">Hrana</div></div>
   </div>
 </div>
 
@@ -293,6 +313,25 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   </div>
 </div>
 
+
+<!-- FOOD MODAL -->
+<div class="modal" id="foodModal">
+  <div class="sheet">
+    <div class="mHead"><div class="mTitle fo">Hrana</div><div class="closeX" data-close="foodModal">×</div></div>
+    <div class="fg"><label class="fl">Šta je jeo</label><input class="fin" id="foodName" type="text" placeholder="Npr. kašica od banane"></div>
+    <div class="fg"><label class="fl">Vrijeme obroka</label><input class="fin" id="foodTime" type="datetime-local"></div>
+    <div class="fg"><label class="fl">Da li mu se svidjelo</label>
+      <div class="togRow" id="foodLikeRow">
+        <button class="tog" data-like="yes">Svidjelo mu se</button>
+        <button class="tog" data-like="no">Nije mu se svidjelo</button>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Bilješka (opcionalno)</label><textarea class="ftx" id="foodNotes" placeholder="..."></textarea></div>
+    <div class="g10"></div>
+    <button class="btn fo" id="foodSave">Spremi obrok</button>
+  </div>
+</div>
+
 <!-- EDIT MODAL -->
 <div class="modal" id="editModal">
   <div class="sheet">
@@ -306,6 +345,15 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
         <button class="tog" data-b="both">Obje</button>
       </div>
     </div>
+    <div id="editFoodWrap" style="display:none;">
+      <div class="fg"><label class="fl">Šta je jeo</label><input class="fin" id="editFoodName" type="text"></div>
+      <div class="fg"><label class="fl">Da li mu se svidjelo</label>
+        <div class="togRow" id="editFoodLikeRow">
+          <button class="tog" data-like="yes">Svidjelo mu se</button>
+          <button class="tog" data-like="no">Nije mu se svidjelo</button>
+        </div>
+      </div>
+    </div>
     <div class="fg"><label class="fl">Bilješka</label><textarea class="ftx" id="editNotes" placeholder="..."></textarea></div>
     <div class="g10"></div>
     <button class="btn nt" id="editSave">Spremi</button>
@@ -314,11 +362,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 
 <script>
 const KA="babyActivities",KS="activeSleep",KF="activeFeeding";
-const SUP=new Set(["sleep","feeding"]);
+const SUP=new Set(["sleep","feeding","food"]);
 let acts=sP(localStorage.getItem(KA)||"[]",[]);
 let aSleep=sP(localStorage.getItem(KS)||"null",null);
 let aFeed=sP(localStorage.getItem(KF)||"null",null);
-let isHist=false,hTab="sleep",selB=null,eId=null,eB=null,lastSec=null;
+let isHist=false,hTab="sleep",selB=null,selLike=null,eId=null,eB=null,eLike=null,lastSec=null;
 normAll();
 
 function sP(j,f){try{return JSON.parse(j);}catch{return f;}}
@@ -364,20 +412,21 @@ function normAct(a){
     else{const m=Number(a.duration);if(Number.isFinite(m)&&m>0)a.endMs=a.startMs+Math.round(m*60000);}
   }
   if(a.startMs&&!a.startIso)a.startIso=msISO(a.startMs);if(a.endMs&&!a.endIso)a.endIso=msISO(a.endMs);
-  if(a.notes==null)a.notes="";if(a.type==="feeding"&&!a.breast)a.breast=null;if(!a.timestamp)a.timestamp=Date.now();return a;
+  if(a.notes==null)a.notes="";if(a.type==="feeding"&&!a.breast)a.breast=null;if(a.type==="food"){if(!a.foodName)a.foodName="";if(!a.liked)a.liked=null;if(a.startMs&&!a.endMs)a.endMs=a.startMs;}if(!a.timestamp)a.timestamp=Date.now();return a;
 }
 function normSl(x){if(!x)return null;if(typeof x.startMs!=="number"){const s=isoMs(x.startIso);if(s)x.startMs=s;}if(x.startMs&&!x.startIso)x.startIso=msISO(x.startMs);return x.startMs?x:null;}
 function normFe(x){if(!x)return null;if(typeof x.startMs!=="number"){const s=isoMs(x.startIso);if(s)x.startMs=s;}if(x.startMs&&!x.startIso)x.startIso=msISO(x.startMs);if(!x.breast)x.breast=null;return x.startMs?x:null;}
 function normAll(){acts=Array.isArray(acts)?acts.map(normAct).filter(Boolean):[];aSleep=normSl(aSleep);aFeed=normFe(aFeed);saveA();saveAct();}
 
 function bStr(b){return b==="left"?"Lijeva":b==="right"?"Desna":b==="both"?"Obje":"–";}
-function titleFor(a){return a.type==="sleep"?"Spavanje":`Hranjenje — ${bStr(a.breast)}`;}
+function titleFor(a){if(a.type==="sleep")return"Spavanje";if(a.type==="feeding")return`Hranjenje — ${bStr(a.breast)}`;return a.foodName||"Hrana";}
 function detFor(a){
   const s=relT(a.startMs),e=relT(a.endMs),dur=hms(a.endMs-a.startMs),n=a.notes?` • ${esc(a.notes)}`:"";
   if(a.type==="sleep")return`Početak: ${s} • Kraj: ${e} • Trajanje: ${dur}${n}`;
-  return`Početak: ${s} • Kraj: ${e} • Trajanje: ${dur} • Dojka: ${bStr(a.breast)}${n}`;
+  if(a.type==="feeding")return`Početak: ${s} • Kraj: ${e} • Trajanje: ${dur} • Dojka: ${bStr(a.breast)}${n}`;
+  return`Vrijeme: ${s} • ${a.liked==="yes"?"Svidjelo mu se":"Nije mu se svidjelo"}${n}`;
 }
-function cardH(a){return`<div class="card"><div class="cardIco">${a.type==="sleep"?"🌙":"🍼"}</div><div class="cardBody"><div class="cardTitle">${esc(titleFor(a))}</div><div class="cardDesc">${detFor(a)}</div><div class="rowBtns"><button class="smBtn" data-edit="${a.id}">Uredi</button><button class="smBtn danger" data-del="${a.id}">Obriši</button></div></div><div class="cardMeta">${ago(a.endMs||a.startMs)}</div></div>`;}
+function cardH(a){return`<div class="card"><div class="cardIco">${a.type==="sleep"?"🌙":a.type==="feeding"?"🍼":"🥣"}</div><div class="cardBody"><div class="cardTitle">${esc(titleFor(a))}</div><div class="cardDesc">${detFor(a)}</div><div class="rowBtns"><button class="smBtn" data-edit="${a.id}">Uredi</button><button class="smBtn danger" data-del="${a.id}">Obriši</button></div></div><div class="cardMeta">${ago(a.endMs||a.startMs)}</div></div>`;}
 function liveH(type){
   if(type==="sleep"&&aSleep){const el=Date.now()-aSleep.startMs;return`<div class="card"><div class="cardIco">🌙</div><div class="cardBody"><div class="cardTitle">Spavanje u toku</div><div class="cardDesc">Počeo: ${relT(aSleep.startMs)} • Traje: ${hms(el)}</div></div><div class="cardMeta">Sada</div></div>`;}
   if(type==="feeding"&&aFeed){const el=Date.now()-aFeed.startMs;return`<div class="card"><div class="cardIco">🍼</div><div class="cardBody"><div class="cardTitle">Hranjenje u toku — ${bStr(aFeed.breast)}</div><div class="cardDesc">Počelo: ${relT(aFeed.startMs)} • Traje: ${hms(el)}</div></div><div class="cardMeta">Sada</div></div>`;}
@@ -386,8 +435,10 @@ function liveH(type){
 function updP(){
   const ls=acts.filter(a=>a.type==="sleep"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
   const lf=acts.filter(a=>a.type==="feeding"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
+  const lfd=acts.filter(a=>a.type==="food"&&a.startMs).sort((a,b)=>b.startMs-a.startMs)[0];
   document.getElementById("pillSleep").textContent=ls?ago(ls.endMs):"–";
   document.getElementById("pillFeed").textContent=lf?ago(lf.endMs):"–";
+  document.getElementById("pillFood").textContent=lfd?ago(lfd.startMs):"–";
 }
 function updH(){
   const main=document.getElementById("heroMain"),sub=document.getElementById("heroSub"),tag=document.getElementById("heroTag"),dot=document.getElementById("liveDot");
@@ -406,25 +457,26 @@ function updL(){
     const b=[];if(aSleep)b.push(liveH("sleep"));if(aFeed)b.push(liveH("feeding"));
     const ls=acts.filter(a=>a.type==="sleep"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
     const lf=acts.filter(a=>a.type==="feeding"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
-    if(!aSleep&&ls)b.push(cardH(ls));if(!aFeed&&lf)b.push(cardH(lf));
+    const lfd=acts.filter(a=>a.type==="food"&&a.startMs).sort((a,b)=>b.startMs-a.startMs)[0];
+    if(!aSleep&&ls)b.push(cardH(ls));if(!aFeed&&lf)b.push(cardH(lf));if(lfd)b.push(cardH(lfd));
     el.innerHTML=b.length?b.join(""):`<div class="empty">Nema aktivnosti.</div>`;return;
   }
   title.textContent="Historija";tgl.textContent="Posljednje";strip.style.display="flex";
   document.querySelectorAll(".tabBtn").forEach(t=>{t.classList.toggle("on",t.dataset.t===hTab);});
-  const type=hTab==="sleep"?"sleep":"feeding";
+  const type=hTab==="sleep"?"sleep":hTab==="feed"?"feeding":"food";
   const sorted=acts.filter(a=>a.type===type&&a.startMs&&a.endMs).sort((a,b)=>b.startMs-a.startMs);
   if(!sorted.length){el.innerHTML=`<div class="empty">Nema zapisa.</div>`;return;}
   const groups={};for(const a of sorted){const k=dKey(a.startMs);(groups[k]||=[]).push(a);}
   const keys=Object.keys(groups).sort((a,b)=>a<b?1:-1);
   el.innerHTML=keys.map(k=>{
     const items=groups[k];
-    const badge=type==="sleep"?`<span class="dayBadge">Ukupno: ${hm(items.reduce((s,a)=>s+(a.endMs-a.startMs),0))}</span>`:`<span class="dayBadge fb">${items.length}× hranjenje</span>`;
+    const badge=type==="sleep"?`<span class="dayBadge">Ukupno: ${hm(items.reduce((s,a)=>s+(a.endMs-a.startMs),0))}</span>`:type==="feeding"?`<span class="dayBadge fb">${items.length}× hranjenje</span>`:`<span class="dayBadge" style="background:rgba(244,201,93,.10);color:var(--food2);border-color:rgba(244,201,93,.20);">${items.length}× obrok</span>`;
     return`<div class="dayGroup"><div class="dayHdr"><div class="dayLabel">${dLbl(k)}</div><div class="dayMeta">${badge}<span class="dayCount">${items.length} zapisa</span></div></div><div class="dayItems">${items.map(cardH).join("")}</div></div>`;
   }).join("");
 }
 function updAll(){updP();updH();updL();}
 
-function openM(id){document.getElementById(id).classList.add("active");if(id==="sleepModal")pSleep();if(id==="feedModal")pFeed();}
+function openM(id){document.getElementById(id).classList.add("active");if(id==="sleepModal")pSleep();if(id==="feedModal")pFeed();if(id==="foodModal")pFood();}
 function closeM(id){document.getElementById(id).classList.remove("active");}
 document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)closeM(m.id);}));
 document.querySelectorAll("[data-close]").forEach(x=>x.addEventListener("click",()=>closeM(x.dataset.close)));
@@ -456,19 +508,45 @@ document.getElementById("feedStop").addEventListener("click",()=>{
   acts.push(a);aFeed=null;saveA();saveAct();closeM("feedModal");updAll();
 });
 
+
+function setFoodLike(v){selLike=v;document.querySelectorAll("#foodLikeRow .tog").forEach(btn=>btn.classList.toggle("on",btn.dataset.like===v));}
+document.querySelectorAll("#foodLikeRow .tog").forEach(btn=>btn.addEventListener("click",()=>setFoodLike(btn.dataset.like)));
+function pFood(){
+  document.getElementById("foodName").value="";
+  document.getElementById("foodTime").value=dtL(Date.now());
+  document.getElementById("foodNotes").value="";
+  setFoodLike(null);
+}
+document.getElementById("foodSave").addEventListener("click",()=>{
+  const foodName=document.getElementById("foodName").value.trim();
+  const startMs=fromDL(document.getElementById("foodTime").value);
+  if(!foodName)return alert("Unesi šta je jeo.");
+  if(!startMs)return alert("Unesi vrijeme obroka.");
+  if(!selLike)return alert("Odaberi da li mu se svidjelo.");
+  acts.push(normAct({id:uid(),type:"food",foodName,liked:selLike,startMs,endMs:startMs,startIso:msISO(startMs),endIso:msISO(startMs),notes:document.getElementById("foodNotes").value||"",timestamp:Date.now()}));
+  saveA();closeM("foodModal");updAll();
+});
+
 function openEdit(id){
   const a=acts.find(x=>x&&x.id===id);if(!a)return;eId=id;
   document.getElementById("editStart").value=a.startMs?dtL(a.startMs):"";document.getElementById("editEnd").value=a.endMs?dtL(a.endMs):"";document.getElementById("editNotes").value=a.notes||"";
-  if(a.type==="feeding"){document.getElementById("editBreastWrap").style.display="block";eB=a.breast||null;document.querySelectorAll("#editBreastRow .tog").forEach(b=>b.classList.toggle("on",b.dataset.b===eB));}
-  else{document.getElementById("editBreastWrap").style.display="none";eB=null;}openM("editModal");
+  document.getElementById("editBreastWrap").style.display=a.type==="feeding"?"block":"none";
+  document.getElementById("editFoodWrap").style.display=a.type==="food"?"block":"none";
+  if(a.type==="feeding"){eB=a.breast||null;document.querySelectorAll("#editBreastRow .tog").forEach(b=>b.classList.toggle("on",b.dataset.b===eB));}else eB=null;
+  if(a.type==="food"){document.getElementById("editEnd").closest(".fg").style.display="none";document.getElementById("editFoodName").value=a.foodName||"";eLike=a.liked||null;document.querySelectorAll("#editFoodLikeRow .tog").forEach(b=>b.classList.toggle("on",b.dataset.like===eLike));}
+  else{document.getElementById("editEnd").closest(".fg").style.display="block";eLike=null;}
+  openM("editModal");
 }
 document.querySelectorAll("#editBreastRow .tog").forEach(btn=>btn.addEventListener("click",()=>{eB=btn.dataset.b;document.querySelectorAll("#editBreastRow .tog").forEach(b=>b.classList.remove("on"));btn.classList.add("on");}));
+document.querySelectorAll("#editFoodLikeRow .tog").forEach(btn=>btn.addEventListener("click",()=>{eLike=btn.dataset.like;document.querySelectorAll("#editFoodLikeRow .tog").forEach(b=>b.classList.remove("on"));btn.classList.add("on");}));
 document.getElementById("editSave").addEventListener("click",()=>{
   if(!eId)return;const a=acts.find(x=>x&&x.id===eId);if(!a)return;
-  const s=fromDL(document.getElementById("editStart").value),e=fromDL(document.getElementById("editEnd").value);
-  if(!s||!e)return alert("Unesi početak i kraj.");if(e<=s)return alert("Kraj ne može biti prije početka.");
+  const s=fromDL(document.getElementById("editStart").value),e=a.type==="food"?s:fromDL(document.getElementById("editEnd").value);
+  if(!s||!e)return alert(a.type==="food"?"Unesi vrijeme obroka.":"Unesi početak i kraj.");if(a.type!=="food"&&e<=s)return alert("Kraj ne može biti prije početka.");
   a.startMs=s;a.endMs=e;a.startIso=msISO(s);a.endIso=msISO(e);a.time=a.startIso;a.endTime=a.endIso;a.notes=document.getElementById("editNotes").value||"";
-  if(a.type==="sleep"){a.duration=(e-s)/3600000;}else{if(!eB)return alert("Odaberi dojku.");a.breast=eB;a.duration=Math.round((e-s)/60000);if(a.duration<=0)return alert("Greška u vremenima.");}
+  if(a.type==="sleep"){a.duration=(e-s)/3600000;}
+  else if(a.type==="feeding"){if(!eB)return alert("Odaberi dojku.");a.breast=eB;a.duration=Math.round((e-s)/60000);if(a.duration<=0)return alert("Greška u vremenima.");}
+  else{const name=document.getElementById("editFoodName").value.trim();if(!name)return alert("Unesi šta je jeo.");if(!eLike)return alert("Odaberi da li mu se svidjelo.");a.foodName=name;a.liked=eLike;}
   normAll();saveA();closeM("editModal");updAll();
 });
 function delAct(id){const i=acts.findIndex(a=>a&&a.id===id);if(i<0)return;if(!confirm("Obrisati zapis?"))return;acts.splice(i,1);saveA();updAll();}
@@ -481,9 +559,11 @@ document.getElementById("navHome").addEventListener("click",()=>{isHist=false;se
 document.getElementById("navHistory").addEventListener("click",()=>{isHist=true;setNav("navHistory");updAll();window.scrollTo({top:0,behavior:"instant"});});
 document.getElementById("navSleep").addEventListener("click",()=>openM("sleepModal"));
 document.getElementById("navFeed").addEventListener("click",()=>openM("feedModal"));
+document.getElementById("navFood").addEventListener("click",()=>openM("foodModal"));
 document.getElementById("toggleHistory").addEventListener("click",()=>{isHist=!isHist;setNav(isHist?"navHistory":"navHome");updAll();window.scrollTo({top:0,behavior:"instant"});});
 document.getElementById("openSleep").addEventListener("click",()=>openM("sleepModal"));
 document.getElementById("openFeed").addEventListener("click",()=>openM("feedModal"));
+document.getElementById("openFood").addEventListener("click",()=>openM("foodModal"));
 
 function tick(){
   acts=sP(localStorage.getItem(KA)||"[]",[]);aSleep=sP(localStorage.getItem(KS)||"null",null);aFeed=sP(localStorage.getItem(KF)||"null",null);normAll();updP();updH();updL();
@@ -497,7 +577,7 @@ function tick(){
     setH(document.getElementById("feedH"),document.getElementById("feedM"),document.getElementById("feedS"),el);if(isNew)kick("feedFace");document.getElementById("feedClockBox").style.display="block";
   }
 }
-updAll();pSleep();pFeed();setInterval(tick,1000);
+updAll();pSleep();pFeed();pFood();setInterval(tick,1000);
 </script>
 </body>
 </html>
