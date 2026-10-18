@@ -2,7 +2,10 @@
 <html lang="bs">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
+<meta name="theme-color" content="#07080E"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
 <title>Norian</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
@@ -18,15 +21,17 @@
   --maxW:660px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;}
-body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden;-webkit-tap-highlight-color:transparent;}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;touch-action:manipulation;}
+html,body{height:100%;width:100%;max-width:100%;overflow-x:hidden;}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--txt);-webkit-tap-highlight-color:transparent;touch-action:manipulation;overscroll-behavior-y:none;}
+button,input,textarea{font-family:inherit;touch-action:manipulation;}
 
-.wrap{max-width:var(--maxW);margin:0 auto;padding:0 14px calc(var(--navH) + var(--safeB) + 28px);position:relative;z-index:1;}
+.wrap{width:100%;max-width:var(--maxW);margin:0 auto;padding:0 14px calc(var(--navH) + var(--safeB) + 28px);position:relative;z-index:1;}
 
 /* header */
 .hdr{
   position:sticky;top:0;z-index:120;margin:0 -14px;
-  background:rgba(7,8,14,.88);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  background:rgba(7,8,14,.92);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
   border-bottom:1px solid var(--b1);padding:calc(10px + var(--safeT)) 16px 12px;
 }
 .hdrTop{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;}
@@ -37,10 +42,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .statDot{width:10px;height:10px;border-radius:99px;flex-shrink:0;box-shadow:0 0 14px currentColor;}
 .statDot.sl{background:var(--moon);}
 .statDot.fe{background:var(--feed);}
-.statDot.fo{background:var(--food);}
 .statInfo{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
 .statLbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mu2);}
-.statVal{font-size:16px;font-weight:700;color:var(--txt);line-height:1.25;white-space:normal;overflow:visible;word-break:normal;}
+.statVal{font-size:16px;font-weight:700;color:var(--txt);line-height:1.25;white-space:normal;overflow-wrap:anywhere;}
 
 /* hero */
 .hero{margin-top:12px;border-radius:26px;border:1px solid var(--b2);background:linear-gradient(145deg,rgba(123,155,255,.13),rgba(255,143,171,.08) 55%,rgba(200,168,108,.07));position:relative;overflow:hidden;padding:18px;}
@@ -52,30 +56,30 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .heroTag.fe{border-color:rgba(255,143,171,.30);background:rgba(255,143,171,.12);color:var(--feed2);}
 .liveDot{width:8px;height:8px;border-radius:99px;background:var(--grn);flex-shrink:0;box-shadow:0 0 0 0 rgba(78,201,160,.5);animation:ping 1.9s infinite;}
 @keyframes ping{0%{box-shadow:0 0 0 0 rgba(78,201,160,.5);}70%{box-shadow:0 0 0 9px rgba(78,201,160,0);}100%{box-shadow:0 0 0 0 rgba(78,201,160,0);}}
-.heroMain{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.1;letter-spacing:-.01em;margin-bottom:5px;}
-.heroSub{font-size:13px;color:var(--mu);line-height:1.5;}
+.heroMain{font-family:'DM Serif Display',serif;font-size:28px;line-height:1.12;letter-spacing:-.01em;margin-bottom:5px;overflow-wrap:anywhere;}
+.heroSub{font-size:13px;color:var(--mu);line-height:1.5;overflow-wrap:anywhere;}
 
 /* cta row */
 .ctaRow{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .cta.fd{grid-column:1/-1;}
-.cta{border-radius:20px;border:1px solid var(--b2);background:rgba(255,255,255,.05);padding:13px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;position:relative;overflow:hidden;transition:transform .13s,filter .13s;min-height:70px;}
+.cta{border-radius:20px;border:1px solid var(--b2);background:rgba(255,255,255,.05);padding:13px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;-webkit-user-select:none;position:relative;overflow:hidden;transition:transform .13s,filter .13s;min-height:70px;}
 .cta:active{transform:scale(.97);filter:brightness(.95);}
 .cta.sc::before{content:"";position:absolute;inset:-2px;pointer-events:none;background:radial-gradient(380px 110px at 8% 0%,rgba(123,155,255,.24),transparent);}
 .cta.fc::before{content:"";position:absolute;inset:-2px;pointer-events:none;background:radial-gradient(380px 110px at 8% 0%,rgba(255,143,171,.22),transparent);}
 .cta.fd::before{content:"";position:absolute;inset:-2px;pointer-events:none;background:radial-gradient(380px 110px at 8% 0%,rgba(244,201,93,.22),transparent);}
 .ctaIco{width:42px;height:42px;border-radius:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:19px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);position:relative;z-index:1;}
 .ctaTxt{flex:1;min-width:0;position:relative;z-index:1;}
-.ctaTxt .lbl{font-size:14px;font-weight:700;white-space:normal;overflow:visible;}
-.ctaTxt .sub{font-size:11px;color:var(--mu);white-space:normal;overflow:visible;margin-top:2px;}
-.ctaArr{font-size:15px;color:rgba(240,242,250,.40);position:relative;z-index:1;flex-shrink:0;}
+.ctaTxt .lbl{font-size:14px;font-weight:700;}
+.ctaTxt .sub{font-size:11px;color:var(--mu);margin-top:2px;}
+.ctaArr{font-size:13px;color:rgba(240,242,250,.40);position:relative;z-index:1;flex-shrink:0;}
 
 /* section */
 .sec{margin-top:12px;border-radius:24px;border:1px solid var(--b1);background:var(--surf);overflow:hidden;}
 .secHead{padding:13px 15px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--b1);background:rgba(255,255,255,.03);}
 .secTitle{font-size:14px;font-weight:700;}
-.secLink{font-size:13px;font-weight:600;color:var(--moon);cursor:pointer;user-select:none;}
+.secLink{font-size:13px;font-weight:600;color:var(--moon);cursor:pointer;user-select:none;padding:6px 0 6px 12px;}
 .tabs{display:flex;border-bottom:1px solid var(--b1);background:rgba(255,255,255,.02);}
-.tabBtn{flex:1;padding:10px 8px;text-align:center;font-size:13px;font-weight:600;color:var(--mu);cursor:pointer;user-select:none;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;}
+.tabBtn{flex:1;padding:12px 4px;text-align:center;font-size:13px;font-weight:600;color:var(--mu);cursor:pointer;user-select:none;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;}
 .tabBtn.on{color:var(--txt);border-bottom-color:var(--moon);}
 .tabBtn.ft.on{border-bottom-color:var(--feed);}
 .tabBtn.fo.on{border-bottom-color:var(--food);}
@@ -87,53 +91,63 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .card::after{content:"";position:absolute;inset:-2px;pointer-events:none;background:radial-gradient(450px 90px at 8% -10%,rgba(255,255,255,.06),transparent);}
 .cardIco{width:40px;height:40px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:17px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.06);position:relative;z-index:1;}
 .cardBody{flex:1;min-width:0;position:relative;z-index:1;}
-.cardTitle{font-size:13px;font-weight:700;margin-bottom:3px;line-height:1.2;}
-.cardDesc{font-size:12px;color:var(--mu);line-height:1.5;overflow-wrap:anywhere;}
+.cardTitle{font-size:14px;font-weight:700;margin-bottom:3px;line-height:1.25;overflow-wrap:anywhere;}
+.cardDesc{font-size:12.5px;color:var(--mu);line-height:1.55;overflow-wrap:anywhere;}
 .rowBtns{margin-top:9px;display:flex;gap:7px;flex-wrap:wrap;}
-.smBtn{padding:7px 13px;border-radius:11px;border:1px solid var(--b2);background:rgba(255,255,255,.06);color:rgba(240,242,250,.85);font-size:12px;font-weight:600;cursor:pointer;user-select:none;transition:transform .12s;min-height:34px;}
+.smBtn{padding:8px 14px;border-radius:11px;border:1px solid var(--b2);background:rgba(255,255,255,.06);color:rgba(240,242,250,.85);font-size:13px;font-weight:600;cursor:pointer;user-select:none;transition:transform .12s;min-height:38px;}
 .smBtn:active{transform:scale(.96);}
 .smBtn.danger{border-color:rgba(255,90,90,.22);background:rgba(255,70,70,.10);color:rgba(255,130,130,1);}
-.cardMeta{font-size:11px;color:var(--mu2);flex-shrink:0;position:relative;z-index:1;white-space:nowrap;}
+.cardMeta{font-size:11px;color:var(--mu2);flex-shrink:0;position:relative;z-index:1;max-width:84px;text-align:right;line-height:1.35;}
 
 /* day group */
 .dayGroup{border-radius:18px;border:1px solid var(--b1);background:rgba(255,255,255,.03);overflow:hidden;}
-.dayHdr{padding:10px 13px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--b1);background:rgba(255,255,255,.03);}
+.dayHdr{padding:10px 13px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--b1);background:rgba(255,255,255,.03);}
 .dayLabel{font-size:13px;font-weight:700;}
 .dayMeta{display:flex;align-items:center;gap:8px;}
 .dayBadge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;background:rgba(123,155,255,.12);color:var(--moon2);border:1px solid rgba(123,155,255,.22);}
 .dayBadge.fb{background:rgba(255,143,171,.10);color:var(--feed2);border-color:rgba(255,143,171,.20);}
+.dayBadge.fdb{background:rgba(244,201,93,.10);color:var(--food2);border-color:rgba(244,201,93,.20);}
 .dayCount{font-size:11px;color:var(--mu2);}
 .dayItems{padding:9px;display:flex;flex-direction:column;gap:7px;}
 
+/* backup card */
+.bk{margin-top:12px;border-radius:24px;border:1px solid var(--b1);background:var(--surf);padding:15px;}
+.bkTitle{font-size:14px;font-weight:700;margin-bottom:4px;}
+.bkTxt{font-size:12.5px;color:var(--mu);line-height:1.55;}
+.bkStatus{margin-top:8px;font-size:12px;font-weight:700;color:var(--grn);}
+.bkStatus.warn{color:var(--orn);}
+.bkRow{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px;}
+.bkRow .btn{min-height:48px;font-size:14px;}
+
 /* nav */
-.nav{position:fixed;left:0;right:0;bottom:0;height:calc(var(--navH) + var(--safeB));padding:8px 12px calc(8px + var(--safeB));background:rgba(7,8,14,.90);border-top:1px solid var(--b1);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);z-index:220;}
-.navIn{max-width:var(--maxW);margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-around;gap:6px;}
-.navItem{flex:1;border-radius:14px;border:1px solid transparent;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;user-select:none;color:var(--mu);min-height:48px;transition:all .14s;}
+.nav{position:fixed;left:0;right:0;bottom:0;height:calc(var(--navH) + var(--safeB));padding:8px 10px calc(8px + var(--safeB));background:rgba(7,8,14,.94);border-top:1px solid var(--b1);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);z-index:220;}
+.navIn{max-width:var(--maxW);margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-around;gap:4px;}
+.navItem{flex:1;min-width:0;border-radius:14px;border:1px solid transparent;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;user-select:none;color:var(--mu);min-height:50px;transition:all .14s;}
 .navItem:active{transform:scale(.95);}
 .navItem.on{color:var(--moon2);background:rgba(123,155,255,.10);border-color:rgba(123,155,255,.18);}
 .navItem.fn.on{color:var(--feed2);background:rgba(255,143,171,.10);border-color:rgba(255,143,171,.18);}
 .navItem.fo.on{color:var(--food2);background:rgba(244,201,93,.10);border-color:rgba(244,201,93,.18);}
-.navIco{font-size:18px;line-height:1;}
-.navLbl{font-size:10px;font-weight:700;letter-spacing:.03em;}
+.navIco{font-size:19px;line-height:1;}
+.navLbl{font-size:10px;font-weight:700;letter-spacing:.02em;}
 
 /* modal */
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:1000;padding-bottom:var(--safeB);animation:mf .18s ease-out;}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:1000;animation:mf .18s ease-out;}
 .modal.active{display:flex;align-items:flex-end;}
 @keyframes mf{from{opacity:0;}to{opacity:1;}}
 @keyframes mu{from{transform:translateY(100%);}to{transform:translateY(0);}}
-.sheet{width:100%;max-height:92vh;border-radius:28px 28px 0 0;padding:18px 16px calc(18px + var(--safeB));background:var(--surf2);border-top:1px solid var(--b2);box-shadow:0 -26px 70px rgba(0,0,0,.60);overflow-y:auto;animation:mu .22s cubic-bezier(.25,.85,.45,1.0);}
+.sheet{width:100%;max-width:var(--maxW);margin:0 auto;max-height:92vh;max-height:92dvh;border-radius:28px 28px 0 0;padding:18px 16px calc(22px + var(--safeB));background:var(--surf2);border-top:1px solid var(--b2);box-shadow:0 -26px 70px rgba(0,0,0,.60);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;animation:mu .22s cubic-bezier(.25,.85,.45,1.0);}
 .mHead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;}
 .mTitle{font-family:'DM Serif Display',serif;font-size:22px;}
 .mTitle.sl{background:linear-gradient(90deg,var(--moon2),var(--moon));-webkit-background-clip:text;background-clip:text;color:transparent;}
 .mTitle.fe{background:linear-gradient(90deg,var(--feed2),var(--feed));-webkit-background-clip:text;background-clip:text;color:transparent;}
 .mTitle.fo{background:linear-gradient(90deg,var(--food2),var(--food));-webkit-background-clip:text;background-clip:text;color:transparent;}
-.closeX{width:34px;height:34px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--mu);cursor:pointer;user-select:none;border:1px solid var(--b2);background:rgba(255,255,255,.05);}
+.closeX{width:40px;height:40px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--mu);cursor:pointer;user-select:none;border:1px solid var(--b2);background:rgba(255,255,255,.05);flex-shrink:0;}
 .closeX:active{background:rgba(255,255,255,.10);}
 
 /* clock */
 .clockBox{border-radius:20px;border:1px solid var(--b2);background:rgba(255,255,255,.04);padding:14px;margin-bottom:14px;}
 .clockRow{display:flex;align-items:center;gap:14px;}
-.face{width:104px;height:104px;border-radius:99px;flex-shrink:0;position:relative;background:radial-gradient(circle at 33% 24%,rgba(123,155,255,.18),transparent 52%),var(--surf2);border:1px solid rgba(123,155,255,.20);box-shadow:inset 0 0 0 7px rgba(123,155,255,.06),0 10px 36px rgba(0,0,0,.50);overflow:hidden;}
+.face{width:100px;height:100px;border-radius:99px;flex-shrink:0;position:relative;background:radial-gradient(circle at 33% 24%,rgba(123,155,255,.18),transparent 52%),var(--surf2);border:1px solid rgba(123,155,255,.20);box-shadow:inset 0 0 0 7px rgba(123,155,255,.06),0 10px 36px rgba(0,0,0,.50);overflow:hidden;}
 .fGlass{position:absolute;inset:0;border-radius:99px;background:radial-gradient(ellipse 68% 48% at 28% 18%,rgba(255,255,255,.14),transparent 58%);pointer-events:none;}
 .fTicks{position:absolute;inset:7px;border-radius:99px;background:conic-gradient(from -90deg,rgba(255,255,255,.38) 0 1.4deg,transparent 1.4deg 30deg,rgba(255,255,255,.38) 30deg 31.4deg,transparent 31.4deg 60deg,rgba(255,255,255,.38) 60deg 61.4deg,transparent 61.4deg 90deg,rgba(255,255,255,.38) 90deg 91.4deg,transparent 91.4deg 120deg,rgba(255,255,255,.38) 120deg 121.4deg,transparent 121.4deg 150deg,rgba(255,255,255,.38) 150deg 151.4deg,transparent 151.4deg 180deg,rgba(255,255,255,.38) 180deg 181.4deg,transparent 181.4deg 210deg,rgba(255,255,255,.38) 210deg 211.4deg,transparent 211.4deg 240deg,rgba(255,255,255,.38) 240deg 241.4deg,transparent 241.4deg 270deg,rgba(255,255,255,.38) 270deg 271.4deg,transparent 271.4deg 300deg,rgba(255,255,255,.38) 300deg 301.4deg,transparent 301.4deg 330deg,rgba(255,255,255,.38) 330deg 331.4deg,transparent 331.4deg 360deg);mask:radial-gradient(circle,transparent 0 68%,#000 71% 100%);-webkit-mask:radial-gradient(circle,transparent 0 68%,#000 71% 100%);opacity:.55;}
 .hnd{position:absolute;left:50%;top:50%;transform-origin:50% 100%;transform:translate(-50%,-100%) rotate(0deg);border-radius:99px;}
@@ -144,21 +158,29 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .faceKick{animation:fk .11s ease-out;}
 @keyframes fk{0%{transform:rotate(0)scale(1);}40%{transform:rotate(-.3deg)scale(1.004);}100%{transform:rotate(0)scale(1);}}
 .digCol{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-end;gap:5px;}
-.digTime{font-family:'DM Serif Display',serif;font-size:36px;font-variant-numeric:tabular-nums;letter-spacing:-.01em;background:linear-gradient(90deg,var(--moon2),var(--moon));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.digTime{font-family:'DM Serif Display',serif;font-size:32px;font-variant-numeric:tabular-nums;letter-spacing:-.01em;background:linear-gradient(90deg,var(--moon2),var(--moon));-webkit-background-clip:text;background-clip:text;color:transparent;}
 .digTime.fe{background:linear-gradient(90deg,var(--feed2),var(--feed));-webkit-background-clip:text;background-clip:text;color:transparent;}
-.digSub{font-size:11px;color:var(--mu);text-align:right;line-height:1.4;max-width:52vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.digSub{font-size:11px;color:var(--mu);text-align:right;line-height:1.4;max-width:100%;overflow-wrap:anywhere;}
 
-/* form */
+/* form (font-size 16px sprječava automatski zoom na mobitelu) */
 .fg{margin-top:13px;}
-.fl{display:block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu2);margin-bottom:7px;}
-.ftx{width:100%;min-height:76px;padding:11px;border-radius:14px;border:1px solid var(--b2);background:rgba(255,255,255,.05);color:var(--txt);font-size:14px;resize:vertical;font-family:inherit;outline:none;}
+.fl{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu2);margin-bottom:7px;}
+.ftx{width:100%;min-height:76px;padding:11px;border-radius:14px;border:1px solid var(--b2);background:rgba(255,255,255,.05);color:var(--txt);font-size:16px;resize:vertical;outline:none;}
 .ftx:focus{border-color:rgba(123,155,255,.38);box-shadow:0 0 0 3px rgba(123,155,255,.09);}
-.fin{width:100%;height:48px;padding:11px;border-radius:14px;border:1px solid var(--b2);background:rgba(255,255,255,.05);color:var(--txt);font-size:14px;font-family:inherit;outline:none;}
+.fin{display:block;width:100%;min-width:0;max-width:100%;height:50px;padding:11px;border-radius:14px;border:1px solid var(--b2);background:rgba(255,255,255,.05);color:var(--txt);font-size:16px;outline:none;-webkit-appearance:none;appearance:none;}
 .fin:focus{border-color:rgba(123,155,255,.38);box-shadow:0 0 0 3px rgba(123,155,255,.09);}
+.fin::-webkit-date-and-time-value{text-align:left;}
 .togRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
-.tog{flex:1 1 90px;min-width:90px;padding:10px;border-radius:13px;border:1px solid var(--b2);background:rgba(255,255,255,.05);color:rgba(240,242,250,.82);font-size:13px;font-weight:600;cursor:pointer;user-select:none;transition:all .12s;min-height:42px;}
+.togGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+.tog{flex:1 1 90px;min-width:0;padding:11px 8px;border-radius:13px;border:1px solid var(--b2);background:rgba(255,255,255,.05);color:rgba(240,242,250,.82);font-size:14px;font-weight:600;cursor:pointer;user-select:none;transition:all .12s;min-height:48px;}
 .tog:active{transform:scale(.96);}
 .tog.on{background:rgba(255,143,171,.15);border-color:rgba(255,143,171,.28);color:var(--feed2);}
+.tog.bottle.on{background:rgba(123,155,255,.16);border-color:rgba(123,155,255,.34);color:var(--moon2);}
+.hide{display:none!important;}
+
+.manBox{margin-top:14px;border-radius:18px;border:1px dashed var(--b2);background:rgba(255,255,255,.03);padding:13px;}
+.manToggle{width:100%;min-height:46px;border-radius:14px;border:1px solid var(--b2);background:rgba(255,255,255,.05);color:var(--txt);font-size:14px;font-weight:700;cursor:pointer;margin-top:14px;}
+.manToggle:active{transform:scale(.98);}
 
 /* buttons */
 .btn{width:100%;min-height:54px;border:none;border-radius:17px;cursor:pointer;user-select:none;font-size:15px;font-weight:700;letter-spacing:.01em;transition:transform .12s,filter .12s;overflow:hidden;position:relative;}
@@ -239,6 +261,17 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
     <div class="list" id="list"></div>
   </div>
 
+  <div class="bk">
+    <div class="bkTitle">💾 Čuvanje historije</div>
+    <div class="bkTxt">Podaci se spremaju na ovom mobitelu (u pregledniku) i automatski kopiraju u drugu pohranu uređaja. Za potpunu sigurnost povremeno napravi kopiju u fajl, a po potrebi je vrati.</div>
+    <div class="bkStatus" id="bkStatus">Provjera pohrane…</div>
+    <div class="bkRow">
+      <button class="btn gr" id="bkExport">⬇️ Spremi kopiju</button>
+      <button class="btn nt" id="bkImport">⬆️ Vrati kopiju</button>
+    </div>
+    <input type="file" id="bkFile" accept="application/json,.json" class="hide">
+  </div>
+
 </div>
 
 <div class="nav">
@@ -272,6 +305,14 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
     <div class="g10"></div>
     <button class="btn st" id="sleepStop" style="display:none;">☀️ Beba se probudila</button>
     <div class="fg"><label class="fl">Bilješka (opcionalno)</label><textarea class="ftx" id="sleepNotes" placeholder="..."></textarea></div>
+
+    <button class="manToggle" id="sleepManToggle">✍️ Ručni unos (već je spavala)</button>
+    <div class="manBox hide" id="sleepManBox">
+      <div class="fg" style="margin-top:0;"><label class="fl">Početak</label><input class="fin" id="sleepManStart" type="datetime-local"></div>
+      <div class="fg"><label class="fl">Kraj</label><input class="fin" id="sleepManEnd" type="datetime-local"></div>
+      <div class="g10"></div>
+      <button class="btn sl" id="sleepManSave">Spremi san</button>
+    </div>
   </div>
 </div>
 
@@ -292,18 +333,29 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
         </div>
       </div>
     </div>
-    <div class="fg"><label class="fl">Dojka</label>
-      <div class="togRow" id="breastRow">
-        <button class="tog" data-b="left">Lijeva</button>
-        <button class="tog" data-b="right">Desna</button>
-        <button class="tog" data-b="both">Obje</button>
+    <div class="fg"><label class="fl">Šta / odakle jede</label>
+      <div class="togGrid" id="breastRow">
+        <button class="tog" data-b="left">🤱 Lijeva dojka</button>
+        <button class="tog" data-b="right">🤱 Desna dojka</button>
+        <button class="tog" data-b="both">🤱 Obje dojke</button>
+        <button class="tog bottle" data-b="bottle">🍼 Flašica</button>
       </div>
     </div>
+    <div class="fg hide" id="feedMlWrap"><label class="fl">Količina (ml) – opcionalno</label><input class="fin" id="feedMl" type="number" inputmode="numeric" min="0" max="1000" placeholder="npr. 120"></div>
     <div class="g10"></div>
     <button class="btn fe" id="feedStart">🍼 Počinje jesti</button>
     <div class="g10"></div>
     <button class="btn gr" id="feedStop" style="display:none;">✓ Završio jesti</button>
     <div class="fg"><label class="fl">Bilješka (opcionalno)</label><textarea class="ftx" id="feedNotes" placeholder="..."></textarea></div>
+
+    <button class="manToggle" id="feedManToggle">✍️ Ručni unos (već je jeo)</button>
+    <div class="manBox hide" id="feedManBox">
+      <div class="bkTxt" style="margin-bottom:6px;">Odaberi gore dojku ili flašicu, pa unesi kada je jeo.</div>
+      <div class="fg" style="margin-top:0;"><label class="fl">Početak</label><input class="fin" id="feedManStart" type="datetime-local"></div>
+      <div class="fg"><label class="fl">Kraj</label><input class="fin" id="feedManEnd" type="datetime-local"></div>
+      <div class="g10"></div>
+      <button class="btn fe" id="feedManSave">Spremi hranjenje</button>
+    </div>
   </div>
 </div>
 
@@ -331,13 +383,15 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   <div class="sheet">
     <div class="mHead"><div class="mTitle" style="font-size:19px;font-family:'DM Sans',sans-serif;font-weight:700;">Ispravka unosa</div><div class="closeX" data-close="editModal">×</div></div>
     <div class="fg"><label class="fl">Početak</label><input class="fin" id="editStart" type="datetime-local"></div>
-    <div class="fg"><label class="fl">Kraj</label><input class="fin" id="editEnd" type="datetime-local"></div>
-    <div class="fg" id="editBreastWrap" style="display:none;"><label class="fl">Dojka</label>
-      <div class="togRow" id="editBreastRow">
-        <button class="tog" data-b="left">Lijeva</button>
-        <button class="tog" data-b="right">Desna</button>
-        <button class="tog" data-b="both">Obje</button>
+    <div class="fg" id="editEndWrap"><label class="fl">Kraj</label><input class="fin" id="editEnd" type="datetime-local"></div>
+    <div class="fg" id="editBreastWrap" style="display:none;"><label class="fl">Šta / odakle jede</label>
+      <div class="togGrid" id="editBreastRow">
+        <button class="tog" data-b="left">🤱 Lijeva dojka</button>
+        <button class="tog" data-b="right">🤱 Desna dojka</button>
+        <button class="tog" data-b="both">🤱 Obje dojke</button>
+        <button class="tog bottle" data-b="bottle">🍼 Flašica</button>
       </div>
+      <div class="fg hide" id="editMlWrap"><label class="fl">Količina (ml)</label><input class="fin" id="editMl" type="number" inputmode="numeric" min="0" max="1000" placeholder="npr. 120"></div>
     </div>
     <div id="editFoodWrap" style="display:none;">
       <div class="fg"><label class="fl">Šta je jeo</label><input class="fin" id="editFoodName" type="text"></div>
@@ -355,6 +409,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 </div>
 
 <script>
+/* ====== Ključevi su ISTI kao u staroj verziji -> postojeća historija ostaje ====== */
 const KA="babyActivities",KS="activeSleep",KF="activeFeeding";
 const SUP=new Set(["sleep","feeding","food"]);
 let acts=sP(localStorage.getItem(KA)||"[]",[]);
@@ -391,11 +446,32 @@ function dLbl(k){
 }
 function dtL(ms){const d=new Date(ms);return`${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}T${p2(d.getHours())}:${p2(d.getMinutes())}`;}
 function fromDL(v){const t=new Date(v).getTime();return Number.isFinite(t)?t:null;}
-function saveA(){localStorage.setItem(KA,JSON.stringify(acts));}
-function saveAct(){
-  if(aSleep)localStorage.setItem(KS,JSON.stringify(aSleep));else localStorage.removeItem(KS);
-  if(aFeed)localStorage.setItem(KF,JSON.stringify(aFeed));else localStorage.removeItem(KF);
+
+/* ====== Pohrana: localStorage + IndexedDB kopija ====== */
+function idbOpen(){
+  return new Promise((res,rej)=>{
+    if(!window.indexedDB)return rej(new Error("no idb"));
+    const r=indexedDB.open("norianDB",1);
+    r.onupgradeneeded=()=>r.result.createObjectStore("kv");
+    r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);
+  });
 }
+async function idbSet(k,v){try{const db=await idbOpen();await new Promise((res,rej)=>{const tx=db.transaction("kv","readwrite");tx.objectStore("kv").put(v,k);tx.oncomplete=res;tx.onerror=()=>rej(tx.error);});db.close();}catch{}}
+async function idbGet(k){try{const db=await idbOpen();const v=await new Promise((res,rej)=>{const tx=db.transaction("kv","readonly");const q=tx.objectStore("kv").get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error);});db.close();return v;}catch{return undefined;}}
+
+function saveA(){
+  try{localStorage.setItem(KA,JSON.stringify(acts));}catch(e){}
+  idbSet("acts",JSON.stringify(acts));
+}
+function saveAct(){
+  try{
+    if(aSleep)localStorage.setItem(KS,JSON.stringify(aSleep));else localStorage.removeItem(KS);
+    if(aFeed)localStorage.setItem(KF,JSON.stringify(aFeed));else localStorage.removeItem(KF);
+  }catch(e){}
+  idbSet("activeSleep",aSleep?JSON.stringify(aSleep):"null");
+  idbSet("activeFeeding",aFeed?JSON.stringify(aFeed):"null");
+}
+
 function normAct(a){
   if(!a||!a.type)return null;if(!a.id)a.id=uid();
   if(a.type==="awake")a.type="sleep";if(!SUP.has(a.type))return a;
@@ -406,18 +482,24 @@ function normAct(a){
     else if(a.type==="feeding"){const m=Number(a.duration);if(Number.isFinite(m)&&m>0)a.endMs=a.startMs+Math.round(m*60000);}
   }
   if(a.startMs&&!a.startIso)a.startIso=msISO(a.startMs);if(a.endMs&&!a.endIso)a.endIso=msISO(a.endMs);
-  if(a.notes==null)a.notes="";if(a.type==="feeding"&&!a.breast)a.breast=null;if(a.type==="food"){if(!a.foodName)a.foodName="";if(!a.liked)a.liked=null;if(a.startMs&&!a.endMs)a.endMs=a.startMs;}if(!a.timestamp)a.timestamp=Date.now();return a;
+  if(a.notes==null)a.notes="";if(a.type==="feeding"&&!a.breast)a.breast=null;if(a.type==="feeding"&&a.ml==null)a.ml=null;
+  if(a.type==="food"){if(!a.foodName)a.foodName="";if(!a.liked)a.liked=null;if(a.startMs&&!a.endMs)a.endMs=a.startMs;}
+  if(!a.timestamp)a.timestamp=Date.now();return a;
 }
 function normSl(x){if(!x)return null;if(typeof x.startMs!=="number"){const s=isoMs(x.startIso);if(s)x.startMs=s;}if(x.startMs&&!x.startIso)x.startIso=msISO(x.startMs);return x.startMs?x:null;}
 function normFe(x){if(!x)return null;if(typeof x.startMs!=="number"){const s=isoMs(x.startIso);if(s)x.startMs=s;}if(x.startMs&&!x.startIso)x.startIso=msISO(x.startMs);if(!x.breast)x.breast=null;return x.startMs?x:null;}
-function normAll(){acts=Array.isArray(acts)?acts.map(normAct).filter(Boolean):[];aSleep=normSl(aSleep);aFeed=normFe(aFeed);saveA();saveAct();}
+function normAll(){acts=Array.isArray(acts)?acts.map(normAct).filter(Boolean):[];aSleep=normSl(aSleep);aFeed=normFe(aFeed);}
 
-function bStr(b){return b==="left"?"Lijeva":b==="right"?"Desna":b==="both"?"Obje":"–";}
-function titleFor(a){if(a.type==="sleep")return"Spavanje";if(a.type==="feeding")return`Hranjenje — ${bStr(a.breast)}`;return a.foodName||"Hrana";}
+function bStr(b){return b==="left"?"Lijeva":b==="right"?"Desna":b==="both"?"Obje":b==="bottle"?"Flašica":"–";}
+function mlStr(a){return a.type==="feeding"&&a.breast==="bottle"&&a.ml?` (${a.ml} ml)`:"";}
+function titleFor(a){if(a.type==="sleep")return"Spavanje";if(a.type==="feeding")return a.breast==="bottle"?`Hranjenje — Flašica${mlStr(a)}`:`Hranjenje — ${bStr(a.breast)}`;return a.foodName||"Hrana";}
 function detFor(a){
   const s=relT(a.startMs),e=relT(a.endMs),dur=hms(a.endMs-a.startMs),n=a.notes?` • ${esc(a.notes)}`:"";
   if(a.type==="sleep")return`Početak: ${s} • Kraj: ${e} • Trajanje: ${dur}${n}`;
-  if(a.type==="feeding")return`Početak: ${s} • Kraj: ${e} • Trajanje: ${dur} • Dojka: ${bStr(a.breast)}${n}`;
+  if(a.type==="feeding"){
+    const how=a.breast==="bottle"?`Flašica${a.ml?` ${a.ml} ml`:""}`:`Dojka: ${bStr(a.breast)}`;
+    return`Početak: ${s} • Kraj: ${e} • Trajanje: ${dur} • ${how}${n}`;
+  }
   const liked=a.liked==="yes"?"Svidjelo mu se":a.liked==="no"?"Nije mu se svidjelo":"Nije označeno";
   return`Vrijeme: ${s} • ${liked}${n}`;
 }
@@ -431,7 +513,7 @@ function updP(){
   const ls=acts.filter(a=>a.type==="sleep"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
   const lf=acts.filter(a=>a.type==="feeding"&&a.endMs).sort((a,b)=>b.endMs-a.endMs)[0];
   document.getElementById("pillSleep").textContent=ls?ago(ls.endMs):"–";
-  document.getElementById("pillFeed").textContent=lf?ago(lf.endMs):"–";
+  document.getElementById("pillFeed").textContent=lf?`${ago(lf.endMs)}${lf.breast==="bottle"?" • 🍼":""}`:"–";
 }
 function updH(){
   const main=document.getElementById("heroMain"),sub=document.getElementById("heroSub"),tag=document.getElementById("heroTag"),dot=document.getElementById("liveDot");
@@ -462,7 +544,12 @@ function updL(){
   const keys=Object.keys(groups).sort((a,b)=>a<b?1:-1);
   el.innerHTML=keys.map(k=>{
     const items=groups[k];
-    const badge=type==="sleep"?`<span class="dayBadge">Ukupno: ${hm(items.reduce((s,a)=>s+(a.endMs-a.startMs),0))}</span>`:type==="feeding"?`<span class="dayBadge fb">${items.length}× hranjenje</span>`:`<span class="dayBadge" style="background:rgba(244,201,93,.10);color:var(--food2);border-color:rgba(244,201,93,.20);">${items.length}× obrok</span>`;
+    let badge;
+    if(type==="sleep")badge=`<span class="dayBadge">Ukupno: ${hm(items.reduce((s,a)=>s+(a.endMs-a.startMs),0))}</span>`;
+    else if(type==="feeding"){
+      const bt=items.filter(a=>a.breast==="bottle").length;
+      badge=`<span class="dayBadge fb">${items.length}× hranjenje${bt?` (🍼 ${bt})`:""}</span>`;
+    }else badge=`<span class="dayBadge fdb">${items.length}× obrok</span>`;
     return`<div class="dayGroup"><div class="dayHdr"><div class="dayLabel">${dLbl(k)}</div><div class="dayMeta">${badge}<span class="dayCount">${items.length} zapisa</span></div></div><div class="dayItems">${items.map(cardH).join("")}</div></div>`;
   }).join("");
 }
@@ -476,9 +563,12 @@ document.querySelectorAll("[data-close]").forEach(x=>x.addEventListener("click",
 function setH(H,M,S,ms){const t=Math.max(0,Math.floor(ms/1000)),s=t%60,m=Math.floor(t/60)%60,h=Math.floor(t/3600)%12;H.style.transform=`translate(-50%,-100%) rotate(${h*30+m*.5}deg)`;M.style.transform=`translate(-50%,-100%) rotate(${m*6+s*.1}deg)`;S.style.transform=`translate(-50%,-100%) rotate(${s*6}deg)`;}
 function kick(id){const el=document.getElementById(id);if(!el)return;el.classList.remove("faceKick");void el.offsetWidth;el.classList.add("faceKick");}
 
+/* ---- SPAVANJE ---- */
 function pSleep(){
   if(aSleep){document.getElementById("sleepClockBox").style.display="block";document.getElementById("sleepStart").style.display="none";document.getElementById("sleepStop").style.display="block";}
   else{document.getElementById("sleepClockBox").style.display="none";document.getElementById("sleepStart").style.display="block";document.getElementById("sleepStop").style.display="none";document.getElementById("sleepNotes").value="";}
+  document.getElementById("sleepManBox").classList.add("hide");
+  document.getElementById("sleepManToggle").style.display=aSleep?"none":"block";
 }
 document.getElementById("sleepStart").addEventListener("click",()=>{if(aSleep)return;const ms=Date.now();aSleep={startMs:ms,startIso:new Date(ms).toISOString()};saveAct();pSleep();updAll();});
 document.getElementById("sleepStop").addEventListener("click",()=>{
@@ -486,21 +576,59 @@ document.getElementById("sleepStop").addEventListener("click",()=>{
   const a=normAct({id:uid(),type:"sleep",time:aSleep.startIso,endTime:new Date(endMs).toISOString(),duration:(endMs-aSleep.startMs)/3600000,notes:document.getElementById("sleepNotes").value||"",timestamp:Date.now()});
   acts.push(a);aSleep=null;saveA();saveAct();closeM("sleepModal");updAll();
 });
-
-function setBreast(b){selB=b;document.querySelectorAll("#breastRow .tog").forEach(btn=>btn.classList.toggle("on",btn.dataset.b===b));}
-document.querySelectorAll("#breastRow .tog").forEach(btn=>btn.addEventListener("click",()=>setBreast(btn.dataset.b)));
-function pFeed(){
-  if(aFeed){document.getElementById("feedClockBox").style.display="block";document.getElementById("feedStart").style.display="none";document.getElementById("feedStop").style.display="block";setBreast(aFeed.breast);}
-  else{document.getElementById("feedClockBox").style.display="none";document.getElementById("feedStart").style.display="block";document.getElementById("feedStop").style.display="none";setBreast(null);document.getElementById("feedNotes").value="";}
-}
-document.getElementById("feedStart").addEventListener("click",()=>{if(aFeed)return;if(!selB)return alert("Odaberi dojku.");const ms=Date.now();aFeed={startMs:ms,startIso:new Date(ms).toISOString(),breast:selB};saveAct();pFeed();updAll();});
-document.getElementById("feedStop").addEventListener("click",()=>{
-  if(!aFeed)return;const endMs=Date.now();const dur=Math.round((endMs-aFeed.startMs)/60000);if(dur<=0)return alert("Greška u vremenima.");
-  const a=normAct({id:uid(),type:"feeding",time:aFeed.startIso,endTime:new Date(endMs).toISOString(),breast:aFeed.breast,duration:dur,notes:document.getElementById("feedNotes").value||"",timestamp:Date.now()});
-  acts.push(a);aFeed=null;saveA();saveAct();closeM("feedModal");updAll();
+document.getElementById("sleepManToggle").addEventListener("click",()=>{
+  const box=document.getElementById("sleepManBox");box.classList.toggle("hide");
+  if(!box.classList.contains("hide")){
+    document.getElementById("sleepManEnd").value=dtL(Date.now());
+    document.getElementById("sleepManStart").value=dtL(Date.now()-3600000);
+  }
+});
+document.getElementById("sleepManSave").addEventListener("click",()=>{
+  const s=fromDL(document.getElementById("sleepManStart").value),e=fromDL(document.getElementById("sleepManEnd").value);
+  if(!s||!e)return alert("Unesi početak i kraj.");if(e<=s)return alert("Kraj ne može biti prije početka.");
+  acts.push(normAct({id:uid(),type:"sleep",startMs:s,endMs:e,startIso:msISO(s),endIso:msISO(e),time:msISO(s),endTime:msISO(e),duration:(e-s)/3600000,notes:document.getElementById("sleepNotes").value||"",timestamp:Date.now()}));
+  saveA();closeM("sleepModal");updAll();
 });
 
+/* ---- HRANJENJE ---- */
+function setBreast(b){
+  selB=b;
+  document.querySelectorAll("#breastRow .tog").forEach(btn=>btn.classList.toggle("on",btn.dataset.b===b));
+  document.getElementById("feedMlWrap").classList.toggle("hide",b!=="bottle");
+}
+document.querySelectorAll("#breastRow .tog").forEach(btn=>btn.addEventListener("click",()=>{
+  if(aFeed)return; /* tokom hranjenja izbor se ne mijenja */
+  setBreast(btn.dataset.b);
+}));
+function mlVal(id){const v=parseInt(document.getElementById(id).value,10);return Number.isFinite(v)&&v>0?v:null;}
+function pFeed(){
+  if(aFeed){document.getElementById("feedClockBox").style.display="block";document.getElementById("feedStart").style.display="none";document.getElementById("feedStop").style.display="block";setBreast(aFeed.breast);}
+  else{document.getElementById("feedClockBox").style.display="none";document.getElementById("feedStart").style.display="block";document.getElementById("feedStop").style.display="none";setBreast(null);document.getElementById("feedNotes").value="";document.getElementById("feedMl").value="";}
+  document.getElementById("feedManBox").classList.add("hide");
+  document.getElementById("feedManToggle").style.display=aFeed?"none":"block";
+}
+document.getElementById("feedStart").addEventListener("click",()=>{if(aFeed)return;if(!selB)return alert("Odaberi dojku ili flašicu.");const ms=Date.now();aFeed={startMs:ms,startIso:new Date(ms).toISOString(),breast:selB};saveAct();pFeed();updAll();});
+document.getElementById("feedStop").addEventListener("click",()=>{
+  if(!aFeed)return;const endMs=Date.now();const dur=Math.max(1,Math.round((endMs-aFeed.startMs)/60000));
+  const a=normAct({id:uid(),type:"feeding",time:aFeed.startIso,endTime:new Date(endMs).toISOString(),breast:aFeed.breast,ml:aFeed.breast==="bottle"?mlVal("feedMl"):null,duration:dur,notes:document.getElementById("feedNotes").value||"",timestamp:Date.now()});
+  acts.push(a);aFeed=null;saveA();saveAct();closeM("feedModal");updAll();
+});
+document.getElementById("feedManToggle").addEventListener("click",()=>{
+  const box=document.getElementById("feedManBox");box.classList.toggle("hide");
+  if(!box.classList.contains("hide")){
+    document.getElementById("feedManEnd").value=dtL(Date.now());
+    document.getElementById("feedManStart").value=dtL(Date.now()-15*60000);
+  }
+});
+document.getElementById("feedManSave").addEventListener("click",()=>{
+  if(!selB)return alert("Odaberi dojku ili flašicu.");
+  const s=fromDL(document.getElementById("feedManStart").value),e=fromDL(document.getElementById("feedManEnd").value);
+  if(!s||!e)return alert("Unesi početak i kraj.");if(e<=s)return alert("Kraj ne može biti prije početka.");
+  acts.push(normAct({id:uid(),type:"feeding",startMs:s,endMs:e,startIso:msISO(s),endIso:msISO(e),time:msISO(s),endTime:msISO(e),breast:selB,ml:selB==="bottle"?mlVal("feedMl"):null,duration:Math.max(1,Math.round((e-s)/60000)),notes:document.getElementById("feedNotes").value||"",timestamp:Date.now()}));
+  saveA();closeM("feedModal");updAll();
+});
 
+/* ---- HRANA ---- */
 function setFoodLike(v){selLike=v;document.querySelectorAll("#foodLikeRow .tog").forEach(btn=>btn.classList.toggle("on",btn.dataset.like===v));}
 document.querySelectorAll("#foodLikeRow .tog").forEach(btn=>btn.addEventListener("click",()=>setFoodLike(btn.dataset.like)));
 function pFood(){
@@ -519,26 +647,36 @@ document.getElementById("foodSave").addEventListener("click",()=>{
   saveA();closeM("foodModal");updAll();
 });
 
+/* ---- UREDI ---- */
+function setEditB(b){
+  eB=b;
+  document.querySelectorAll("#editBreastRow .tog").forEach(x=>x.classList.toggle("on",x.dataset.b===b));
+  document.getElementById("editMlWrap").classList.toggle("hide",b!=="bottle");
+}
 function openEdit(id){
   const a=acts.find(x=>x&&x.id===id);if(!a)return;eId=id;
   document.getElementById("editStart").value=a.startMs?dtL(a.startMs):"";document.getElementById("editEnd").value=a.endMs?dtL(a.endMs):"";document.getElementById("editNotes").value=a.notes||"";
   document.getElementById("editBreastWrap").style.display=a.type==="feeding"?"block":"none";
   document.getElementById("editFoodWrap").style.display=a.type==="food"?"block":"none";
-  if(a.type==="feeding"){eB=a.breast||null;document.querySelectorAll("#editBreastRow .tog").forEach(b=>b.classList.toggle("on",b.dataset.b===eB));}else eB=null;
-  if(a.type==="food"){document.getElementById("editEnd").closest(".fg").style.display="none";document.getElementById("editFoodName").value=a.foodName||"";eLike=a.liked||null;document.querySelectorAll("#editFoodLikeRow .tog").forEach(b=>b.classList.toggle("on",b.dataset.like===eLike));}
-  else{document.getElementById("editEnd").closest(".fg").style.display="block";eLike=null;}
+  if(a.type==="feeding"){setEditB(a.breast||null);document.getElementById("editMl").value=a.ml||"";}else{eB=null;}
+  if(a.type==="food"){document.getElementById("editEndWrap").style.display="none";document.getElementById("editFoodName").value=a.foodName||"";eLike=a.liked||null;document.querySelectorAll("#editFoodLikeRow .tog").forEach(b=>b.classList.toggle("on",b.dataset.like===eLike));}
+  else{document.getElementById("editEndWrap").style.display="block";eLike=null;}
   openM("editModal");
 }
-document.querySelectorAll("#editBreastRow .tog").forEach(btn=>btn.addEventListener("click",()=>{eB=btn.dataset.b;document.querySelectorAll("#editBreastRow .tog").forEach(b=>b.classList.remove("on"));btn.classList.add("on");}));
+document.querySelectorAll("#editBreastRow .tog").forEach(btn=>btn.addEventListener("click",()=>setEditB(btn.dataset.b)));
 document.querySelectorAll("#editFoodLikeRow .tog").forEach(btn=>btn.addEventListener("click",()=>{eLike=btn.dataset.like;document.querySelectorAll("#editFoodLikeRow .tog").forEach(b=>b.classList.remove("on"));btn.classList.add("on");}));
 document.getElementById("editSave").addEventListener("click",()=>{
   if(!eId)return;const a=acts.find(x=>x&&x.id===eId);if(!a)return;
   const s=fromDL(document.getElementById("editStart").value),e=a.type==="food"?s:fromDL(document.getElementById("editEnd").value);
   if(!s||!e)return alert(a.type==="food"?"Unesi vrijeme obroka.":"Unesi početak i kraj.");if(a.type!=="food"&&e<=s)return alert("Kraj ne može biti prije početka.");
+  /* validacija prije izmjene */
+  let name=null;
+  if(a.type==="feeding"){if(!eB)return alert("Odaberi dojku ili flašicu.");}
+  if(a.type==="food"){name=document.getElementById("editFoodName").value.trim();if(!name)return alert("Unesi šta je jeo.");if(!eLike)return alert("Odaberi da li mu se svidjelo.");}
   a.startMs=s;a.endMs=e;a.startIso=msISO(s);a.endIso=msISO(e);a.time=a.startIso;a.endTime=a.endIso;a.notes=document.getElementById("editNotes").value||"";
   if(a.type==="sleep"){a.duration=(e-s)/3600000;}
-  else if(a.type==="feeding"){if(!eB)return alert("Odaberi dojku.");a.breast=eB;a.duration=Math.round((e-s)/60000);if(a.duration<=0)return alert("Greška u vremenima.");}
-  else{const name=document.getElementById("editFoodName").value.trim();if(!name)return alert("Unesi šta je jeo.");if(!eLike)return alert("Odaberi da li mu se svidjelo.");a.foodName=name;a.liked=eLike;}
+  else if(a.type==="feeding"){a.breast=eB;a.ml=eB==="bottle"?mlVal("editMl"):null;a.duration=Math.max(1,Math.round((e-s)/60000));}
+  else{a.foodName=name;a.liked=eLike;}
   normAll();saveA();closeM("editModal");updAll();
 });
 function delAct(id){const i=acts.findIndex(a=>a&&a.id===id);if(i<0)return;if(!confirm("Obrisati zapis?"))return;acts.splice(i,1);saveA();updAll();}
@@ -557,19 +695,73 @@ document.getElementById("openSleep").addEventListener("click",()=>openM("sleepMo
 document.getElementById("openFeed").addEventListener("click",()=>openM("feedModal"));
 document.getElementById("openFood").addEventListener("click",()=>openM("foodModal"));
 
+/* ---- BACKUP: izvoz / uvoz ---- */
+document.getElementById("bkExport").addEventListener("click",()=>{
+  const data={app:"norian",version:2,exportedAt:new Date().toISOString(),acts,activeSleep:aSleep,activeFeeding:aFeed};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const d=new Date(),name=`norian-backup-${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}.json`;
+  const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),4000);
+});
+document.getElementById("bkImport").addEventListener("click",()=>document.getElementById("bkFile").click());
+document.getElementById("bkFile").addEventListener("change",async e=>{
+  const f=e.target.files&&e.target.files[0];e.target.value="";if(!f)return;
+  try{
+    const j=JSON.parse(await f.text());
+    const arr=Array.isArray(j)?j:Array.isArray(j.acts)?j.acts:null;
+    if(!arr)return alert("Fajl nije ispravna kopija.");
+    const have=new Set(acts.map(a=>a.id));let add=0;
+    for(const raw of arr){const n=normAct(raw);if(n&&!have.has(n.id)){acts.push(n);have.add(n.id);add++;}}
+    saveA();updAll();alert(`Vraćeno. Dodano novih zapisa: ${add}. Postojeći zapisi su sačuvani.`);
+  }catch{alert("Greška pri čitanju fajla.");}
+});
+
+/* ---- Trajna pohrana + oporavak iz IndexedDB ---- */
+async function initStorage(){
+  const st=document.getElementById("bkStatus");
+  /* ako je localStorage prazan (npr. očišćen), vrati iz IndexedDB kopije */
+  if(!acts.length){
+    const raw=await idbGet("acts");
+    if(raw){
+      const arr=sP(raw,[]);
+      if(Array.isArray(arr)&&arr.length){
+        acts=arr.map(normAct).filter(Boolean);
+        if(!aSleep){const s=normSl(sP(await idbGet("activeSleep")||"null",null));if(s)aSleep=s;}
+        if(!aFeed){const f=normFe(sP(await idbGet("activeFeeding")||"null",null));if(f)aFeed=f;}
+        saveA();saveAct();updAll();
+      }
+    }
+  } else { idbSet("acts",JSON.stringify(acts)); }
+  try{
+    if(navigator.storage&&navigator.storage.persist){
+      let ok=await navigator.storage.persisted();
+      if(!ok)ok=await navigator.storage.persist();
+      if(ok){st.textContent="✓ Pohrana je zaštićena (preglednik je neće sam brisati).";st.className="bkStatus";}
+      else{st.textContent="⚠ Preglednik nije potvrdio trajnu pohranu. Povremeno spremi kopiju u fajl.";st.className="bkStatus warn";}
+    }else{st.textContent="Podaci su spremljeni na uređaju. Povremeno spremi kopiju u fajl.";st.className="bkStatus";}
+  }catch{st.textContent="Podaci su spremljeni na uređaju. Povremeno spremi kopiju u fajl.";st.className="bkStatus";}
+}
+
 function tick(){
-  acts=sP(localStorage.getItem(KA)||"[]",[]);aSleep=sP(localStorage.getItem(KS)||"null",null);aFeed=sP(localStorage.getItem(KF)||"null",null);normAll();updP();updH();updL();
+  /* sinhronizacija između kartica; bez ponovnog upisa svake sekunde */
+  const ra=localStorage.getItem(KA);
+  if(ra!==null){const parsed=sP(ra,null);if(Array.isArray(parsed))acts=parsed;}
+  aSleep=sP(localStorage.getItem(KS)||"null",null);aFeed=sP(localStorage.getItem(KF)||"null",null);normAll();updP();updH();updL();
   const nowSec=Math.floor(Date.now()/1000),isNew=lastSec===null||nowSec!==lastSec;if(isNew)lastSec=nowSec;
   if(document.getElementById("sleepModal").classList.contains("active")&&aSleep){
     const el=Date.now()-aSleep.startMs;document.getElementById("sleepElapsed").textContent=hms(el);document.getElementById("sleepMeta").textContent=`Zaspao: ${relT(aSleep.startMs)} • ${ago(aSleep.startMs)}`;
     setH(document.getElementById("sleepH"),document.getElementById("sleepM"),document.getElementById("sleepS"),el);if(isNew)kick("sleepFace");document.getElementById("sleepClockBox").style.display="block";
   }
   if(document.getElementById("feedModal").classList.contains("active")&&aFeed){
-    const el=Date.now()-aFeed.startMs;document.getElementById("feedElapsed").textContent=hms(el);document.getElementById("feedMeta").textContent=`Počelo: ${relT(aFeed.startMs)} • Dojka: ${bStr(aFeed.breast)} • ${ago(aFeed.startMs)}`;
+    const el=Date.now()-aFeed.startMs;document.getElementById("feedElapsed").textContent=hms(el);document.getElementById("feedMeta").textContent=`Počelo: ${relT(aFeed.startMs)} • ${aFeed.breast==="bottle"?"Flašica":"Dojka: "+bStr(aFeed.breast)} • ${ago(aFeed.startMs)}`;
     setH(document.getElementById("feedH"),document.getElementById("feedM"),document.getElementById("feedS"),el);if(isNew)kick("feedFace");document.getElementById("feedClockBox").style.display="block";
   }
 }
+/* prvi upis nakon normalizacije (stari podaci ostaju, samo se dopune poljima) */
+saveA();saveAct();
 updAll();pSleep();pFeed();pFood();setInterval(tick,1000);
+initStorage();
 </script>
 </body>
 </html>
